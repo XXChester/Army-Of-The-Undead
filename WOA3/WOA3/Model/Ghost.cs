@@ -44,7 +44,7 @@ namespace WOA3.Model {
 			StaticDrawable2DParams wallParams = new StaticDrawable2DParams {
 				Position = position,
 				Texture = texture,
-				Origin = new Vector2(Constants.TILE_SIZE)
+				Origin = new Vector2(Constants.TILE_SIZE/2)
 			};
 
 			base.init(new StaticDrawable2D(wallParams));

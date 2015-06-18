@@ -37,7 +37,7 @@ namespace WOA3.Model {
 				Position = position,
 				Texture = texture,
 				//Scale = new Vector2(.5f),
-				Origin = new Vector2(Constants.TILE_SIZE)
+				Origin = new Vector2(Constants.TILE_SIZE/2)
 			};
 			
 			base.init(new StaticDrawable2D(wallParams));

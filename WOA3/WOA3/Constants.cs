@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WOA3 {
 	public class Constants {
-		public const float TILE_SIZE = 16f;
+		public const float TILE_SIZE = 32f;
 		public const int RESOLUTION_X = 1280;
 		public const int RESOLUTION_Y = 768;
 		

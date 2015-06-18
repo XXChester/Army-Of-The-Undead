@@ -53,7 +53,7 @@ namespace WOA3.Model {
 		}
 
 		protected virtual BoundingBox getBBox() {
-			return CollisionGenerationUtils.getBBox(this.Position);
+			return CollisionGenerationUtils.getBBoxHalf(this.Position);
 		}
 
 		public virtual void update(float elapsed) {
