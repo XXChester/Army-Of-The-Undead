@@ -23,16 +23,15 @@ using WOA3.Map;
 namespace WOA3.Model.Display {
 	public class GameDisplay : IRenderable {
 		#region Class variables
-		private string mapName;
 		private ContentManager content;
-		private BoundingBox boundary;
-		//private MapCollisionChecker mapCollisionChecker;
+		private string mapName;
 
 
 		private Map map;
+		private HUD hud;
 		private List<Ghost> allGhosts = new List<Ghost>();
 		private List<Ghost> selectedGhosts = new List<Ghost>();
-		private List<Goof> mobs = new List<Goof>();
+		private List<Mob> mobs = new List<Mob>();
 		private GhostObservationHandler ghostObserverHandler;
 
 #if DEBUG
@@ -57,14 +56,8 @@ namespace WOA3.Model.Display {
 		private void init(bool fullRegen = false) {
 			initDelegates();
 			loadMap();
-			Vector3 min = new Vector3(0f);
-			Vector3 max = new Vector3(Constants.RESOLUTION_X, Constants.RESOLUTION_Y, 0f);
-			this.boundary = new BoundingBox(min, max);
 			this.ghostObserverHandler = new GhostObservationHandler();
-			this.allGhosts.Add(new Ghost(content, new Vector2(100f), this.ghostObserverHandler));
-			this.selectedGhosts.Add(this.allGhosts[0]);
-			//this.allGhosts[0].Selected = true;
-			this.mobs.Add(new Goof(content, new Vector2(500f)));
+			this.hud = new HUD(content);
 
 			if (fullRegen) {
 				/*this.backGround = new BackGround(this.content);
@@ -82,15 +75,26 @@ namespace WOA3.Model.Display {
 			string suffix = ".xml";
 			XmlReader xmlReader = XmlReader.Create(Constants.MAP_DIRECTORY + this.mapName + "Identifiers" + suffix);
 
+			Point ghostStart = new Point();
+			List<Point> monsterInfos = new List<Point>();
 			try {
 				XmlDocument doc = new XmlDocument();
 				doc.Load(xmlReader);
 
 				// load the map information
 				MapLoader.loadMap(this.content, Constants.MAP_DIRECTORY + this.mapName + suffix, out this.map);
+
+				MapLoader.loadPlayerInformation(doc, ref ghostStart);
+
+				MapLoader.loadGenericPointList(doc, MapEditor.MappingState.Monster, out monsterInfos);
 			} finally {
 				xmlReader.Close();
 			}
+
+			foreach (var mobInfo in monsterInfos) {
+				this.mobs.Add(new Mob(content, mobInfo.toVector2()));
+			}
+			this.allGhosts.Add(new Ghost(content, ghostStart.toVector2(), this.ghostObserverHandler));
 		}
 
 		private void initDelegates() {
@@ -98,39 +102,12 @@ namespace WOA3.Model.Display {
 				return this.map.collisionDetected(bbox, objectsPosition);
 			};*/
 #if DEBUG
-			this.editorsCreator = delegate(MapEditor.MappingState type, Point point, Point end, string subType) {
-				/*switch (type) {
-					case MapEditor.MappingState.Crate:
-						this.levelObjects.Add(new Crate(this.content, new Vector2(point.X, point.Y),
-							this.fishCounterIncrementer));
-						break;
-					case MapEditor.MappingState.Fish:
-						this.levelObjects.Add(new Fish(this.content, new Vector2(point.X, point.Y),
-							this.fishCounterIncrementer));
-						break;
-					case MapEditor.MappingState.HealthKit:
-						this.levelObjects.Add(new HealthKit(this.content, new Vector2(point.X, point.Y),
-							this.playerHealthModifier));
-						break;
-					case MapEditor.MappingState.Spike:
-						this.levelObjects.Add(new Spike(this.content, subType, new Vector2(point.X, point.Y),
-							this.playerHealthModifier));
-						break;
-					case MapEditor.MappingState.SpikeLauncher:
-						this.spikeLaunchers.Add(new SpikeLauncher(this.content, new Vector2(point.X, point.Y),
-							this.playerHealthModifier, (CardinalDirection)Enum.Parse(typeof(CardinalDirection),
-							subType), this.mapCollisionChecker));
-						break;
+			this.editorsCreator = delegate(MapEditor.MappingState type, Vector2 position) {
+				switch (type) {
 					case MapEditor.MappingState.Monster:
-						if (subType == MapEditor.MONSTER_TYPE_ZOOM) {
-							SpecializedLoadResult result = new SpecializedLoadResult();
-							result.Start = point;
-							result.End = end;
-							result.Type = subType;
-							this.monsters.Add(new Zoom(this.content, this.mapCollisionChecker, result, this.scoreIncrementer, this.playerHealthModifier));
-						}
+						this.mobs.Add(new Mob(content, position));
 						break;
-				};*/
+				};
 			};
 
 			/*this.editorsDeleter = delegate(Point point) {
@@ -170,8 +147,14 @@ namespace WOA3.Model.Display {
 					}
 				}
 				if (damage > 0f) {
-					mob.scare(damage);
-					if (mob.Scared.amIDead()) {
+					mob.damage(damage);
+					if (mob.Health.amIDead()) {
+						SkillResult deathEffect = mob.die();
+						foreach (var inRange in allGhosts) {
+							if (inRange.BBox.Intersects(deathEffect.BoundingSphere)) {
+								inRange.damage(deathEffect.Damage);
+							}
+						}
 						mobs.RemoveAt(i);
 						this.allGhosts.Add(new Ghost(content, mob.Position, this.ghostObserverHandler));
 					}
@@ -185,7 +168,6 @@ namespace WOA3.Model.Display {
 			foreach (var ghost in allGhosts) {
 				ghost.update(elapsed);
 				if (ghost.isVisible()) {
-
 					foreach (var mob in mobs) {
 						Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
 						Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
@@ -266,16 +248,6 @@ namespace WOA3.Model.Display {
 				updateFieldOfView(elapsed);
 				updateSkills(elapsed);
 
-				/*Wall collision = null;
-				foreach (var mob in mobs) {
-					if (!mob.isStopped()) {
-						collision = this.map.collisionDetected(mob.BBox);
-						if (collision != null) {
-							mob.stop(collision);
-						}
-					}
-				}*/
-
 				if (InputManager.getInstance().wasLeftButtonPressed()) {
 					if (!InputManager.getInstance().isKeyDown(Keys.LeftShift)) {
 						foreach (var ghost in allGhosts) {
@@ -292,9 +264,11 @@ namespace WOA3.Model.Display {
 						}
 					}
 				}
+				this.hud.update(elapsed);
 			}
 #if DEBUG
 			Debug.update();
+			MapEditor.getInstance().update();
 #endif
 		}
 
@@ -308,12 +282,7 @@ namespace WOA3.Model.Display {
 			foreach (var mob in mobs) {
 				mob.render(spriteBatch);
 			}
-
-#if DEBUG
-			if (Debug.debugOn) {
-				DebugUtils.drawBoundingBox(spriteBatch, this.boundary, Debug.DEBUG_BBOX_Color, Debug.debugChip);
-			}
-#endif
+		//	this.hud.render(spriteBatch);
 		}
 		#endregion Support methods
 

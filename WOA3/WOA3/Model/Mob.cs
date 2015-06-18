@@ -19,11 +19,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 using WOA3.Engine;
 using WOA3.Logic;
+using WOA3.Logic.Skills;
 using WOA3.Logic.AI;
 using WOA3.Logic.Behaviours;
 
 namespace WOA3.Model {
-	public class Goof : Entity, Scareable, IObserver<Ghost> {
+	public class Mob : Character, IObserver<Ghost> {
 		public enum State { Tracking, LostTarget, Stopped, Pathing, Idle }
 		#region Class variables
 		private TargetBehaviour activeBehaviour;
@@ -32,7 +33,6 @@ namespace WOA3.Model {
 		private Pathing pathingBehaviour;
 		private Entity tracking;
 		private State previousState;
-		private Text2D scaredText;
 		private IDisposable unsubscriber;
 
 		private const float SPEED = .1f;
@@ -41,19 +41,15 @@ namespace WOA3.Model {
 		#region Class propeties
 		public Vector2 LastKnownLocation { get; set; }
 		public State CurrentState { get; set; }
-		public ScaredFactor Scared { get; set; }
-		public BoundingSphere BoundingSphere { get; set; }
+		//public BoundingSphere BoundingSphere { get; set; }
+		public float CorpseExplosionDamage { get { return 3; } }
 		#endregion Class properties
 
 		#region Constructor
-		public Goof(ContentManager content, Vector2 position)
-			:base(content) {
-
-			this.Scared = new ScaredFactor();
+		public Mob(ContentManager content, Vector2 position)
+			:base(content, position, SPEED) {
 			
 			StaticDrawable2D character = getCharacterSprite(content, position);
-			createScaredText(position);
-
 			base.init(character);
 
 			BehaviourFinished idleCallback = delegate() {
@@ -68,7 +64,7 @@ namespace WOA3.Model {
 			updateBoundingSphere(position);
 		}
 		private void updateBoundingSphere(Vector2 position) {
-			this.BoundingSphere = new BoundingSphere(new Vector3(position, 0f), Constants.BOUNDING_SPHERE_SIZE);
+		//	this.BoundingSphere = new BoundingSphere(new Vector3(position, 0f), Constants.BOUNDING_SPHERE_SIZE);
 		}
 
 		private StaticDrawable2D getCharacterSprite(ContentManager content, Vector2 position) {
@@ -82,27 +78,14 @@ namespace WOA3.Model {
 			};
 			return new StaticDrawable2D(characterParams);
 		}
-
-		private Text2D createScaredText(Vector2 position) {
-			Text2DParams textParams = new Text2DParams() {
-				Position = getTextPosition(position),
-				LightColour = Constants.TEXT_COLOUR,
-				WrittenText = this.Scared.Text,
-				Origin = new Vector2(Constants.TILE_SIZE / 2),
-				Font = Constants.FONT
-			};
-			this.scaredText = new Text2D(textParams);
-			return this.scaredText;
-		}
 		#endregion Constructor
 
 		#region Support methods
-		private Vector2 getTextPosition(Vector2 position) {
-			return Vector2.Subtract(position, new Vector2(-6f, Constants.TILE_SIZE));
-		}
 		private void swapBehaviours(TargetBehaviour newBehaviour, State state) {
 			if (!state.Equals(previousState)) {
+#if DEBUG
 				Debug.log("old: " + previousState + "\tnew: " + state + "\tLKL: " + LastKnownLocation);
+#endif
 				this.LastKnownLocation = this.activeBehaviour.Target;
 				newBehaviour.Target = this.LastKnownLocation;
 				newBehaviour.Position = this.activeBehaviour.Position;
@@ -128,14 +111,11 @@ namespace WOA3.Model {
 		}
 
 		public void stop() {
+#if DEBUG
 			Debug.log("Stoppping");
+#endif
 			this.activeBehaviour.Target = this.Position;
 			this.CurrentState = State.Stopped;
-		}
-
-		public void scare(float amount) {
-			this.Scared.scare(amount);
-			this.scaredText.WrittenText = this.Scared.Text;
 		}
 
 		public bool isStopped() {
@@ -150,6 +130,16 @@ namespace WOA3.Model {
 			return State.Idle.Equals(this.CurrentState);
 		}
 
+		public override SkillResult die() {
+			SkillResult result = new CorpseExplode(CorpseExplosionDamage).perform(this.rangeRing.BoundingSphere);
+
+			return result;
+		}
+
+		public override List<SkillResult> performSkills() {
+			throw new NotImplementedException();
+		}
+
 		public override void update(float elapsed) {
 			base.update(elapsed);
 
@@ -160,15 +150,13 @@ namespace WOA3.Model {
 				}
 				this.activeBehaviour.update(elapsed);
 				base.Position = this.activeBehaviour.Position;
-				this.scaredText.Position = getTextPosition(base.Position);
-				this.scaredText.update(elapsed);
 				updateBoundingSphere(base.Position);
 			}
 
-			if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
+			/*if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
 				this.activeBehaviour.Target = GWNorthEngine.Input.InputManager.getInstance().MousePosition;
 				swapBehaviours(this.seekingBehaviour, State.Tracking);
-			}
+			}*/
 			/*if (!isPathing() && !isStopped() && activeBehaviour.Target.Equals(activeBehaviour.Position)) {
 				stop();
 			}*/
@@ -178,7 +166,6 @@ namespace WOA3.Model {
 
 		public override void render(SpriteBatch spriteBatch) {
 			base.render(spriteBatch);
-			this.scaredText.render(spriteBatch);
 			
 #if DEBUG
 			if (Debug.debugOn) {
@@ -186,7 +173,7 @@ namespace WOA3.Model {
 					BoundingBox bbox = CollisionGenerationUtils.getBBoxHalf(this.activeBehaviour.Target);
 					DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Green, Debug.debugChip);
 				}
-				DebugUtils.drawBoundingSphere(spriteBatch, BoundingSphere, Color.Pink, Debug.debugRing);
+				//DebugUtils.drawBoundingSphere(spriteBatch, BoundingSphere, Color.Pink, Debug.debugRing);
 			}
 			if (GWNorthEngine.Input.InputManager.getInstance().wasKeyPressed(Microsoft.Xna.Framework.Input.Keys.Space)) {
 				Debug.log("Type: " + this.activeBehaviour +"\tpos: " + this.activeBehaviour.Position);

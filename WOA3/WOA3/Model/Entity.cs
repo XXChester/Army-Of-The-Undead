@@ -17,7 +17,6 @@ namespace WOA3.Model {
 		#region Class variables
 		private Base2DSpriteDrawable image;
 		protected ContentManager content;
-		protected bool alwaysRender;
 		protected List<FinishableEffect> managedEffects = new List<FinishableEffect>();
 		#endregion Class variables
 
@@ -42,10 +41,9 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Entity(ContentManager content, bool alwaysRender=false) : this(content, null, alwaysRender) { }
-		public Entity(ContentManager content, Base2DSpriteDrawable image, bool alwaysRender = false) {
+		public Entity(ContentManager content, bool alwaysRender=false) : this(content, null) { }
+		public Entity(ContentManager content, Base2DSpriteDrawable image) {
 			this.content = content;
-			this.alwaysRender = alwaysRender;
 			init(image);
 		}
 		#endregion Constructor
@@ -84,7 +82,7 @@ namespace WOA3.Model {
 		}
 
 		public virtual void render(SpriteBatch spriteBatch) {
-			if (StateManager.getInstance().CurrentGameState == GameState.Active || alwaysRender) {
+			if (StateManager.getInstance().CurrentGameState == GameState.Active) {
 				if (this.image != null) {
 					this.image.render(spriteBatch);
 				}

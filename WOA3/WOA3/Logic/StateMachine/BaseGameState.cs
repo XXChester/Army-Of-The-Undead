@@ -28,7 +28,7 @@ namespace WOA3.Logic.StateMachine {
 		}
 
 		public virtual void goToNextState() {
-			
+			reset();
 		}
 
 		public virtual Model.Display.IRenderable getCurrentScreen() {
@@ -44,7 +44,7 @@ namespace WOA3.Logic.StateMachine {
 		}
 		
 		public virtual void reset() {
-			
+		
 		}
 
 		public void Dispose() {

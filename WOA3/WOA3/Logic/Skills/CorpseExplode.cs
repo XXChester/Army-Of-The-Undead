@@ -8,10 +8,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace WOA3.Logic.Skills {
-	public class Appear : Skill {
-
-		private const float DAMAGE = .5f;
+	public class CorpseExplode : Skill {
 		private const int COOL_DOWN = 1;
-		public Appear(VisualCallback visualCallback) : base(DAMAGE, COOL_DOWN, visualCallback) {	}
+		public CorpseExplode(float damage) : base(damage, 1, null) { }
 	}
 }

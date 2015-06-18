@@ -39,18 +39,6 @@ namespace WOA3.Logic {
 		#region Constructor
 		public StateManager() {
 			this.currentTransitionState = TransitionState.InitTransitionIn;
-			this.currentGameState = GameState.CompanyCinematic;
-
-#if DEBUG
-			// TESTING VALUES
-			this.currentGameState = GameState.Active;
-			//this.currentGameState = GameState.Waiting;
-			//this.GameMode = Logic.GameMode.TwoPlayer;
-			//this.currentGameState = GameState.GameOver;
-			//this.WhoWon = Winner.PlayerOne;
-			//this.currentGameState = GameState.MainMenu;
-			//this.currentGameState = GameState.Options;
-#endif
 		}
 		#endregion Constructor
 

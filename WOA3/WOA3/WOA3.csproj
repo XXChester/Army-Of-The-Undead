@@ -121,6 +121,7 @@
     <Compile Include="Logic\Behaviours\Pathing.cs" />
     <Compile Include="Logic\Behaviours\TargetBehaviour.cs" />
     <Compile Include="Logic\GhostObservationHandler.cs" />
+    <Compile Include="Logic\Skills\CorpseExplode.cs" />
     <Compile Include="Logic\StateMachine\BaseGameState.cs" />
     <Compile Include="Logic\StateMachine\CompanyCinematicState.cs" />
     <Compile Include="Logic\StateMachine\GameDisplayState.cs" />
@@ -147,7 +148,6 @@
     <Compile Include="Logic\Behaviours\LostTarget.cs" />
     <Compile Include="Logic\Behaviours\Tracking.cs" />
     <Compile Include="Logic\GameState.cs" />
-    <Compile Include="Logic\Scareable.cs" />
     <Compile Include="Logic\ScaredFactor.cs" />
     <Compile Include="Logic\Skills\Shriek.cs" />
     <Compile Include="Logic\Skills\Skill.cs" />
@@ -157,8 +157,13 @@
     <Compile Include="Logic\StateManager.cs" />
     <Compile Include="Logic\TransitionState.cs" />
     <Compile Include="Map\SpecializedLoadResult.cs" />
+    <Compile Include="Model\CoolDownHit.cs" />
+    <Compile Include="Model\Character.cs" />
+    <Compile Include="Model\TextPopup.cs" />
+    <Compile Include="Model\HUDIcon.cs" />
+    <Compile Include="Model\HUD.cs" />
     <Compile Include="Model\Wall.cs" />
-    <Compile Include="Model\Goof.cs" />
+    <Compile Include="Model\Mob.cs" />
     <Compile Include="Model\Display\Cinematic.cs" />
     <Compile Include="Model\Display\GameDisplay.cs" />
     <Compile Include="Engine\Program.cs" />

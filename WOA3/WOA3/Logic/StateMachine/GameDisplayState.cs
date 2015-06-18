@@ -26,7 +26,6 @@ namespace WOA3.Logic.StateMachine {
 		}
 
 		public override void setStates() {
-			base.setStates();
 			StateManager.getInstance().CurrentGameState = GameState.Active;
 		}
 

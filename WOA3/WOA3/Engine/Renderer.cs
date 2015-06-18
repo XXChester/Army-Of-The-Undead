@@ -15,6 +15,7 @@ using WOA3.Logic;
 using WOA3.Logic.AI;
 using WOA3.Logic.StateMachine;
 using WOA3.Model.Display;
+using WOA3.Map;
 
 
 namespace WOA3.Engine {
@@ -73,6 +74,7 @@ namespace WOA3.Engine {
 #if WINDOWS
 #if DEBUG
 			ScriptManager.getInstance().LogFile = "Log.log";
+			ScriptManager.getInstance().registerObject(MapEditor.getInstance(), "editor");
 			Debug.debugChip = LoadingUtils.load<Texture2D>(Content, "Chip");
 			Debug.debugRing = TextureUtils.create2DRingTexture(GraphicsDevice, (int)Constants.BOUNDING_SPHERE_SIZE, Color.White);
 #endif
@@ -167,6 +169,7 @@ namespace WOA3.Engine {
 			}
 			if (InputManager.getInstance().wasKeyPressed(Keys.Escape) ||
 			InputManager.getInstance().wasButtonPressed(PlayerIndex.One, Buttons.B)) {
+				MapEditor.getInstance().logEntries();
 				//SpawnGenerator.getInstance().Running = false;
 				this.Exit();
 			}

@@ -9,9 +9,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace WOA3.Logic.Skills {
 	public class Boo : Skill {
-
 		private const float DAMAGE = 1f;
 		private const int COOL_DOWN = 1;
-		public Boo() : base(DAMAGE, COOL_DOWN) { }
+		public Boo(VisualCallback visualCallback) : base(DAMAGE, COOL_DOWN, visualCallback) { }
 	}
 }

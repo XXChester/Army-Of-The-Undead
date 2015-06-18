@@ -21,7 +21,9 @@ namespace WOA3.Logic.StateMachine {
 			this.GameDevCinematic = new GameDevSplashState(this, device, content);
 			this.GameDisplay = new GameDisplayState(this, device, content);
 
-			this.CurrentState = this.GameDisplay;
+			//this.CurrentState = this.GameDisplay;
+			this.CurrentState = GameDevCinematic;
+			setStates();
 		}
 
 		public void goToNextState() {
@@ -37,7 +39,7 @@ namespace WOA3.Logic.StateMachine {
 		}
 		
 		public void setStates() {
-			throw new NotImplementedException();
+			CurrentState.setStates();
 		}
 
 		public void reset() {

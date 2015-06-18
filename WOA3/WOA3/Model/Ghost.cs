@@ -18,8 +18,6 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-
-
 using WOA3.Engine;
 using WOA3.Logic;
 using WOA3.Logic.AI;
@@ -27,10 +25,9 @@ using WOA3.Logic.Behaviours;
 using WOA3.Logic.Skills;
 
 namespace WOA3.Model {
-	public class Ghost : Entity {
+	public class Ghost : Character {
 		private enum State { Visisble, Invisible };
 		#region Class variables
-		private RadiusRing ring;
 		private Tracking seeking;
 		private StaticDrawable2D selectedImg;
 		private FadeEffect fadeEffect, selectedFadeEffect;
@@ -39,7 +36,7 @@ namespace WOA3.Model {
 
 		private Dictionary<Keys, Skill> skills;
 
-		private const float SPEED = .5f;//.2f;
+		private const float SPEED = .2f;
 		#endregion Class variables
 
 		#region Class propeties
@@ -48,19 +45,18 @@ namespace WOA3.Model {
 
 		#region Constructor
 		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler)
-			: base(content) {
+			: base(content, position, SPEED) {
 			
 			this.observerHandler = observerHandler;
-			Texture2D texture = null;
-			texture = LoadingUtils.load<Texture2D>(content, "Ghost");
+			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Ghost");
 
-			StaticDrawable2DParams wallParams = new StaticDrawable2DParams {
+			StaticDrawable2DParams characterParms = new StaticDrawable2DParams {
 				Position = position,
 				Texture = texture,
 				Origin = new Vector2(Constants.TILE_SIZE/2)
 			};
 
-			base.init(new StaticDrawable2D(wallParams));
+			base.init(new StaticDrawable2D(characterParms));
 
 			Texture2D radiusTexture =  LoadingUtils.load<Texture2D>(content, "Ring");
 			StaticDrawable2DParams parms = new StaticDrawable2DParams();
@@ -68,28 +64,12 @@ namespace WOA3.Model {
 			parms.LightColour = Color.LimeGreen;
 			parms.Texture = radiusTexture;
 			parms.Origin = new Vector2(Constants.TILE_SIZE/2, -(Constants.TILE_SIZE / 4));
+			
 			this.selectedImg = new StaticDrawable2D(parms);
-
 			this.seeking = new Tracking(position, SPEED);
-
 			this.fadeEffect = createEffect(base.LightColour);
 			this.addEffect(fadeEffect);
 			this.selectedFadeEffect = createEffect(this.selectedImg.LightColour);
-			//this.selectedImg.addEffect(selectedFadeEffect);
-
-		/*	PartialFadeEffectParams fadeParms = new PartialFadeEffectParams() {
-				OriginalColour = base.LightColour,
-				TotalTransitionTime = 500f,
-				State = FadeEffect.FadeState.PartialIn,
-			};
-			this.fadeEffect = new FadeEffect(fadeParms);
-			this.addEffect(this.fadeEffect);
-			fadeParms.OriginalColour = this.selectedImg.LightColour;
-			this.selectedFadeEffect = new FadeEffect(fadeParms);
-			this.selectedImg.addEffect(this.selectedFadeEffect);
-			this.addEffect(this.selectedFadeEffect);*/
-
-			this.ring = new RadiusRing(content, base.Position);
 
 			initSkills();
 		}
@@ -97,11 +77,6 @@ namespace WOA3.Model {
 
 		#region Support methods
 		private void initSkills() {
-			this.skills = new Dictionary<Keys, Skill>();
-			this.skills.Add(Keys.D1, new Boo());
-			this.skills.Add(Keys.D2, new Shriek());
-
-
 			VisualCallback appear = delegate() {
 				int alpha = 255;
 				resetFadeEffect(this.fadeEffect, alpha, FadeEffect.FadeState.PartialIn);
@@ -115,6 +90,10 @@ namespace WOA3.Model {
 				this.state = State.Invisible;
 				this.observerHandler.notifyGhostChange(this);
 			};
+
+			this.skills = new Dictionary<Keys, Skill>();
+			this.skills.Add(Keys.D1, new Boo(appear));
+			this.skills.Add(Keys.D2, new Shriek(appear));
 			this.skills.Add(Keys.D3, new Appear(appear));
 			this.skills.Add(Keys.D4, new Disappear(disappear));
 		}
@@ -138,12 +117,12 @@ namespace WOA3.Model {
 			return State.Visisble.Equals(this.state);
 		}
 
-		public List<SkillResult> performSkills() {
+		public override List<SkillResult> performSkills() {
 			List<SkillResult> results = new List<SkillResult>();
 			if (Selected) {
 				foreach (var skill in skills) {
 					if (InputManager.getInstance().wasKeyPressed(skill.Key)) {
-						SkillResult result = skill.Value.perform(this.ring.BoundingSphere);
+						SkillResult result = skill.Value.perform(this.rangeRing.BoundingSphere);
 						if (result != null) {
 							results.Add(result);
 						}
@@ -153,12 +132,14 @@ namespace WOA3.Model {
 			return results;
 		}
 
+		public override SkillResult die() {
+			throw new NotImplementedException();
+		}
 		
 		public override void update(float elapsed) {
 			base.update(elapsed);
 			this.seeking.update(elapsed);
 			base.Position = this.seeking.Position;
-			this.ring.updatePosition(base.Position);
 			this.selectedImg.update(elapsed);
 			this.selectedImg.Position = base.Position;
 
@@ -175,7 +156,6 @@ namespace WOA3.Model {
 		}
 
 		public override void render(SpriteBatch spriteBatch) {
-			this.ring.render(spriteBatch);
 			if (Selected) {
 				this.selectedImg.render(spriteBatch);
 			}

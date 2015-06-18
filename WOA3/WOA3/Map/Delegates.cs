@@ -14,7 +14,7 @@ namespace WOA3.Map {
 	public delegate void ScoreIncrementer(int amount);
 	public delegate void DisplayUpdater(Vector2 moveBy);*/
 #if DEBUG
-	public delegate void EditorCreator(MapEditor.MappingState type, Point point, Point end, string subType);
+	public delegate void EditorCreator(MapEditor.MappingState type, Vector2 position);
 	public delegate void EditorDeleter(Point point);
 #endif
 }
