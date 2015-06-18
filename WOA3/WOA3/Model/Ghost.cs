@@ -36,7 +36,7 @@ namespace WOA3.Model {
 
 		private Dictionary<Keys, Skill> skills;
 
-		private const float SPEED = .2f;
+		private const float SPEED = .5f;//.2f;
 		#endregion Class variables
 
 		#region Class propeties
@@ -44,8 +44,8 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler)
-			: base(content, position, SPEED) {
+		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange)
+			: base(content, position, SPEED, charactersInRange) {
 			
 			this.observerHandler = observerHandler;
 			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Ghost");
@@ -120,20 +120,22 @@ namespace WOA3.Model {
 		public override List<SkillResult> performSkills() {
 			List<SkillResult> results = new List<SkillResult>();
 			if (Selected) {
+				List<Character> charactersInRange = this.CharactersInRange.Invoke(this.Range);
 				foreach (var skill in skills) {
 					if (InputManager.getInstance().wasKeyPressed(skill.Key)) {
-						SkillResult result = skill.Value.perform(this.rangeRing.BoundingSphere);
-						if (result != null) {
-							results.Add(result);
-						}
+						CombatManager.getInstance().CombatRequests.Add(new CombatRequest() {
+							Skill = skill.Value,
+							Source = this,
+							Targets = charactersInRange
+						});
 					}
 				}
 			}
 			return results;
 		}
 
-		public override SkillResult die() {
-			throw new NotImplementedException();
+		public override Skill die() {
+			return null;
 		}
 		
 		public override void update(float elapsed) {

@@ -17,7 +17,6 @@ namespace WOA3.Model {
 		#region Class variables
 		private Base2DSpriteDrawable image;
 		protected ContentManager content;
-		protected List<FinishableEffect> managedEffects = new List<FinishableEffect>();
 		#endregion Class variables
 
 		#region Class propeties
@@ -61,23 +60,12 @@ namespace WOA3.Model {
 		}
 
 		public void addEffect(BaseEffect effect) {
-			if (effect.GetType().IsAssignableFrom(typeof(FinishableEffect))) {
-				this.managedEffects.Add((FinishableEffect)effect);
-			}
 			this.image.addEffect(effect);
 		}
 
 		public virtual void update(float elapsed) {
 			if (this.image != null) {
 				this.image.update(elapsed);
-				/*FinishableEffect effect = null;
-				for (int i = this.managedEffects.Count -1; i >= 0; i--) {
-					effect = this.managedEffects[i];
-					if (effect.HasFinished) {
-						this.image.Effects.Remove((BaseEffect)effect);
-						this.managedEffects.Remove(effect);
-					}
-				}*/
 			}
 		}
 

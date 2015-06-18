@@ -29,21 +29,28 @@ namespace WOA3.Model {
 		#region Class variables
 		protected RadiusRing rangeRing;
 		private Text2D healthText;
+		private CharactersInRange charactersInRange;
+		private float elapsedTime;
 
 		private readonly float SPEED;
+		private const float REMOVED_AFTER = 2000f;
 		#endregion Class variables
 
 		#region Class propeties
 		//public Character Target { get; set; }
 		public ScaredFactor Health { get; set; }
+		public BoundingSphere Range { get { return this.rangeRing.BoundingSphere; } }
+		public CharactersInRange CharactersInRange { get { return this.charactersInRange; } }
+		public bool ReadyForRemoval { get; set; }
 		#endregion Class properties
 
 		#region Constructor
-		public Character(ContentManager content, Vector2 position, float speed)
+		public Character(ContentManager content, Vector2 position, float speed, CharactersInRange charactersInRange)
 			: base(content) {
 			this.SPEED = speed;
 			this.rangeRing = new RadiusRing(content, position);
 			this.Health = new ScaredFactor();
+			this.charactersInRange = charactersInRange;
 			createHealthText(position);
 		}
 		#endregion Constructor
@@ -66,7 +73,7 @@ namespace WOA3.Model {
 		}
 
 		public abstract List<SkillResult> performSkills();
-		public abstract SkillResult die();
+		public abstract Skill die();
 
 
 		public void damage(float amount) {
@@ -79,12 +86,20 @@ namespace WOA3.Model {
 			this.rangeRing.updatePosition(base.Position);
 			this.healthText.Position = getTextPosition(base.Position);
 			this.healthText.update(elapsed);
+			if (this.Health.amIDead() && !ReadyForRemoval) {
+				this.elapsedTime += elapsed;
+				if (this.elapsedTime >= REMOVED_AFTER) {
+					this.ReadyForRemoval = true;
+				}
+			}
 		}
 
 		public override void render(SpriteBatch spriteBatch) {
-			this.rangeRing.render(spriteBatch);
-			this.healthText.render(spriteBatch);
-			base.render(spriteBatch);
+			if (!this.Health.amIDead()) {
+				this.rangeRing.render(spriteBatch);
+				this.healthText.render(spriteBatch);
+				base.render(spriteBatch);
+			}
 		}
 		#endregion Support methods
 	}

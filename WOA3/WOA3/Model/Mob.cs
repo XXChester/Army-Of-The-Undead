@@ -34,6 +34,8 @@ namespace WOA3.Model {
 		private Entity tracking;
 		private State previousState;
 		private IDisposable unsubscriber;
+		private List<Skill> skills;
+		private OnDeath onDeath;
 
 		private const float SPEED = .1f;
 		#endregion Class variables
@@ -41,13 +43,12 @@ namespace WOA3.Model {
 		#region Class propeties
 		public Vector2 LastKnownLocation { get; set; }
 		public State CurrentState { get; set; }
-		//public BoundingSphere BoundingSphere { get; set; }
 		public float CorpseExplosionDamage { get { return 3; } }
 		#endregion Class properties
 
 		#region Constructor
-		public Mob(ContentManager content, Vector2 position)
-			:base(content, position, SPEED) {
+		public Mob(ContentManager content, Vector2 position, CharactersInRange charactersInRange, OnDeath onDeath)
+			:base(content, position, SPEED, charactersInRange) {
 			
 			StaticDrawable2D character = getCharacterSprite(content, position);
 			base.init(character);
@@ -61,10 +62,10 @@ namespace WOA3.Model {
 			this.pathingBehaviour = new Pathing(position, SPEED, idleCallback);
 			this.activeBehaviour = this.seekingBehaviour;
 			this.CurrentState = State.Idle;
-			updateBoundingSphere(position);
-		}
-		private void updateBoundingSphere(Vector2 position) {
-		//	this.BoundingSphere = new BoundingSphere(new Vector3(position, 0f), Constants.BOUNDING_SPHERE_SIZE);
+			this.onDeath = onDeath;
+			
+			this.skills = new List<Skill>();
+			this.skills.Add(new HolySwirl(2f));
 		}
 
 		private StaticDrawable2D getCharacterSprite(ContentManager content, Vector2 position) {
@@ -130,10 +131,11 @@ namespace WOA3.Model {
 			return State.Idle.Equals(this.CurrentState);
 		}
 
-		public override SkillResult die() {
-			SkillResult result = new CorpseExplode(CorpseExplosionDamage).perform(this.rangeRing.BoundingSphere);
-
-			return result;
+		public override Skill die() {
+			if (this.onDeath != null) {
+				this.onDeath.Invoke(base.Position);
+			}
+			return new CorpseExplode(CorpseExplosionDamage);
 		}
 
 		public override List<SkillResult> performSkills() {
@@ -150,7 +152,6 @@ namespace WOA3.Model {
 				}
 				this.activeBehaviour.update(elapsed);
 				base.Position = this.activeBehaviour.Position;
-				updateBoundingSphere(base.Position);
 			}
 
 			/*if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
@@ -173,7 +174,6 @@ namespace WOA3.Model {
 					BoundingBox bbox = CollisionGenerationUtils.getBBoxHalf(this.activeBehaviour.Target);
 					DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Green, Debug.debugChip);
 				}
-				//DebugUtils.drawBoundingSphere(spriteBatch, BoundingSphere, Color.Pink, Debug.debugRing);
 			}
 			if (GWNorthEngine.Input.InputManager.getInstance().wasKeyPressed(Microsoft.Xna.Framework.Input.Keys.Space)) {
 				Debug.log("Type: " + this.activeBehaviour +"\tpos: " + this.activeBehaviour.Position);

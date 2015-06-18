@@ -33,6 +33,9 @@ namespace WOA3.Model.Display {
 		private List<Ghost> selectedGhosts = new List<Ghost>();
 		private List<Mob> mobs = new List<Mob>();
 		private GhostObservationHandler ghostObserverHandler;
+		private CharactersInRange mobsInRange;
+		private CharactersInRange ghostsInRange;
+		private OnDeath mobDeathFinish;
 
 #if DEBUG
 		private EditorCreator editorsCreator;
@@ -53,10 +56,12 @@ namespace WOA3.Model.Display {
 
 		#region Support methods
 		private void init(bool fullRegen = false) {
-			initDelegates();
-			loadMap();
+
 			this.ghostObserverHandler = new GhostObservationHandler();
 			this.hud = new HUD(content);
+			initDelegates();
+			loadMap();
+			CombatManager.getInstance().init();
 
 			if (fullRegen) {
 				/*this.backGround = new BackGround(this.content);
@@ -91,53 +96,65 @@ namespace WOA3.Model.Display {
 			}
 
 			foreach (var mobInfo in monsterInfos) {
-				this.mobs.Add(new Mob(content, mobInfo.toVector2()));
+				this.mobs.Add(new Mob(content, mobInfo.toVector2(), this.ghostsInRange, this.mobDeathFinish));
 			}
-			this.allGhosts.Add(new Ghost(content, ghostStart.toVector2(), this.ghostObserverHandler));
+			this.allGhosts.Add(new Ghost(content, ghostStart.toVector2(), this.ghostObserverHandler, this.mobsInRange));
 		}
 
 		private void initDelegates() {
+			this.mobDeathFinish = delegate(Vector2 position) {
+				this.allGhosts.Add(new Ghost(content, position, this.ghostObserverHandler, this.mobsInRange));
+			};
+			this.ghostsInRange = delegate(BoundingSphere range) {
+				List<Character> result = new List<Character>();
+				// do not count the last ghost which is the one spawned from the death - he shouldn't be harmed
+				for (int j = allGhosts.Count -2; j >= 0; j--) {
+					Ghost inRange = allGhosts[j];
+					if (inRange.BBox.Intersects(range)) {
+						result.Add(inRange);
+					}
+				}
+				return result;
+			};
+			this.mobsInRange = delegate(BoundingSphere range) {
+				List<Character> result = new List<Character>();
+				for (int j = mobs.Count - 1; j >= 0; j--) {
+					Mob inRange = mobs[j];
+					if (inRange.BBox.Intersects(range)) {
+						result.Add(inRange);
+					}
+				}
+				return result;
+			};
 #if DEBUG
 			this.editorsCreator = delegate(MapEditor.MappingState type, Vector2 position) {
 				switch (type) {
 					case MapEditor.MappingState.Monster:
-						this.mobs.Add(new Mob(content, position));
+						this.mobs.Add(new Mob(content, position, this.ghostsInRange, this.mobDeathFinish));
 						break;
 				};
 			};
 #endif
 		}
 
+		private void handleDead<T>(List<T> characters) where T : Character{
+			for (int j = characters.Count - 1; j >= 0; j--) {
+				T character = characters[j];
+				if (character != null && character.ReadyForRemoval) {
+					characters.RemoveAt(j);
+					character = null;
+				}
+			}
+		}
+
 		private void updateSkills(float elapsed) {
-			// did we use any skills?
-			List<SkillResult> skillResults = new List<SkillResult>();
 			foreach (var ghost in selectedGhosts) {
-				skillResults.AddRange(ghost.performSkills());
+				ghost.performSkills();
 			}
 
-			// perform the damage against all mobs in the area
-			for (int i = mobs.Count - 1; i >= 0; i--) {
-				var mob = mobs[i];
-				float damage = 0f;
-				foreach (var skillResult in skillResults) {
-					if (skillResult.BoundingSphere.Intersects(mob.BBox)) {
-						damage += skillResult.Damage;
-					}
-				}
-				if (damage > 0f) {
-					mob.damage(damage);
-					if (mob.Health.amIDead()) {
-						SkillResult deathEffect = mob.die();
-						foreach (var inRange in allGhosts) {
-							if (inRange.BBox.Intersects(deathEffect.BoundingSphere)) {
-								inRange.damage(deathEffect.Damage);
-							}
-						}
-						mobs.RemoveAt(i);
-						this.allGhosts.Add(new Ghost(content, mob.Position, this.ghostObserverHandler));
-					}
-				}
-			}
+			//check for dead
+			handleDead(this.allGhosts);
+			handleDead(this.mobs);
 		}
 
 		private void updateFieldOfView(float elapsed) {
@@ -243,6 +260,7 @@ namespace WOA3.Model.Display {
 					}
 				}
 				this.hud.update(elapsed);
+				CombatManager.getInstance().update(elapsed);
 			}
 #if DEBUG
 			Debug.update();
