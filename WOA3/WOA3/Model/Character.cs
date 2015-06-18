@@ -79,10 +79,10 @@ namespace WOA3.Model {
 		}
 
 		public override void update(float elapsed) {
-			base.update(elapsed);
 			this.rangeRing.updatePosition(base.Position);
 			this.healthText.Position = getTextPosition(base.Position);
 			this.healthText.update(elapsed);
+			base.update(elapsed);
 		}
 
 		public override void render(SpriteBatch spriteBatch) {

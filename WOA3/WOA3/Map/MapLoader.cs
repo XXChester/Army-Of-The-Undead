@@ -83,7 +83,8 @@ namespace WOA3.Engine {
 			foreach (var mapTile in layerTiles) {
 				if (mapTile != null) {
 					Vector2 newPosition = Vector2.Add(mapTile.WorldPosition, new Vector2(Constants.TILE_SIZE) /2);
-					walls.Add(new Wall(content, newPosition, mapTile.Texture));
+					BoundingBox boundingBox = CollisionGenerationUtils.generateBoundingBoxesForTexture(mapTile.Texture, newPosition);
+					walls.Add(new Wall(content, newPosition, mapTile.Texture, boundingBox));
 					aiSpaceTypes[mapTile.Index.Y, mapTile.Index.X] = BasePathFinder.TypeOfSpace.Unwalkable;
 				}
 			}
@@ -117,7 +118,6 @@ namespace WOA3.Engine {
 				intResults = (int[])loadObject<int>(doc, header, xySearch, i);
 				positions.Add(new Point(intResults[0], intResults[1]));
 			}
-
 		}
 
 		public static void loadPlayerInformation(XmlDocument doc, ref Point playerStart) {

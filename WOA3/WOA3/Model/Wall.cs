@@ -17,19 +17,18 @@ using WOA3.Logic.Behaviours;
 
 namespace WOA3.Model {
 	public class Wall : Entity {
-
 		#region Class variables
-
+		private BoundingBox staticBoundingBox;
 		#endregion Class variables
 
 		#region Class propeties
-	
+		
 		#endregion Class properties
 
 		#region Constructor
-		public Wall(ContentManager content, Vector2 position, Texture2D texture)
+		public Wall(ContentManager content, Vector2 position, Texture2D texture, BoundingBox boundingBox)
 			:base(content) {
-
+				this.staticBoundingBox = boundingBox;
 			StaticDrawable2DParams wallParams = new StaticDrawable2DParams {
 				Position = position,
 				Texture = texture,
@@ -43,7 +42,9 @@ namespace WOA3.Model {
 		#endregion Constructor
 
 		#region Support methods
-
+		protected override BoundingBox getBBox() {
+			return this.staticBoundingBox;
+		}
 		#endregion Support methods
 	}
 }

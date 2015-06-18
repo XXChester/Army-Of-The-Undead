@@ -76,6 +76,10 @@ namespace WOA3.Model {
 						}
 					}
 				}
+			} else if (Debug.debugOn) {
+				foreach (var wall in Walls) {
+					DebugUtils.drawBoundingBox(spriteBatch, wall.BBox, Debug.DEBUG_BBOX_Color, Debug.debugChip);
+				}
 			}
 #endif
 			/*if (this.Tiles != null) {

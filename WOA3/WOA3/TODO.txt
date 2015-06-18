@@ -29,3 +29,6 @@
 []can damage through walls
 []New mob spawn gets hit with damage
 []Mobs only perform their skills once, after that they cannot find ghosts in range
+[]Change lostTarget to pathing behaviour
+[]If we don't get a path, end the behaviour
+[]If a ghost goes into a wall visible, the mobs get stuck

@@ -119,7 +119,7 @@ namespace WOA3.Model {
 
 		public override List<SkillResult> performSkills() {
 			List<SkillResult> results = new List<SkillResult>();
-			if (Selected) {
+			if (Selected && Constants.ALLOW_PLAYER_ATTACKS) {
 				List<Character> charactersInRange = this.CharactersInRange.Invoke(this.Range);
 				foreach (var skill in skills) {
 					if (InputManager.getInstance().wasKeyPressed(skill.Key)) {

@@ -1,0 +1,37 @@
+﻿<Map>
+  <Size>
+    <Height>21</Height>
+    <Width>40</Width>
+    <TileSize>32</TileSize>
+  </Size>
+  <Layer />
+  <Layer>
+    <Tile>
+      <Index>459</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>499</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>539</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>579</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>619</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+  </Layer>
+  <Layer />
+  <Layer />
+</Map>

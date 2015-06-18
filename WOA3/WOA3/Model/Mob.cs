@@ -44,6 +44,7 @@ namespace WOA3.Model {
 		public Vector2 LastKnownLocation { get; set; }
 		public State CurrentState { get; set; }
 		public float CorpseExplosionDamage { get { return 3; } }
+		public BoundingSphere BoundingSphere { get; set; }
 		#endregion Class properties
 
 		#region Constructor
@@ -63,9 +64,13 @@ namespace WOA3.Model {
 			this.activeBehaviour = this.seekingBehaviour;
 			this.CurrentState = State.Idle;
 			this.onDeath = onDeath;
+			updateBoundingSphere();
 			
 			this.skills = new List<Skill>();
 			this.skills.Add(new HolySwirl(2f));
+		}
+		private void updateBoundingSphere() {
+				this.BoundingSphere = new BoundingSphere(new Vector3(Position, 0f), Constants.BOUNDING_SPHERE_SIZE);
 		}
 
 		private StaticDrawable2D getCharacterSprite(ContentManager content, Vector2 position) {
@@ -93,22 +98,25 @@ namespace WOA3.Model {
 				this.activeBehaviour = newBehaviour;
 				this.CurrentState = state;
 			}
+			if (!state.Equals(State.Pathing)) {
+				this.pathingBehaviour.stop();
+			}
 		}
 
-		public void lostTarget() {
-			swapBehaviours(lostTargetBehaviour, State.LostTarget);
-		}
-
-		public void trackTarget(Entity toTrack) {
+		private void trackTarget(Entity toTrack) {
 			this.tracking = toTrack;
 			swapBehaviours(seekingBehaviour, State.Tracking);
 		}
 
+
+		public void lostTarget() {
+			swapBehaviours(lostTargetBehaviour, State.Pathing);
+			this.pathingBehaviour.init(base.Position, this.LastKnownLocation);
+		}
+
 		public void pathToWaypoint() {
-			if (!isPathing()) {
-				this.pathingBehaviour.init(base.Position, this.LastKnownLocation);
-				swapBehaviours(this.pathingBehaviour, State.Pathing);
-			}
+			swapBehaviours(this.pathingBehaviour, State.Pathing);
+			this.pathingBehaviour.init(base.Position, this.LastKnownLocation);
 		}
 
 		public void stop() {
@@ -140,15 +148,17 @@ namespace WOA3.Model {
 
 		public override List<SkillResult> performSkills() {
 			List<SkillResult> results = new List<SkillResult>();
-			List<Character> charactersInRange = this.CharactersInRange.Invoke(this.Range);
-			if (charactersInRange.Count > 0) {
-				foreach (var skill in skills) {
-					if (skill.CoolDownOver) {
-						CombatManager.getInstance().CombatRequests.Add(new CombatRequest() {
-							Skill = skill,
-							Source = this,
-							Targets = charactersInRange
-						});
+			if (Constants.ALLOW_MOB_ATTACKS) {
+				List<Character> charactersInRange = this.CharactersInRange.Invoke(this.Range);
+				if (charactersInRange.Count > 0) {
+					foreach (var skill in skills) {
+						if (skill.CoolDownOver) {
+							CombatManager.getInstance().CombatRequests.Add(new CombatRequest() {
+								Skill = skill,
+								Source = this,
+								Targets = charactersInRange
+							});
+						}
 					}
 				}
 			}
@@ -165,6 +175,7 @@ namespace WOA3.Model {
 				}
 				this.activeBehaviour.update(elapsed);
 				base.Position = this.activeBehaviour.Position;
+				updateBoundingSphere();
 			}
 
 			/*if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
@@ -188,6 +199,7 @@ namespace WOA3.Model {
 					DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Green, Debug.debugChip);
 				}
 			}
+			DebugUtils.drawBoundingSphere(spriteBatch, BoundingSphere, Color.Pink, Debug.debugRing);
 			if (GWNorthEngine.Input.InputManager.getInstance().wasKeyPressed(Microsoft.Xna.Framework.Input.Keys.Space)) {
 				Debug.log("Type: " + this.activeBehaviour +"\tpos: " + this.activeBehaviour.Position);
 			}
