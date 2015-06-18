@@ -107,8 +107,7 @@ namespace WOA3.Model.Display {
 			};
 			this.ghostsInRange = delegate(BoundingSphere range) {
 				List<Character> result = new List<Character>();
-				// do not count the last ghost which is the one spawned from the death - he shouldn't be harmed
-				for (int j = allGhosts.Count -2; j >= 0; j--) {
+				for (int j = allGhosts.Count -1; j >= 0; j--) {
 					Ghost inRange = allGhosts[j];
 					if (inRange.BBox.Intersects(range)) {
 						result.Add(inRange);
@@ -140,7 +139,7 @@ namespace WOA3.Model.Display {
 		private void handleDead<T>(List<T> characters) where T : Character{
 			for (int j = characters.Count - 1; j >= 0; j--) {
 				T character = characters[j];
-				if (character != null && character.ReadyForRemoval) {
+				if (character != null && character.Health.amIDead()) {
 					characters.RemoveAt(j);
 					character = null;
 				}
@@ -150,6 +149,11 @@ namespace WOA3.Model.Display {
 		private void updateSkills(float elapsed) {
 			foreach (var ghost in selectedGhosts) {
 				ghost.performSkills();
+				ghost.update(elapsed);
+			}
+			foreach (var mob in mobs) {
+				mob.performSkills();
+				mob.update(elapsed);
 			}
 
 			//check for dead
@@ -161,7 +165,6 @@ namespace WOA3.Model.Display {
 			// cast a ray from our chaser to the target. If this ray hits the target, test it against all other objects
 			Nullable<ClosestSeeable> closestSeeable = null;
 			foreach (var ghost in allGhosts) {
-				ghost.update(elapsed);
 				if (ghost.isVisible()) {
 					foreach (var mob in mobs) {
 						Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);

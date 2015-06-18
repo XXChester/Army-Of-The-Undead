@@ -83,7 +83,7 @@ namespace WOA3.Engine {
 			foreach (var mapTile in layerTiles) {
 				if (mapTile != null) {
 					Vector2 newPosition = Vector2.Add(mapTile.WorldPosition, new Vector2(Constants.TILE_SIZE) /2);
-					walls.Add(new Wall(content, newPosition));
+					walls.Add(new Wall(content, newPosition, mapTile.Texture));
 					aiSpaceTypes[mapTile.Index.Y, mapTile.Index.X] = BasePathFinder.TypeOfSpace.Unwalkable;
 				}
 			}

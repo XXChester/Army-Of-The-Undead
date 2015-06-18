@@ -16,6 +16,8 @@ namespace WOA3.Logic.Skills {
 		private readonly float DAMAGE;
 		private readonly int COOL_DOWN;
 
+		public bool CoolDownOver { get { return lastUsedAt == 0; } }
+
 		public Skill(float damage, int coolDown) : this(damage, coolDown, null) { }
 
 		public Skill(float damage, int coolDown, VisualCallback visualCallback) {
@@ -27,7 +29,7 @@ namespace WOA3.Logic.Skills {
 
 		public virtual SkillResult perform(BoundingSphere boundingSphere) {
 			SkillResult result = null;
-			if (lastUsedAt == 0) {
+			if (CoolDownOver) {
 				// positive angle is the right side, negative is the left side
 				float directionFactor = 1f;
 

@@ -139,7 +139,20 @@ namespace WOA3.Model {
 		}
 
 		public override List<SkillResult> performSkills() {
-			throw new NotImplementedException();
+			List<SkillResult> results = new List<SkillResult>();
+				List<Character> charactersInRange = this.CharactersInRange.Invoke(this.Range);
+				if (charactersInRange.Count > 0) {
+					foreach (var skill in skills) {
+						if (skill.CoolDownOver) {
+							CombatManager.getInstance().CombatRequests.Add(new CombatRequest() {
+								Skill = skill,
+								Source = this,
+								Targets = charactersInRange
+							});
+						}
+					}
+				}
+			return results;
 		}
 
 		public override void update(float elapsed) {

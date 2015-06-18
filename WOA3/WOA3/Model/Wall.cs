@@ -27,11 +27,8 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Wall(ContentManager content, Vector2 position)
+		public Wall(ContentManager content, Vector2 position, Texture2D texture)
 			:base(content) {
-
-			Texture2D texture = null;
-			texture = LoadingUtils.load<Texture2D>(content, "Quad");
 
 			StaticDrawable2DParams wallParams = new StaticDrawable2DParams {
 				Position = position,

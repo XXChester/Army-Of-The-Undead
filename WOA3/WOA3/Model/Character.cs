@@ -30,10 +30,8 @@ namespace WOA3.Model {
 		protected RadiusRing rangeRing;
 		private Text2D healthText;
 		private CharactersInRange charactersInRange;
-		private float elapsedTime;
 
 		private readonly float SPEED;
-		private const float REMOVED_AFTER = 2000f;
 		#endregion Class variables
 
 		#region Class propeties
@@ -86,20 +84,12 @@ namespace WOA3.Model {
 			this.rangeRing.updatePosition(base.Position);
 			this.healthText.Position = getTextPosition(base.Position);
 			this.healthText.update(elapsed);
-			if (this.Health.amIDead() && !ReadyForRemoval) {
-				this.elapsedTime += elapsed;
-				if (this.elapsedTime >= REMOVED_AFTER) {
-					this.ReadyForRemoval = true;
-				}
-			}
 		}
 
 		public override void render(SpriteBatch spriteBatch) {
-			if (!this.Health.amIDead()) {
-				this.rangeRing.render(spriteBatch);
-				this.healthText.render(spriteBatch);
-				base.render(spriteBatch);
-			}
+			this.rangeRing.render(spriteBatch);
+			this.healthText.render(spriteBatch);
+			base.render(spriteBatch);
 		}
 		#endregion Support methods
 	}

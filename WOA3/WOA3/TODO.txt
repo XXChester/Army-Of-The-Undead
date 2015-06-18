@@ -27,3 +27,5 @@
 []Enemy AI needs to stop when close and start fighting
 []Seems as once a single enemy can see the ghost, they all can
 []can damage through walls
+[]New mob spawn gets hit with damage
+[]Mobs only perform their skills once, after that they cannot find ghosts in range

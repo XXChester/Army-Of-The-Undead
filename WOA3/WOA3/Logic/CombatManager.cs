@@ -75,24 +75,26 @@ namespace WOA3.Logic {
 				CombatRequest request = getFirst();
 				if (request.Skill != null) {
 					SkillResult skillResult = request.Skill.perform(request.Source.Range);
-					foreach (var target in request.Targets) {
-						if (target != null) {
-							if (request.Source != null) {
-								// can we see the target?
+					if (skillResult != null) {
+						foreach (var target in request.Targets) {
+							if (target != null) {
+								if (request.Source != null) {
+									// can we see the target?
 
 
-								target.damage(skillResult.Damage);
-								// did we kill the target?
-								if (target.Health.amIDead()) {
-									removeRequests(target);
-									// if we had a death effect it needs to go to the front of the list of actions and apply against all targets in the area
-									Skill deathEffect = target.die();
-									List<Character> charactersInRange = target.CharactersInRange.Invoke(target.Range);
-									this.combatRequests.Insert(0, new CombatRequest() {
-										Skill = deathEffect,
-										Source = target,
-										Targets = charactersInRange
-									});
+									target.damage(skillResult.Damage);
+									// did we kill the target?
+									if (target.Health.amIDead()) {
+										removeRequests(target);
+										// if we had a death effect it needs to go to the front of the list of actions and apply against all targets in the area
+										Skill deathEffect = target.die();
+										List<Character> charactersInRange = target.CharactersInRange.Invoke(target.Range);
+										this.combatRequests.Insert(0, new CombatRequest() {
+											Skill = deathEffect,
+											Source = target,
+											Targets = charactersInRange
+										});
+									}
 								}
 							}
 						}
