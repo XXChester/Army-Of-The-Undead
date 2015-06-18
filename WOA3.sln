@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual C# Express 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WOA3", "WOA3\WOA3\WOA3.csproj", "{12696066-FE8A-4FDD-8D39-5B62F6A3B420}"
+EndProject
+Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "WOAContent", "WOAContent\WOAContent.contentproj", "{EAD7001B-6664-4474-BF99-2746C9DC82DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12696066-FE8A-4FDD-8D39-5B62F6A3B420}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{12696066-FE8A-4FDD-8D39-5B62F6A3B420}.Debug|x86.ActiveCfg = Debug|x86
+		{12696066-FE8A-4FDD-8D39-5B62F6A3B420}.Debug|x86.Build.0 = Debug|x86
+		{12696066-FE8A-4FDD-8D39-5B62F6A3B420}.Release|Any CPU.ActiveCfg = Release|x86
+		{12696066-FE8A-4FDD-8D39-5B62F6A3B420}.Release|x86.ActiveCfg = Release|x86
+		{12696066-FE8A-4FDD-8D39-5B62F6A3B420}.Release|x86.Build.0 = Release|x86
+		{EAD7001B-6664-4474-BF99-2746C9DC82DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAD7001B-6664-4474-BF99-2746C9DC82DA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EAD7001B-6664-4474-BF99-2746C9DC82DA}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAD7001B-6664-4474-BF99-2746C9DC82DA}.Release|x86.ActiveCfg = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
