@@ -47,30 +47,15 @@ namespace WOA3.Logic.Behaviours {
 				this.recalculate = false;
 			}
 			if (!Target.Equals(Position)) {
-				Vector2 distance = Vector2.Subtract(target, Position);
-				float maxSpeedForFrame = (SPEED / 1000) * elapsed;
-				//float delta = (this.speed / 1000) * elapsed;
-				//NEED TO STOP LERPING!!
-				Position = Vector2.Add(Position, distance * maxSpeedForFrame);
+				float distance = Vector2.Distance(Position, target);
+				Vector2 direction = Vector2.Normalize(target - Position);
 
-
-				//Vector2 speed = new Vector2(SPEED);
-				//Position = Vector2.Add(Position, Vector2.MXA(distance * maxSpeedForFrame, speed * maxSpeedForFrame));
-
-				//Vector2 noLerp = new Vector2(Math.Max(delta, delta *distance.X), Math.Max(delta, delta *distance.Y));
-				//Vector2 t = maxSpeedForFrame * originalDistance;
-				//Vector2 t2 = maxSpeedForFrame * distance;
-				
-				
-				//Position = Vector2.Add(Position, noLerp);
-				//Position = Vector2.Add(Position, originalDistance * maxSpeedForFrame);
-				//Vector2 noLerp = new Vector2(Math.Max(maxSpeedForFrame, originalDistance.X * maxSpeedForFrame), 
-				//	(Math.Max(maxSpeedForFrame, originalDistance.Y * maxSpeedForFrame)));
-				
-				/*Vector2 min = Vector2.Min(originalDistance * maxSpeedForFrame, new Vector2(maxSpeedForFrame * SPEED));
-				Vector2 max = Vector2.Max(originalDistance * maxSpeedForFrame, new Vector2(maxSpeedForFrame * SPEED));
-				Vector2 noLerp = Vector2.Clamp(new Vector2(maxSpeedForFrame), min, max);
-				Position = Vector2.Add(Position, noLerp);*/
+				Vector2 newPosition = Position + direction * SPEED * elapsed;
+				if (Vector2.Distance(Position, newPosition) >= distance) {
+					Position = target;
+				} else {
+					Position = newPosition;
+				}
 			}
 		}
 	}

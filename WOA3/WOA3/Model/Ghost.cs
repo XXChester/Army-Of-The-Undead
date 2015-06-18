@@ -36,6 +36,8 @@ namespace WOA3.Model {
 		private GhostObservationHandler observerHandler;
 
 		private Dictionary<Keys, Skill> skills;
+
+		private const float SPEED = .2f;
 		#endregion Class variables
 
 		#region Class propeties
@@ -66,7 +68,7 @@ namespace WOA3.Model {
 			parms.Origin = new Vector2(Constants.TILE_SIZE/2, -(Constants.TILE_SIZE / 4));
 			this.selectedImg = new StaticDrawable2D(parms);
 
-			this.seeking = new Tracking(position, 2f);
+			this.seeking = new Tracking(position, SPEED);
 
 			this.fadeEffect = createEffect(base.LightColour);
 			this.addEffect(fadeEffect);

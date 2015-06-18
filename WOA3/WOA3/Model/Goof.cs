@@ -35,7 +35,7 @@ namespace WOA3.Model {
 		private Text2D scaredText;
 		private IDisposable unsubscriber;
 
-		private const float SPEED = 1f;
+		private const float SPEED = .1f;
 		#endregion Class variables
 
 		#region Class propeties
