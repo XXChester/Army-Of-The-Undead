@@ -23,7 +23,7 @@ namespace WOA3.Logic.Skills {
 			this.lastUsedAt = 0f;
 		}
 
-		public SkillResult perform(BoundingSphere boundingSphere) {
+		public virtual SkillResult perform(BoundingSphere boundingSphere) {
 			SkillResult result = null;
 			if (lastUsedAt == 0) {
 				// positive angle is the right side, negative is the left side
