@@ -17,42 +17,28 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace WOA3.Logic.Behaviours {
 	public class Tracking : TargetBehaviour {
-		private Vector2 target;
-		private bool recalculate;
-		private Vector2 originalDistance;
 
 		private readonly float SPEED;
 
-		public Vector2 Target {
-			get { return target; }
-			set {
-				this.target = value;
-				this.recalculate = true;
-				this.originalDistance = Vector2.Subtract(target, Position);
-			}
-		}
+		public Vector2 Target { get; set; }
 
 		public Vector2 Position { get; set; }
 
 		public Tracking(Vector2 startingPosition, float speed) {
 			this.Position = startingPosition;
-			this.target = this.Position;
+			this.Target = this.Position;
 			this.SPEED = speed;
 		}
 
 
 		public void update(float elapsed) {
-			if (this.recalculate) {
-				String test = "";
-				this.recalculate = false;
-			}
 			if (!Target.Equals(Position)) {
-				float distance = Vector2.Distance(Position, target);
-				Vector2 direction = Vector2.Normalize(target - Position);
+				float distance = Vector2.Distance(Position, Target);
+				Vector2 direction = Vector2.Normalize(Target - Position);
 
 				Vector2 newPosition = Position + direction * SPEED * elapsed;
 				if (Vector2.Distance(Position, newPosition) >= distance) {
-					Position = target;
+					Position = Target;
 				} else {
 					Position = newPosition;
 				}
