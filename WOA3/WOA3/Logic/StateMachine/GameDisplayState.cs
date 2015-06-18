@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Graphics;
+
+using WOA3.Model.Display;
+
+
+namespace WOA3.Logic.StateMachine {
+	class GameDisplayState : BaseGameState {
+
+		public GameDisplayState(GameStateMachine stateMachine, GraphicsDevice device,  ContentManager content)
+			: base(stateMachine, device, content, new GameDisplay(device, content, "Map")) { }
+
+		public override void goToNextState() {
+			changeState(stateMachine.GameDevCinematic);
+		}
+
+		public override void setStates() {
+			base.setStates();
+			StateManager.getInstance().CurrentGameState = GameState.Active;
+		}
+	}
+}

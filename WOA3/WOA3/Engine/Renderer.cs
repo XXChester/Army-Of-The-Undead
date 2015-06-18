@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Input;
 
 using WOA3.Logic;
 using WOA3.Logic.AI;
+using WOA3.Logic.StateMachine;
 using WOA3.Model.Display;
 
 
@@ -21,11 +22,8 @@ namespace WOA3.Engine {
 	/// This is the main type for your game
 	/// </summary>
 	public class Renderer : BaseRenderer {
-		private Cinematic cinematic;
-		private GameDisplay gameDisplay;
-	//	private MainMenu mainMenu;
-	//	private OptionsMenu optionsMenu;
 		private IRenderable activeDisplay;
+		private GameStateMachine stateMachine;
 		private StaticDrawable2D transitionItem;
 		private FadeEffect fadeEffect;
 		private FadeEffectParams fadeParams;
@@ -55,11 +53,7 @@ namespace WOA3.Engine {
 		protected override void LoadContent() {
 			SoundManager.getInstance().init(Content);
 			Constants.FONT = LoadingUtils.load<SpriteFont>(Content, "SpriteFont1");
-
-
-			this.cinematic = new Cinematic(Content);
-			//this.mainMenu = new MainMenu(Content);
-			//this.optionsMenu = new OptionsMenu(Content);
+			this.stateMachine = new GameStateMachine(GraphicsDevice, Content);
 
 			this.fadeParams = new FadeEffectParams {
 				OriginalColour = Color.Black,
@@ -79,10 +73,6 @@ namespace WOA3.Engine {
 #if WINDOWS
 #if DEBUG
 			ScriptManager.getInstance().LogFile = "Log.log";
-			if (StateManager.getInstance().CurrentGameState == GameState.Active || StateManager.getInstance().CurrentGameState == GameState.Waiting ||
-				StateManager.getInstance().CurrentGameState == GameState.GameOver) {
-				this.gameDisplay = new GameDisplay(GraphicsDevice, Content, "Map");
-			}
 #endif
 #endif
 
@@ -93,13 +83,13 @@ namespace WOA3.Engine {
 		/// all content.
 		/// </summary>
 		protected override void UnloadContent() {
-			this.gameDisplay.Dispose();
+			this.stateMachine.Dispose();
 			AIManager.getInstance().Dispose();
 			base.UnloadContent();
 		}
 
 		private void handleNewTransition() {
-			this.activeDisplay = this.gameDisplay;
+			this.activeDisplay = this.stateMachine.getCurrentScreen();
 			/*if (StateManager.getInstance().CurrentTransitionState == TransitionState.InitTransitionIn) {
 				this.fadeEffect.State = FadeEffect.FadeState.Out;
 				this.fadeEffect.reset();
@@ -169,30 +159,27 @@ namespace WOA3.Engine {
 			base.Window.Title = GAME_NAME + "...FPS: " + FrameRate.getInstance().calculateFrameRate(gameTime) + "    X:" +
 				InputManager.getInstance().MouseX + " Y:" + InputManager.getInstance().MouseY;
 
-			if (InputManager.getInstance().wasKeyPressed(Keys.R)) {
+			/*if (InputManager.getInstance().wasKeyPressed(Keys.R)) {
 				SoundManager.getInstance().removeAllEmitters();
 				this.gameDisplay = new GameDisplay(GraphicsDevice, Content, "Map");
-			}
+			}*/
 			if (InputManager.getInstance().wasKeyPressed(Keys.Escape) ||
 			InputManager.getInstance().wasButtonPressed(PlayerIndex.One, Buttons.B)) {
 				//SpawnGenerator.getInstance().Running = false;
 				this.Exit();
 			}
 #endif
+			if (InputManager.getInstance().wasKeyPressed(Keys.Escape)) {
+				this.stateMachine.goToNextState();
+			}
+
+
 			// start the transitions
 			handleNewTransition();
 
 			if (StateManager.getInstance().CurrentGameState == GameState.Exit) {
 				this.Exit();
 			}
-
-
-			/*base.IsMouseVisible = false;
-			if (StateManager.getInstance().CurrentGameState == GameState.Options) {
-				if (!InputManager.getInstance().isLeftButtonDown()) {
-					base.IsMouseVisible = true;
-				}
-			}*/
 
 			float elapsed = gameTime.ElapsedGameTime.Milliseconds;
 			handleTransitionState(elapsed);

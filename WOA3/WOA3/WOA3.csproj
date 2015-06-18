@@ -121,6 +121,12 @@
     <Compile Include="Logic\Behaviours\Pathing.cs" />
     <Compile Include="Logic\Behaviours\TargetBehaviour.cs" />
     <Compile Include="Logic\GhostObservationHandler.cs" />
+    <Compile Include="Logic\StateMachine\BaseGameState.cs" />
+    <Compile Include="Logic\StateMachine\CompanyCinematicState.cs" />
+    <Compile Include="Logic\StateMachine\GameDisplayState.cs" />
+    <Compile Include="Logic\StateMachine\GameDevSplashState.cs" />
+    <Compile Include="Logic\StateMachine\GameStateMachine.cs" />
+    <Compile Include="Logic\StateMachine\State.cs" />
     <Compile Include="Logic\Unsubscriber.cs" />
     <Compile Include="Logic\Skills\Appear.cs" />
     <Compile Include="Logic\CallBacks.cs" />

@@ -5,5 +5,6 @@ namespace WOA3.Model.Display {
 	public interface IRenderable {
 		void render(SpriteBatch spriteBatch);
 		void update(float elapsed);
+		void dispose();
 	}
 }

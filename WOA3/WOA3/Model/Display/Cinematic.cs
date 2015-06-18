@@ -22,8 +22,8 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public Cinematic(ContentManager content) {
-			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Logo");
+		public Cinematic(ContentManager content, string imageName) {
+			Texture2D texture = LoadingUtils.load<Texture2D>(content, imageName);
 			StaticDrawable2DParams parms = new StaticDrawable2DParams {
 				Texture = texture,
 				Origin = new Vector2(texture.Width / 2, texture.Height / 2),
@@ -54,5 +54,10 @@ namespace WOA3.Model.Display {
 			}
 		}
 		#endregion Support methods
+
+
+		public void dispose() {
+			cinematic.dispose();
+		}
 	}
 }

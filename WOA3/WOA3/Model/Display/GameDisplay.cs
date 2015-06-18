@@ -21,7 +21,7 @@ using WOA3.Engine;
 using WOA3.Map;
 
 namespace WOA3.Model.Display {
-	public class GameDisplay : IRenderable, IDisposable {
+	public class GameDisplay : IRenderable {
 		#region Class variables
 		private string mapName;
 		private ContentManager content;
@@ -265,10 +265,6 @@ namespace WOA3.Model.Display {
 					}
 				}
 			}
-
-			if (InputManager.getInstance().wasKeyPressed(Keys.Escape)) {
-				StateManager.getInstance().CurrentGameState = GameState.MainMenu;
-			}
 #if DEBUG
 			Debug.update();
 #endif
@@ -294,7 +290,7 @@ namespace WOA3.Model.Display {
 		#endregion Support methods
 
 		#region Destructor
-		public void Dispose() {
+		public void dispose() {
 			// AI
 			AIManager.getInstance().Dispose();
 		}
