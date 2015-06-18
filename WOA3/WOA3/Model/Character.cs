@@ -39,7 +39,6 @@ namespace WOA3.Model {
 		public ScaredFactor Health { get; set; }
 		public BoundingSphere Range { get { return this.rangeRing.BoundingSphere; } }
 		public CharactersInRange CharactersInRange { get { return this.charactersInRange; } }
-		public bool ReadyForRemoval { get; set; }
 		#endregion Class properties
 
 		#region Constructor

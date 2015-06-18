@@ -41,10 +41,8 @@ WOAContent\Tile7.xnb
 WOAContent\Tile8.xnb
 WOAContent\Tile9.xnb
 WOAContent\Background.wma
-WOAContent\Data\Map.xml
 WOAContent\Data\MapIdentifiers.xml
 WOAContent\Data\Map2.XML
 WOAContent\Data\Map2Identifiers.xml
 WOAContent\Data\IdentifiersTemplate.xml
-WOAContent\Data\Test.xml
-WOAContent\Data\TestIdentifiers.xml
+WOAContent\Data\Map.XML

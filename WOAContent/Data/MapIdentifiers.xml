@@ -7,16 +7,28 @@
   </PlayerInformation>
   <MonsterInformation>
     <Monster>
-      <X>15</X>
-      <Y>15</Y>
+      <X>31</X>
+      <Y>2</Y>
     </Monster>
     <Monster>
-      <X>37</X>
+      <X>22</X>
       <Y>18</Y>
     </Monster>
     <Monster>
-      <X>32</X>
+      <X>2</X>
+      <Y>19</Y>
+    </Monster>
+    <Monster>
+      <X>1</X>
+      <Y>12</Y>
+    </Monster>
+    <Monster>
+      <X>15</X>
       <Y>9</Y>
+    </Monster>
+    <Monster>
+      <X>22</X>
+      <Y>6</Y>
     </Monster>
   </MonsterInformation>
 </MapIdentifier>

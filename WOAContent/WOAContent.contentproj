@@ -117,14 +117,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Map.xml">
-      <Name>Map</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="DoubleBottom.png">
       <Name>DoubleBottom</Name>
       <Importer>TextureImporter</Importer>
@@ -221,14 +213,6 @@
       <Name>IdentifiersTemplate</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Data\Test.xml">
-      <Name>Test</Name>
-      <Importer>XmlImporter</Importer>
-      <Processor>PassThroughProcessor</Processor>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -354,11 +338,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\TestIdentifiers.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Name>TestIdentifiers</Name>
+    <None Include="Data\Map.XML">
+      <Name>Map</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />

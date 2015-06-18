@@ -101,29 +101,26 @@ namespace WOA3.Model.Display {
 			this.allGhosts.Add(new Ghost(content, ghostStart.toVector2(), this.ghostObserverHandler, this.mobsInRange));
 		}
 
+		private List<Character> getCharactersInRange<T>(BoundingSphere range, List<T> all) where T : Character {
+			List<Character> result = new List<Character>();
+			for (int j = all.Count - 1; j >= 0; j--) {
+				T inRange = all[j];
+				if (inRange.BBox.Intersects(range)) {
+					result.Add(inRange);
+				}
+			}
+			return result;
+		}
+
 		private void initDelegates() {
 			this.mobDeathFinish = delegate(Vector2 position) {
 				this.allGhosts.Add(new Ghost(content, position, this.ghostObserverHandler, this.mobsInRange));
 			};
 			this.ghostsInRange = delegate(BoundingSphere range) {
-				List<Character> result = new List<Character>();
-				for (int j = allGhosts.Count -1; j >= 0; j--) {
-					Ghost inRange = allGhosts[j];
-					if (inRange.BBox.Intersects(range)) {
-						result.Add(inRange);
-					}
-				}
-				return result;
+				return getCharactersInRange<Ghost>(range, this.allGhosts);
 			};
 			this.mobsInRange = delegate(BoundingSphere range) {
-				List<Character> result = new List<Character>();
-				for (int j = mobs.Count - 1; j >= 0; j--) {
-					Mob inRange = mobs[j];
-					if (inRange.BBox.Intersects(range)) {
-						result.Add(inRange);
-					}
-				}
-				return result;
+				return getCharactersInRange<Mob>(range, this.mobs);
 			};
 #if DEBUG
 			this.editorsCreator = delegate(MapEditor.MappingState type, Vector2 position) {
