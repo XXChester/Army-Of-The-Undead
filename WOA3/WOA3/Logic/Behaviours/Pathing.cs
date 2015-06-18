@@ -44,6 +44,7 @@ namespace WOA3.Logic.Behaviours {
 			foreach (var point in points) {
 				targets.Enqueue(point.toVector2());
 			}
+			this.targets = new Stack<Vector2>();
 			foreach (var vector in targets) {
 				Targets.Push(vector);
 			}

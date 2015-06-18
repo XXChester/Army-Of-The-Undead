@@ -50,16 +50,16 @@ namespace WOA3.Logic.Behaviours {
 				Vector2 distance = Vector2.Subtract(target, Position);
 				float maxSpeedForFrame = (SPEED / 1000) * elapsed;
 				//float delta = (this.speed / 1000) * elapsed;
-				// WHY ARE YOU LERPING!				
+				//NEED TO STOP LERPING!!
 				Position = Vector2.Add(Position, distance * maxSpeedForFrame);
 
 
-				Vector2 speed = new Vector2(SPEED);
+				//Vector2 speed = new Vector2(SPEED);
 				//Position = Vector2.Add(Position, Vector2.MXA(distance * maxSpeedForFrame, speed * maxSpeedForFrame));
 
 				//Vector2 noLerp = new Vector2(Math.Max(delta, delta *distance.X), Math.Max(delta, delta *distance.Y));
-				Vector2 t = maxSpeedForFrame * originalDistance;
-				Vector2 t2 = maxSpeedForFrame * distance;
+				//Vector2 t = maxSpeedForFrame * originalDistance;
+				//Vector2 t2 = maxSpeedForFrame * distance;
 				
 				
 				//Position = Vector2.Add(Position, noLerp);

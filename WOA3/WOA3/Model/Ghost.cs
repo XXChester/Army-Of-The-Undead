@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using GWNorthEngine.Audio;
 using GWNorthEngine.Audio.Params;
@@ -25,12 +26,14 @@ using WOA3.Logic.Skills;
 
 namespace WOA3.Model {
 	public class Ghost : Entity {
-
+		private enum State { Visisble, Invisible };
 		#region Class variables
 		private RadiusRing ring;
 		private Tracking seeking;
 		private StaticDrawable2D selectedImg;
 		private FadeEffect fadeEffect, selectedFadeEffect;
+		private State state;
+		private GhostObservationHandler observerHandler;
 
 		private Dictionary<Keys, Skill> skills;
 		#endregion Class variables
@@ -40,9 +43,10 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Ghost(ContentManager content, Vector2 position)
+		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler)
 			: base(content) {
-
+			
+			this.observerHandler = observerHandler;
 			Texture2D texture = null;
 			texture = LoadingUtils.load<Texture2D>(content, "Ghost");
 
@@ -98,14 +102,14 @@ namespace WOA3.Model {
 				int alpha = 255;
 				resetFadeEffect(this.fadeEffect, alpha, FadeEffect.FadeState.PartialIn);
 				resetFadeEffect(this.selectedFadeEffect, alpha, FadeEffect.FadeState.PartialIn);
-				/*this.fadeEffect.AlphaAmount = 255;
-				this.fadeEffect.State = FadeEffect.FadeState.PartialIn;
-				this.fadeEffect.reset();*/
+				this.state = State.Visisble;
 			};
 			VisualCallback disappear = delegate() {
 				int alpha = 75;
 				resetFadeEffect(this.fadeEffect, alpha, FadeEffect.FadeState.PartialOut);
 				resetFadeEffect(this.selectedFadeEffect, alpha, FadeEffect.FadeState.PartialOut);
+				this.state = State.Invisible;
+				this.observerHandler.notifyGhostChange(this);
 			};
 			this.skills.Add(Keys.D3, new Appear(appear));
 			this.skills.Add(Keys.D4, new Disappear(disappear));
@@ -124,6 +128,10 @@ namespace WOA3.Model {
 				State = FadeEffect.FadeState.PartialIn,
 			};
 			return new FadeEffect(fadeParms);
+		}
+
+		public bool isVisible() {
+			return State.Visisble.Equals(this.state);
 		}
 
 		public List<SkillResult> performSkills() {

@@ -23,7 +23,6 @@ namespace WOA3.Logic.Skills {
 		public override SkillResult perform(BoundingSphere boundingSphere) {
 			SkillResult result = base.perform(boundingSphere);
 			if (result != null) {
-				Debug.log("here I AM!");
 				if (this.visualCallback != null) {
 					this.visualCallback.Invoke();
 				}

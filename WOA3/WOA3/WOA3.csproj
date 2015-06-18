@@ -120,8 +120,10 @@
     <Compile Include="Logic\AI\PathRequest.cs" />
     <Compile Include="Logic\Behaviours\Pathing.cs" />
     <Compile Include="Logic\Behaviours\TargetBehaviour.cs" />
+    <Compile Include="Logic\GhostObservationHandler.cs" />
+    <Compile Include="Logic\Unsubscriber.cs" />
     <Compile Include="Logic\Skills\Appear.cs" />
-    <Compile Include="Logic\Skills\CallBacks.cs" />
+    <Compile Include="Logic\CallBacks.cs" />
     <Compile Include="Logic\Skills\Disappear.cs" />
     <Compile Include="Map\Delegates.cs" />
     <Compile Include="Map\MapEditor.cs" />

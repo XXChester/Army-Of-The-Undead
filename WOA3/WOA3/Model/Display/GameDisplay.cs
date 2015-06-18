@@ -33,6 +33,7 @@ namespace WOA3.Model.Display {
 		private List<Ghost> allGhosts = new List<Ghost>();
 		private List<Ghost> selectedGhosts = new List<Ghost>();
 		private List<Goof> mobs = new List<Goof>();
+		private GhostObservationHandler ghostObserverHandler;
 
 #if DEBUG
 		private EditorCreator editorsCreator;
@@ -59,7 +60,8 @@ namespace WOA3.Model.Display {
 			Vector3 min = new Vector3(0f);
 			Vector3 max = new Vector3(Constants.RESOLUTION_X, Constants.RESOLUTION_Y, 0f);
 			this.boundary = new BoundingBox(min, max);
-			this.allGhosts.Add(new Ghost(content, new Vector2(100f)));
+			this.ghostObserverHandler = new GhostObservationHandler();
+			this.allGhosts.Add(new Ghost(content, new Vector2(100f), this.ghostObserverHandler));
 			this.selectedGhosts.Add(this.allGhosts[0]);
 			this.allGhosts[0].Selected = true;
 			this.mobs.Add(new Goof(content, new Vector2(500f)));
@@ -176,7 +178,7 @@ namespace WOA3.Model.Display {
 					mob.scare(damage);
 					if (mob.Scared.amIDead()) {
 						mobs.RemoveAt(i);
-						this.allGhosts.Add(new Ghost(content, mob.Position));
+						this.allGhosts.Add(new Ghost(content, mob.Position, this.ghostObserverHandler));
 					}
 				}
 			}
@@ -187,30 +189,32 @@ namespace WOA3.Model.Display {
 			Nullable<ClosestSeeable> closestSeeable = null;
 			foreach (var ghost in allGhosts) {
 				ghost.update(elapsed);
+				if (ghost.isVisible()) {
 
-				foreach (var mob in mobs) {
-					Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
-					Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
+					foreach (var mob in mobs) {
+						Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
+						Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
 
-					if (distanceToTarget != null) {
-						bool canSee = true;
-						foreach (Wall wall in map.Walls) {
-							Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
-							if (distance != null && distance < distanceToTarget) {
-								canSee = false;
+						if (distanceToTarget != null) {
+							bool canSee = true;
+							foreach (Wall wall in map.Walls) {
+								Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
+								if (distance != null && distance < distanceToTarget) {
+									canSee = false;
+								}
 							}
-						}
-						if (canSee) {
-							if (closestSeeable == null || ((ClosestSeeable)closestSeeable).Distance > distanceToTarget) {
-								closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget };
+							if (canSee) {
+								if (closestSeeable == null || ((ClosestSeeable)closestSeeable).Distance > distanceToTarget) {
+									closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget };
+								}
 							}
-						}
-						if (closestSeeable == null) {
-							if (!mob.isStopped()) {
-								mob.lostTarget();
+							if (closestSeeable == null) {
+								if (!mob.isStopped()) {
+									mob.lostTarget();
+								}
+							} else {
+								mob.Subscribe(this.ghostObserverHandler, ghost);
 							}
-						} else {
-							mob.trackTarget(((ClosestSeeable)closestSeeable).Ghost);
 						}
 					}
 				}
