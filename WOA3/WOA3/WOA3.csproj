@@ -157,7 +157,6 @@
     <Compile Include="Logic\StateManager.cs" />
     <Compile Include="Logic\TransitionState.cs" />
     <Compile Include="Map\SpecializedLoadResult.cs" />
-    <Compile Include="Model\CoolDownHit.cs" />
     <Compile Include="Model\Character.cs" />
     <Compile Include="Model\TextPopup.cs" />
     <Compile Include="Model\HUDIcon.cs" />

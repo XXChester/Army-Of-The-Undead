@@ -28,7 +28,6 @@ namespace WOA3.Map {
 		private static MapEditor instance = new MapEditor();
 
 		private EditorCreator objectCreator;
-		private EditorDeleter objectDeleter;
 		private List<CreatedType> createdObjects;
 
 		private struct CreatedType {
@@ -75,9 +74,8 @@ namespace WOA3.Map {
 			return instance;
 		}
 
-		public void init(EditorCreator objectCreator, EditorDeleter objectDeleter) {
+		public void init(EditorCreator objectCreator) {
 			this.objectCreator = objectCreator;
-			this.objectDeleter = objectDeleter;
 			this.createdObjects = new List<CreatedType>();
 		}
 
@@ -128,17 +126,6 @@ namespace WOA3.Map {
 			if (mousePos.X >= 0 && mousePos.Y >= 0) {
 				StringBuilder xml = new StringBuilder();
 
-				if (InputManager.getInstance().wasRightButtonPressed()) {
-					// delete
-					for (int i = 0; i < this.createdObjects.Count; i++) {
-						if (this.createdObjects[i].position == indexPosition) {
-							// only delete new objects
-							this.objectDeleter(indexPosition);
-							this.createdObjects.RemoveAt(i);
-							break;
-						}
-					}
-				}
 				if (InputManager.getInstance().wasLeftButtonPressed()) {
 					Console.WriteLine(indexPosition);
 					CreatedType type = new CreatedType();

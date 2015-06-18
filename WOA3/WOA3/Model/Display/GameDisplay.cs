@@ -36,7 +36,6 @@ namespace WOA3.Model.Display {
 
 #if DEBUG
 		private EditorCreator editorsCreator;
-		private EditorDeleter editorsDeleter;
 #endif
 		#endregion Class variables
 
@@ -70,7 +69,7 @@ namespace WOA3.Model.Display {
 
 		private void loadMap() {
 #if DEBUG
-			MapEditor.getInstance().init(this.editorsCreator, this.editorsDeleter);
+			MapEditor.getInstance().init(this.editorsCreator);
 #endif
 			string suffix = ".xml";
 			XmlReader xmlReader = XmlReader.Create(Constants.MAP_DIRECTORY + this.mapName + "Identifiers" + suffix);
@@ -98,9 +97,6 @@ namespace WOA3.Model.Display {
 		}
 
 		private void initDelegates() {
-			/*this.mapCollisionChecker = delegate(BoundingBox bbox, Vector2 objectsPosition) {
-				return this.map.collisionDetected(bbox, objectsPosition);
-			};*/
 #if DEBUG
 			this.editorsCreator = delegate(MapEditor.MappingState type, Vector2 position) {
 				switch (type) {
@@ -109,24 +105,6 @@ namespace WOA3.Model.Display {
 						break;
 				};
 			};
-
-			/*this.editorsDeleter = delegate(Point point) {
-				Vector2 min = new Vector2(point.X * Constants.TILE_SIZE, point.Y * Constants.TILE_SIZE);
-				Vector2 max = Vector2.Add(min, new Vector2(Constants.TILE_SIZE - 1));
-				Vector2 position;
-				bool found = false;
-				for (int i = this.levelObjects.Count - 1; i > 0; i--) {
-					if (this.levelObjects[i] != null) {
-						position = this.levelObjects[i].Position;
-						if (position.X >= min.X && position.X <= max.X &&
-							position.Y >= min.Y && position.Y <= max.Y) {
-							this.levelObjects.RemoveAt(i);
-							found = true;
-							break;
-						}
-					}
-				}
-			};*/
 #endif
 		}
 
