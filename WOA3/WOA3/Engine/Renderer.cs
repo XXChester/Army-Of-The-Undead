@@ -73,6 +73,8 @@ namespace WOA3.Engine {
 #if WINDOWS
 #if DEBUG
 			ScriptManager.getInstance().LogFile = "Log.log";
+			Debug.debugChip = LoadingUtils.load<Texture2D>(Content, "Chip");
+			Debug.debugRing = TextureUtils.create2DRingTexture(GraphicsDevice, (int)Constants.BOUNDING_SPHERE_SIZE, Color.White);
 #endif
 #endif
 
@@ -159,15 +161,16 @@ namespace WOA3.Engine {
 			base.Window.Title = GAME_NAME + "...FPS: " + FrameRate.getInstance().calculateFrameRate(gameTime) + "    X:" +
 				InputManager.getInstance().MouseX + " Y:" + InputManager.getInstance().MouseY;
 
-			/*if (InputManager.getInstance().wasKeyPressed(Keys.R)) {
+			if (InputManager.getInstance().wasKeyPressed(Keys.R)) {
 				SoundManager.getInstance().removeAllEmitters();
-				this.gameDisplay = new GameDisplay(GraphicsDevice, Content, "Map");
-			}*/
+				this.stateMachine.reset();
+			}
 			if (InputManager.getInstance().wasKeyPressed(Keys.Escape) ||
 			InputManager.getInstance().wasButtonPressed(PlayerIndex.One, Buttons.B)) {
 				//SpawnGenerator.getInstance().Running = false;
 				this.Exit();
 			}
+
 #endif
 			if (InputManager.getInstance().wasKeyPressed(Keys.Escape)) {
 				this.stateMachine.goToNextState();

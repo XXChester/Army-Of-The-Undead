@@ -1,0 +1,24 @@
+﻿[]Skill visual effects
+[]Skill SFX's
+[]Menu screen
+[]Map screen
+[]Transitions
+[]Map win conditions
+[]Map progression
+[]Tutorial
+[]Storyboard
+[]Title
+[]Option screen
+[]Progression profiles
+[]Music
+[]Minigame ghost collection at the end
+[]Lighting
+[]Enemy directed FOV
+[]High score
+[]Health bars
+[]Standalone executable
+[]Player stances
+[]HUD
+[]2 wall passes, one for bottom and right sides being on a higher layer, left and top sides being on a lower layer...gives a true illusion of passing through the wall
+[]If the ghost is hidden and uses skills, he will appear without the fear bonus
+[]Bug in A* implementation that when the target position is inside of a block, it doesn't return a path

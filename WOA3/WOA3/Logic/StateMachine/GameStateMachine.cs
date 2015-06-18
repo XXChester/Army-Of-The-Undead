@@ -40,6 +40,10 @@ namespace WOA3.Logic.StateMachine {
 			throw new NotImplementedException();
 		}
 
+		public void reset() {
+			this.CurrentState.reset();
+		}
+
 		public void Dispose() {
 			this.CompanyCinematic.Dispose();
 			this.GameDevCinematic.Dispose();

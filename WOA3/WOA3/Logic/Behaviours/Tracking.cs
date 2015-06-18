@@ -18,16 +18,20 @@ using Microsoft.Xna.Framework.Graphics;
 namespace WOA3.Logic.Behaviours {
 	public class Tracking : TargetBehaviour {
 
+		private BehaviourFinished callback;
 		private readonly float SPEED;
 
 		public Vector2 Target { get; set; }
 
 		public Vector2 Position { get; set; }
 
-		public Tracking(Vector2 startingPosition, float speed) {
+		public Tracking(Vector2 startingPosition, float speed) :this(startingPosition, speed, null) {}
+
+		public Tracking(Vector2 startingPosition, float speed, BehaviourFinished callback) {
 			this.Position = startingPosition;
 			this.Target = this.Position;
 			this.SPEED = speed;
+			this.callback = callback;
 		}
 
 
@@ -41,6 +45,10 @@ namespace WOA3.Logic.Behaviours {
 					Position = Target;
 				} else {
 					Position = newPosition;
+				}
+			} else {
+				if (this.callback != null) {
+					this.callback.Invoke();
 				}
 			}
 		}

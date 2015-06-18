@@ -42,6 +42,10 @@ namespace WOA3.Logic.StateMachine {
 		public virtual void setStates() {
 			StateManager.getInstance().CurrentGameState = GameState.Waiting;
 		}
+		
+		public virtual void reset() {
+			
+		}
 
 		public void Dispose() {
 			this.display.dispose();

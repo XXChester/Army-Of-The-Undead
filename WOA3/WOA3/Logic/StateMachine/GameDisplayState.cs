@@ -13,7 +13,13 @@ namespace WOA3.Logic.StateMachine {
 	class GameDisplayState : BaseGameState {
 
 		public GameDisplayState(GameStateMachine stateMachine, GraphicsDevice device,  ContentManager content)
-			: base(stateMachine, device, content, new GameDisplay(device, content, "Map")) { }
+			: base(stateMachine, device, content, null) {
+				reset();
+		}
+
+		private IRenderable createInstance() {
+			return new GameDisplay(device, content, "Map");
+		}
 
 		public override void goToNextState() {
 			changeState(stateMachine.GameDevCinematic);
@@ -22,6 +28,13 @@ namespace WOA3.Logic.StateMachine {
 		public override void setStates() {
 			base.setStates();
 			StateManager.getInstance().CurrentGameState = GameState.Active;
+		}
+
+		public override void reset() {
+			if (this.display != null) {
+				this.display.dispose();
+			}
+			this.display = createInstance();
 		}
 	}
 }

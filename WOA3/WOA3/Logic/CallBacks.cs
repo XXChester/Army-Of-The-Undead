@@ -9,4 +9,5 @@ namespace WOA3.Logic {
 	public delegate void VisualCallback();
 	public delegate void DisappearCallback();
 	public delegate void VisiblityChangeMobCallback();
+	public delegate void BehaviourFinished();
 }

@@ -1,18 +1,38 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Map>
   <Size>
-    <Height>23</Height>
-    <Width>32</Width>
+    <Height>25</Height>
+    <Width>33</Width>
     <TileSize>32</TileSize>
   </Size>
   <Layer>
     <Tile>
       <Index>0</Index>
+      <FileName>Quad.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>33</Index>
+      <FileName>Quad.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>43</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>32</Index>
+      <Index>44</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>45</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>46</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
@@ -22,82 +42,82 @@
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>64</Index>
+      <Index>48</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>79</Index>
+      <Index>66</Index>
+      <FileName>Quad.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>81</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>96</Index>
+      <Index>82</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>111</Index>
+      <Index>83</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>112</Index>
+      <Index>84</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>119</Index>
+      <Index>85</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>128</Index>
+      <Index>86</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>144</Index>
+      <Index>87</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>145</Index>
+      <Index>88</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>146</Index>
+      <Index>89</Index>
       <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>99</Index>
+      <FileName>Quad.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>114</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>129</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>132</Index>
+      <FileName>Quad.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
       <Index>147</Index>
-      <FileName>Simple.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>148</Index>
-      <FileName>Simple.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>149</Index>
-      <FileName>Simple.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>150</Index>
-      <FileName>Simple.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>151</Index>
-      <FileName>Simple.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>156</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
@@ -107,17 +127,27 @@
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>176</Index>
+      <Index>161</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>188</Index>
+      <Index>165</Index>
+      <FileName>Quad.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>170</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>192</Index>
+      <Index>180</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>193</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
@@ -127,77 +157,77 @@
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>208</Index>
+      <Index>203</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>219</Index>
+      <Index>226</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>220</Index>
+      <Index>236</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>224</Index>
+      <Index>259</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>230</Index>
-      <FileName>Quad.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>240</Index>
+      <Index>269</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>251</Index>
+      <Index>291</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>256</Index>
+      <Index>292</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>262</Index>
-      <FileName>Quad.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>272</Index>
+      <Index>302</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>282</Index>
+      <Index>307</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>283</Index>
+      <Index>308</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>288</Index>
+      <Index>309</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>294</Index>
-      <FileName>Quad.png</FileName>
+      <Index>310</Index>
+      <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>304</Index>
+      <Index>311</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>312</Index>
+      <FileName>Simple.png</FileName>
+      <Value>1</Value>
+    </Tile>
+    <Tile>
+      <Index>313</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
@@ -207,83 +237,53 @@
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>320</Index>
+      <Index>315</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>326</Index>
-      <FileName>Quad.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>345</Index>
+      <Index>324</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>346</Index>
+      <Index>335</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>358</Index>
-      <FileName>Quad.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>377</Index>
+      <Index>356</Index>
       <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>390</Index>
-      <FileName>Quad.png</FileName>
+      <Index>368</Index>
+      <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>395</Index>
-      <FileName>Quad.png</FileName>
+      <Index>388</Index>
+      <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>396</Index>
-      <FileName>Quad.png</FileName>
+      <Index>389</Index>
+      <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>397</Index>
-      <FileName>Quad.png</FileName>
+      <Index>420</Index>
+      <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>398</Index>
-      <FileName>Quad.png</FileName>
+      <Index>421</Index>
+      <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>399</Index>
-      <FileName>Quad.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>400</Index>
-      <FileName>Quad.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>401</Index>
-      <FileName>Quad.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>402</Index>
-      <FileName>Quad.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>403</Index>
-      <FileName>Quad.png</FileName>
+      <Index>453</Index>
+      <FileName>Simple.png</FileName>
       <Value>1</Value>
     </Tile>
   </Layer>

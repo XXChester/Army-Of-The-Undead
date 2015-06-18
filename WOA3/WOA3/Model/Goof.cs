@@ -24,12 +24,12 @@ using WOA3.Logic.Behaviours;
 
 namespace WOA3.Model {
 	public class Goof : Entity, Scareable, IObserver<Ghost> {
-		public enum State { Tracking, LostTarget, Stopped, Pathing }
+		public enum State { Tracking, LostTarget, Stopped, Pathing, Idle }
 		#region Class variables
 		private TargetBehaviour activeBehaviour;
 		private TargetBehaviour seekingBehaviour;
 		private TargetBehaviour lostTargetBehaviour;
-		private TargetBehaviour pathingBehaviour;
+		private Pathing pathingBehaviour;
 		private Entity tracking;
 		private State previousState;
 		private Text2D scaredText;
@@ -42,6 +42,7 @@ namespace WOA3.Model {
 		public Vector2 LastKnownLocation { get; set; }
 		public State CurrentState { get; set; }
 		public ScaredFactor Scared { get; set; }
+		public BoundingSphere BoundingSphere { get; set; }
 		#endregion Class properties
 
 		#region Constructor
@@ -50,22 +51,31 @@ namespace WOA3.Model {
 
 			this.Scared = new ScaredFactor();
 			
-			Base2DSpriteDrawable character = getCharacterSprite(content, position);
+			StaticDrawable2D character = getCharacterSprite(content, position);
 			createScaredText(position);
 
 			base.init(character);
-			
-			this.seekingBehaviour = new Tracking(position, SPEED);
-			this.lostTargetBehaviour = new LostTarget(this.seekingBehaviour.Position, this.seekingBehaviour.Position, SPEED);
+
+			BehaviourFinished idleCallback = delegate() {
+				Debug.log("Idling");
+				this.CurrentState = State.Idle;
+			};
+			this.seekingBehaviour = new Tracking(position, SPEED, idleCallback);
+			this.lostTargetBehaviour = new LostTarget(this.seekingBehaviour.Position, this.seekingBehaviour.Position, SPEED, idleCallback);
+			this.pathingBehaviour = new Pathing(position, SPEED);
 			this.activeBehaviour = this.seekingBehaviour;
-			this.CurrentState = State.Tracking;
+			this.CurrentState = State.Idle;
+			updateBoundingSphere(position);
+		}
+		private void updateBoundingSphere(Vector2 position) {
+			this.BoundingSphere = new BoundingSphere(new Vector3(position, 0f), Constants.BOUNDING_SPHERE_SIZE);
 		}
 
-		private Base2DSpriteDrawable getCharacterSprite(ContentManager content, Vector2 position) {
+		private StaticDrawable2D getCharacterSprite(ContentManager content, Vector2 position) {
 			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Ghost");
 
 			StaticDrawable2DParams characterParams = new StaticDrawable2DParams {
-				Position = getTextPosition(position),
+				Position = position,
 				Texture = texture,
 				Origin = new Vector2(Constants.TILE_SIZE/2),
 				LightColour = Color.Red
@@ -75,7 +85,7 @@ namespace WOA3.Model {
 
 		private Text2D createScaredText(Vector2 position) {
 			Text2DParams textParams = new Text2DParams() {
-				Position = position,
+				Position = getTextPosition(position),
 				LightColour = Constants.TEXT_COLOUR,
 				WrittenText = this.Scared.Text,
 				Origin = new Vector2(Constants.TILE_SIZE / 2),
@@ -109,32 +119,15 @@ namespace WOA3.Model {
 			swapBehaviours(seekingBehaviour, State.Tracking);
 		}
 
-		public void stop(Wall collisionWith) {
-			// if this bounding box is not the same as the bounding box of our target, go to A* to find a path
-			Vector2 direction = Vector2.Subtract(collisionWith.Position, Position);
-			BoundingBox bbox = CollisionGenerationUtils.getBBox(LastKnownLocation);
-			Nullable<float> distanceToTarget = CollisionUtils.castRay(bbox, Position, direction);
-			Nullable<float> distanceToWall = CollisionUtils.castRay(collisionWith.BBox, Position, direction);
-			if (distanceToTarget != null && distanceToTarget > distanceToWall) {
-				AIManager.getInstance().requestPath(LastKnownLocation.toPoint(), delegate(Stack<Point> path) {
-					if (this != null) {
-						if (path != null) {
-							Debug.log("A*ing this bitch");
-							this.pathingBehaviour = new Pathing(Position, SPEED, path);
-							this.activeBehaviour = this.pathingBehaviour;
-							this.CurrentState = State.Pathing;
-						} else {
-							this.activeBehaviour.Target = this.Position;
-						}
-					}
-				});
-#if DEBUG
-				Debug.log("We hit a wall but our target is further away so turn to A*");
+		public void pathToWaypoint() {
+			if (!isPathing()) {
+				this.pathingBehaviour.init(base.Position);
+				swapBehaviours(this.pathingBehaviour, State.Pathing);
+			}
+		}
 
-#endif
-			} /*else {
-				this.activeBehaviour.Target = this.Position;
-			}*/
+		public void stop() {
+			this.activeBehaviour.Target = this.Position;
 		}
 
 		public void scare(float amount) {
@@ -146,16 +139,36 @@ namespace WOA3.Model {
 			return State.Stopped.Equals(this.CurrentState);
 		}
 
+		public bool isPathing() {
+			return State.Pathing.Equals(this.CurrentState);
+		}
+
+		public bool isIdle() {
+			return State.Idle.Equals(this.CurrentState);
+		}
+
 		public override void update(float elapsed) {
 			base.update(elapsed);
 
-			if (this.tracking != null) {
-				this.seekingBehaviour.Target = this.tracking.Position;
+			if (!isIdle()) {
+				// if we are tracking, update our target to the current prey's location
+				if (this.tracking != null) {
+					this.seekingBehaviour.Target = this.tracking.Position;
+				}
+				this.activeBehaviour.update(elapsed);
+				base.Position = this.activeBehaviour.Position;
+				this.scaredText.Position = getTextPosition(base.Position);
+				this.scaredText.update(elapsed);
+				updateBoundingSphere(base.Position);
 			}
-			this.activeBehaviour.update(elapsed);
-			base.Position = this.activeBehaviour.Position;
-			this.scaredText.Position = getTextPosition(base.Position);
-			this.scaredText.update(elapsed);
+
+			if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
+			//	this.activeBehaviour.Target = GWNorthEngine.Input.InputManager.getInstance().MousePosition;
+			//	swapBehaviours(this.seekingBehaviour, State.Tracking);
+			}
+			/*if (!isPathing() && !isStopped() && activeBehaviour.Target.Equals(activeBehaviour.Position)) {
+				stop();
+			}*/
 
 			this.previousState = CurrentState;
 		}
@@ -163,11 +176,17 @@ namespace WOA3.Model {
 		public override void render(SpriteBatch spriteBatch) {
 			base.render(spriteBatch);
 			this.scaredText.render(spriteBatch);
-
+			
 #if DEBUG
-			if (Debug.debugOn && !isStopped()) {
-				BoundingBox bbox = CollisionGenerationUtils.getBBoxHalf(this.activeBehaviour.Target);
-				DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Green, Debug.debugChip);
+			if (Debug.debugOn) {
+				if (!isStopped()) {
+					BoundingBox bbox = CollisionGenerationUtils.getBBoxHalf(this.activeBehaviour.Target);
+					DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Green, Debug.debugChip);
+				}
+				DebugUtils.drawBoundingSphere(spriteBatch, BoundingSphere, Color.Pink, Debug.debugRing);
+			}
+			if (GWNorthEngine.Input.InputManager.getInstance().wasKeyPressed(Microsoft.Xna.Framework.Input.Keys.Space)) {
+				Debug.log("Type: " + this.activeBehaviour);
 			}
 #endif
 		}

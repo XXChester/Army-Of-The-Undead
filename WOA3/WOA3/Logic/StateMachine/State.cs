@@ -14,5 +14,7 @@ namespace WOA3.Logic.StateMachine {
 		void goToPreviousState();
 
 		void setStates();
+
+		void reset();
 	}
 }

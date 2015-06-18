@@ -16,5 +16,9 @@ namespace WOA3.Engine {
 			int y = (int)(vector.Y / Constants.TILE_SIZE);
 			return new Point(x,y);
 		}
+		public static Rectangle toRectangle(this Point point) {
+			Vector2 v = point.toVector2();
+			return new Rectangle((int)v.X, (int)v.Y, (int)Constants.TILE_SIZE, (int)Constants.TILE_SIZE);
+		}
 	}
 }

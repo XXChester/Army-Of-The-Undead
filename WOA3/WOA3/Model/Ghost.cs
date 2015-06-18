@@ -20,7 +20,9 @@ using Microsoft.Xna.Framework.Input;
 
 
 
+using WOA3.Engine;
 using WOA3.Logic;
+using WOA3.Logic.AI;
 using WOA3.Logic.Behaviours;
 using WOA3.Logic.Skills;
 
@@ -37,7 +39,7 @@ namespace WOA3.Model {
 
 		private Dictionary<Keys, Skill> skills;
 
-		private const float SPEED = .2f;
+		private const float SPEED = .5f;//.2f;
 		#endregion Class variables
 
 		#region Class propeties
@@ -151,6 +153,7 @@ namespace WOA3.Model {
 			return results;
 		}
 
+		
 		public override void update(float elapsed) {
 			base.update(elapsed);
 			this.seeking.update(elapsed);
@@ -158,7 +161,6 @@ namespace WOA3.Model {
 			this.ring.updatePosition(base.Position);
 			this.selectedImg.update(elapsed);
 			this.selectedImg.Position = base.Position;
-
 
 			if (Selected) {
 				// update our skills

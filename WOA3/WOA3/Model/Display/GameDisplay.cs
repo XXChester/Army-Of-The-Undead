@@ -73,11 +73,6 @@ namespace WOA3.Model.Display {
 				this.portals = new PortalManager(content, this.rand);
 				this.walls = new WallManager(content, this.rand);*/
 			}
-
-
-#if DEBUG
-			Debug.debugChip = LoadingUtils.load<Texture2D>(this.content, "Chip");
-#endif
 		}
 
 		private void loadMap() {
@@ -194,26 +189,58 @@ namespace WOA3.Model.Display {
 					foreach (var mob in mobs) {
 						Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
 						Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
-
 						if (distanceToTarget != null) {
 							bool canSee = true;
+							bool pathing = false;
+							bool hitWall = false;
+							bool toBreak = false;
 							foreach (Wall wall in map.Walls) {
+								if (!mob.isIdle()) {
+									// are we going to collide with a wall?
+									if (wall.BBox.Intersects(mob.BoundingSphere)) {
+										pathing = true;
+										toBreak = true;
+									}
+									if (wall.BBox.Intersects(mob.BBox)) {
+										hitWall = true;
+										toBreak = true;
+									}
+								}
+
 								Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
 								if (distance != null && distance < distanceToTarget) {
 									canSee = false;
 								}
+								if (toBreak) {
+									break;
+								}
 							}
-							if (canSee) {
+							if (canSee && !pathing) {
 								if (closestSeeable == null || ((ClosestSeeable)closestSeeable).Distance > distanceToTarget) {
 									closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget };
 								}
 							}
-							if (closestSeeable == null) {
-								if (!mob.isStopped()) {
-									mob.lostTarget();
-								}
+							float t = 0f;
+							if (closestSeeable != null) {
+								t = closestSeeable.Value.Distance;
+							}
+							//Debug.log("canSee: " + canSee + "\tpathing: " + pathing + "\thitWall: " + hitWall + "\tseeable: " + t);
+
+							if (pathing && !canSee) {
+								mob.pathToWaypoint();
 							} else {
-								mob.Subscribe(this.ghostObserverHandler, ghost);
+								if (!pathing) {
+									if (hitWall) {
+										mob.stop();
+									}
+									if (closestSeeable == null) {
+										if (!mob.isStopped() && !mob.isIdle()) {
+											mob.lostTarget();
+										}
+									} else {
+										mob.Subscribe(this.ghostObserverHandler, ghost);
+									}
+								}
 							}
 						}
 					}
@@ -238,7 +265,7 @@ namespace WOA3.Model.Display {
 				updateFieldOfView(elapsed);
 				updateSkills(elapsed);
 
-				Wall collision = null;
+				/*Wall collision = null;
 				foreach (var mob in mobs) {
 					if (!mob.isStopped()) {
 						collision = this.map.collisionDetected(mob.BBox);
@@ -246,7 +273,7 @@ namespace WOA3.Model.Display {
 							mob.stop(collision);
 						}
 					}
-				}
+				}*/
 
 				if (InputManager.getInstance().wasLeftButtonPressed()) {
 					if (!InputManager.getInstance().isKeyDown(Keys.LeftShift)) {

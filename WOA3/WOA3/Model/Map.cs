@@ -17,6 +17,7 @@ using GWNorthEngine.Utils;
 
 using WOA3.Engine;
 using WOA3.Logic;
+using WOA3.Logic.AI;
 
 namespace WOA3.Model {
 	public class Map {
@@ -62,6 +63,21 @@ namespace WOA3.Model {
 			foreach (var wall in Walls) {
 				wall.render(spriteBatch);
 			}
+#if DEBUG
+			if (Debug.showAIMap) {
+				GWNorthEngine.AI.AStar.BasePathFinder.TypeOfSpace space;
+				for (int y = 0; y <=  AIManager.getInstance().Board.GetUpperBound(0); y++) {
+					for (int x = 0; x <=  AIManager.getInstance().Board.GetUpperBound(1); x++) {
+						space = AIManager.getInstance().Board[y, x];
+						if (space == GWNorthEngine.AI.AStar.BasePathFinder.TypeOfSpace.Unwalkable) {
+							DebugUtils.drawRectangle(spriteBatch, new Point(x, y).toRectangle(), Debug.DEBUG_BBOX_Color, Debug.debugChip);
+						} else {
+							DebugUtils.drawRectangle(spriteBatch, new Point(x, y).toRectangle(), Debug.DEBUG_AI_MAP_WALKABLE, Debug.debugChip);
+						}
+					}
+				}
+			}
+#endif
 			/*if (this.Tiles != null) {
 				foreach (var tile in Tiles) {
 					if (tile != null) {
