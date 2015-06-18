@@ -63,7 +63,7 @@ namespace WOA3.Model.Display {
 			this.ghostObserverHandler = new GhostObservationHandler();
 			this.allGhosts.Add(new Ghost(content, new Vector2(100f), this.ghostObserverHandler));
 			this.selectedGhosts.Add(this.allGhosts[0]);
-			this.allGhosts[0].Selected = true;
+			//this.allGhosts[0].Selected = true;
 			this.mobs.Add(new Goof(content, new Vector2(500f)));
 
 			if (fullRegen) {
@@ -191,17 +191,18 @@ namespace WOA3.Model.Display {
 						Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
 						if (distanceToTarget != null) {
 							bool canSee = true;
-							bool pathing = false;
+							bool pathing = mob.isPathing();
 							bool hitWall = false;
 							bool toBreak = false;
 							foreach (Wall wall in map.Walls) {
 								if (!mob.isIdle()) {
 									// are we going to collide with a wall?
-									if (wall.BBox.Intersects(mob.BoundingSphere)) {
+									/*if (!mob.isPathing() && wall.BBox.Intersects(mob.BoundingSphere)) {
 										pathing = true;
 										toBreak = true;
-									}
-									if (wall.BBox.Intersects(mob.BBox)) {
+									}*/
+									if (!mob.isPathing() && wall.BBox.Intersects(mob.BBox)) {
+										pathing = true;
 										hitWall = true;
 										toBreak = true;
 									}
@@ -224,7 +225,7 @@ namespace WOA3.Model.Display {
 							if (closestSeeable != null) {
 								t = closestSeeable.Value.Distance;
 							}
-							//Debug.log("canSee: " + canSee + "\tpathing: " + pathing + "\thitWall: " + hitWall + "\tseeable: " + t);
+						//	Debug.log("canSee: " + canSee + "\tpathing: " + pathing + "\thitWall: " + hitWall + "\tidle: " + mob.isIdle());
 
 							if (pathing && !canSee) {
 								mob.pathToWaypoint();

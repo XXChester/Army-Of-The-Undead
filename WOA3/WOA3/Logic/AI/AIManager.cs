@@ -44,7 +44,7 @@ namespace WOA3.Logic.AI {
 			do {
 				Thread.Sleep(10);
 
-				//try {
+				try {
 					if (this.pathRequests.Count >= 1) {
 						// clone the current requests
 						Queue<PathRequest> clonedRequests = null;
@@ -70,12 +70,12 @@ namespace WOA3.Logic.AI {
 							this.pathRequests.RemoveAt(processedRequests[i]);
 						}
 					}
-				/*} catch (Exception e) {
+				} catch (Exception e) {
 					Console.WriteLine(e.Message + "\n" + e.StackTrace);
 #if (DEBUG)
 					ScriptManager.getInstance().log(e.Message + "\n" + e.StackTrace);
 #endif
-				}*/
+				}
 			} while (this.running);
 		}
 
@@ -85,29 +85,40 @@ namespace WOA3.Logic.AI {
 		}
 
 		private List<Point> findPath(Point start, Point end) {
+			//List<Point> path = null;
 			List<Point> path = new List<Point>();
-			// backup the board first
-			BasePathFinder.TypeOfSpace previousStartSpot = this.Board[start.Y, start.X];
-			BasePathFinder.TypeOfSpace previousEndSpot = this.Board[end.Y, end.X];
-			this.Board[start.Y, start.X] = BasePathFinder.TypeOfSpace.Start;
-			// if our end location is unwalkable, we need to derive a closer end
-			if (this.Board[end.Y, end.X] == BasePathFinder.TypeOfSpace.Unwalkable) {
-				Vector2 direction = Vector2.Normalize(start.toVector2() - end.toVector2());
-				// we now know our location relative to the end node
-				Point newEnd = Vector2.Subtract(direction, end.toVector2()).toPoint();
-				path = findPath(start, newEnd);
-#if (DEBUG)
-				string message = "End: " + end + "\tnewEnd: " + newEnd;
-				Debug.log(message);
-				ScriptManager.getInstance().log(message);
+			int maxY = this.Board.GetUpperBound(0);
+			int maxX = this.Board.GetUpperBound(1);
+			if (end.X >= 0 && end.Y >= 0 && end.X < maxX && end.Y < maxY) {
+				// backup the board first
+				BasePathFinder.TypeOfSpace previousStartSpot = this.Board[start.Y, start.X];
+				BasePathFinder.TypeOfSpace previousEndSpot = this.Board[end.Y, end.X];
+				this.Board[start.Y, start.X] = BasePathFinder.TypeOfSpace.Start;
+				// if our end location is unwalkable, we need to derive a closer end
+				if (this.Board[end.Y, end.X] == BasePathFinder.TypeOfSpace.Unwalkable) {
+					Vector2 direction = Vector2.Normalize(start.toVector2() - end.toVector2());
+					// we now know our location relative to the end node
+					Point newEnd = Vector2.Subtract(direction, end.toVector2()).toPoint();
+					path = findPath(start, newEnd);
+					Debug.log("HERE WE ARE");
+					// we ran out of bounds
+					//if (path == null) {
+
+					//}
+#if DEBUG
+					string message = "End: " + end + "\tnewEnd: " + newEnd;
+					Debug.log(message);
+					ScriptManager.getInstance().log(message);
 #endif
-			} else {
-				this.Board[end.Y, end.X] = BasePathFinder.TypeOfSpace.End;
-				this.pathFinder.findPath(this.Board);
-				path = this.pathFinder.Path;
-				// reset our pieces back
-				this.Board[start.Y, start.X] = previousStartSpot;
-				this.Board[end.Y, end.X] = previousEndSpot;
+				} else {
+					this.Board[end.Y, end.X] = BasePathFinder.TypeOfSpace.End;
+				//	path = new List<Point>();
+					this.pathFinder.findPath(this.Board);
+					path = this.pathFinder.Path;
+					// reset our pieces back
+					this.Board[start.Y, start.X] = previousStartSpot;
+					this.Board[end.Y, end.X] = previousEndSpot;
+				}
 			}
 			return path;
 		}

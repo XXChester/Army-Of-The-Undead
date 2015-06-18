@@ -62,7 +62,7 @@ namespace WOA3.Model {
 			};
 			this.seekingBehaviour = new Tracking(position, SPEED, idleCallback);
 			this.lostTargetBehaviour = new LostTarget(this.seekingBehaviour.Position, this.seekingBehaviour.Position, SPEED, idleCallback);
-			this.pathingBehaviour = new Pathing(position, SPEED);
+			this.pathingBehaviour = new Pathing(position, SPEED, idleCallback);
 			this.activeBehaviour = this.seekingBehaviour;
 			this.CurrentState = State.Idle;
 			updateBoundingSphere(position);
@@ -102,6 +102,7 @@ namespace WOA3.Model {
 		}
 		private void swapBehaviours(TargetBehaviour newBehaviour, State state) {
 			if (!state.Equals(previousState)) {
+				Debug.log("old: " + previousState + "\tnew: " + state + "\tLKL: " + LastKnownLocation);
 				this.LastKnownLocation = this.activeBehaviour.Target;
 				newBehaviour.Target = this.LastKnownLocation;
 				newBehaviour.Position = this.activeBehaviour.Position;
@@ -121,13 +122,15 @@ namespace WOA3.Model {
 
 		public void pathToWaypoint() {
 			if (!isPathing()) {
-				this.pathingBehaviour.init(base.Position);
+				this.pathingBehaviour.init(base.Position, this.LastKnownLocation);
 				swapBehaviours(this.pathingBehaviour, State.Pathing);
 			}
 		}
 
 		public void stop() {
+			Debug.log("Stoppping");
 			this.activeBehaviour.Target = this.Position;
+			this.CurrentState = State.Stopped;
 		}
 
 		public void scare(float amount) {
@@ -163,8 +166,8 @@ namespace WOA3.Model {
 			}
 
 			if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
-			//	this.activeBehaviour.Target = GWNorthEngine.Input.InputManager.getInstance().MousePosition;
-			//	swapBehaviours(this.seekingBehaviour, State.Tracking);
+				this.activeBehaviour.Target = GWNorthEngine.Input.InputManager.getInstance().MousePosition;
+				swapBehaviours(this.seekingBehaviour, State.Tracking);
 			}
 			/*if (!isPathing() && !isStopped() && activeBehaviour.Target.Equals(activeBehaviour.Position)) {
 				stop();
@@ -186,7 +189,7 @@ namespace WOA3.Model {
 				DebugUtils.drawBoundingSphere(spriteBatch, BoundingSphere, Color.Pink, Debug.debugRing);
 			}
 			if (GWNorthEngine.Input.InputManager.getInstance().wasKeyPressed(Microsoft.Xna.Framework.Input.Keys.Space)) {
-				Debug.log("Type: " + this.activeBehaviour);
+				Debug.log("Type: " + this.activeBehaviour +"\tpos: " + this.activeBehaviour.Position);
 			}
 #endif
 		}

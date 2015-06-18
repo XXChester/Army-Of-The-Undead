@@ -35,6 +35,9 @@ namespace WOA3.Logic.StateMachine {
 				this.display.dispose();
 			}
 			this.display = createInstance();
+#if DEBUG
+			Console.Clear();
+#endif
 		}
 	}
 }

@@ -22,7 +22,7 @@ using WOA3.Logic.AI;
 namespace WOA3.Logic.Behaviours {
 	public class Pathing : TargetBehaviour {
 		private Stack<Vector2> targets;
-		
+		private BehaviourFinished callback;
 
 		private readonly float SPEED;
 
@@ -39,10 +39,11 @@ namespace WOA3.Logic.Behaviours {
 
 		public Vector2 Position { get; set; }
 
-		public Pathing(Vector2 startingPosition, float speed) {
+		public Pathing(Vector2 startingPosition, float speed, BehaviourFinished callback) {
 			this.SPEED = speed;
 			this.targets = new Stack<Vector2>();
 			this.Position = startingPosition;
+			this.callback = callback;
 		}
 		public Pathing(Vector2 startingPosition, float speed, Stack<Point> points) {
 			this.targets = new Stack<Vector2>();
@@ -52,8 +53,12 @@ namespace WOA3.Logic.Behaviours {
 		}
 
 		public void init(Vector2 startingPosition) {
+			init(startingPosition, InputManager.getInstance().MousePosition);
+		}
+
+		public void init(Vector2 startingPosition, Vector2 endPosition) {
 			this.Position = startingPosition;
-			AIManager.getInstance().requestPath(startingPosition.toPoint(), InputManager.getInstance().MousePosition.toPoint(), delegate(Stack<Point> path) {
+			AIManager.getInstance().requestPath(startingPosition.toPoint(), endPosition.toPoint(), delegate(Stack<Point> path) {
 				if (this != null) {
 					if (path != null) {
 						initTargets(path);
@@ -80,9 +85,9 @@ namespace WOA3.Logic.Behaviours {
 		}
 
 		public void update(float elapsed) {
-			if (Targets.Count == 0) {
+			/*if (Targets.Count == 0) {
 				init(Position);
-			}
+			}*/
 			if (Targets.Count > 0) {
 				float distance = Vector2.Distance(Position, Target);
 				Vector2 direction = Vector2.Normalize(Target - Position);
@@ -94,7 +99,17 @@ namespace WOA3.Logic.Behaviours {
 					newPosition = Target;
 					Target = targets.Pop();
 				}
-				Position = newPosition;
+				if (!float.IsNaN(newPosition.X) && !float.IsNaN(newPosition.Y)) {
+					Position = newPosition;
+				} else {
+					Debug.log("NAN: " + Position + "\tCount: " + Targets.Count);
+					Target = Targets.Pop();
+				}
+			}
+			if (Targets.Count == 0) {
+				if (this.callback != null) {
+					this.callback.Invoke();
+				}
 			}
 		}
 	}
