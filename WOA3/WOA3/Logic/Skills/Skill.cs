@@ -23,14 +23,14 @@ namespace WOA3.Logic.Skills {
 			this.lastUsedAt = 0f;
 		}
 
-		public SkillResult perform(Vector2 position, double angle) {
+		public SkillResult perform(BoundingSphere boundingSphere) {
 			SkillResult result = null;
 			if (lastUsedAt == 0) {
 				// positive angle is the right side, negative is the left side
 				float directionFactor = 1f;
 
 				this.lastUsedAt = COOL_DOWN;
-				result = new SkillResult() { Damage = DAMAGE * directionFactor };
+				result = new SkillResult() { Damage = DAMAGE * directionFactor, BoundingSphere = boundingSphere  };
 			}
 			return result;
 		}

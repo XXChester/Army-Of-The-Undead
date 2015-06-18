@@ -9,15 +9,10 @@ namespace WOA3 {
 		public const int RESOLUTION_X = 1280;
 		public const int RESOLUTION_Y = 768;
 		
-		public static Color TEXT_COLOUR = Color.DarkBlue;
+		public static Color TEXT_COLOUR = Color.Blue;
 
 		public static SpriteFont FONT;
 
-
-#if DEBUG
-		public static Color DEBUG_BBOX_Color = Color.Red;
-		public static Color DEBUG_PIVOT_Color = Color.White;
-		public static Color DEBUG_RADIUS_COLOUR = Color.LightPink;
-#endif
+		public static string MAP_DIRECTORY = "WOAContent\\Data\\";
 	}
 }

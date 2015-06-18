@@ -36,13 +36,25 @@ namespace WOA3.Logic {
 
 		public ScaredFactor() {
 			states = new Dictionary<string, ScaredState>();
-			states.Add(KEY_DEAD, new ScaredState() { LowerBound = float.MinValue, UpperBound = 0});
-			states.Add(KEY_PETRIFIED, new ScaredState() { LowerBound = 0f, UpperBound = 2.5f });
+			states.Add(KEY_DEAD, new ScaredState() { LowerBound = float.MinValue, UpperBound = 0.00001f});
+			states.Add(KEY_PETRIFIED, new ScaredState() { LowerBound = 0.00001f, UpperBound = 2.5f });
 			states.Add(KEY_STANDARD, new ScaredState() { LowerBound = 2.5f, UpperBound = 5f});
 			states.Add(KEY_COURAGEOUS, new ScaredState() { LowerBound = 5f,  UpperBound = float.MaxValue });
 
 			this.myState = states[KEY_STANDARD];
 			this.factor = 5;
+		}
+
+		public bool amIState(String key) {
+			return states[key].Equals(myState);
+		}
+
+		public bool amIPetrified() {
+			return amIState(KEY_PETRIFIED);
+		}
+
+		public bool amIDead() {
+			return amIState(KEY_DEAD);
 		}
 
 		public void scare(float scare) {
@@ -59,11 +71,11 @@ namespace WOA3.Logic {
 
 			if (newState != null) {
 				// did we scare far enough into dead or petrified?
-				if (states[KEY_PETRIFIED].Equals(newState) || states[KEY_DEAD].Equals(newState)) {
+				//if (states[KEY_PETRIFIED].Equals(newState) || states[KEY_DEAD].Equals(newState)) {
 					factor = newFactorIfSuccessful;
-				} else {
+				/*} else {
 					factor += 1;
-				}
+				}*/
 				myState = (ScaredState)newState;
 			}
 		}

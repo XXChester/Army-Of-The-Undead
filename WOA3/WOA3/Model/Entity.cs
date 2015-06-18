@@ -53,7 +53,7 @@ namespace WOA3.Model {
 		}
 
 		protected virtual BoundingBox getBBox() {
-			return PositionUtils.getBBox(this.Position);
+			return CollisionGenerationUtils.getBBox(this.Position);
 		}
 
 		public virtual void update(float elapsed) {
@@ -70,7 +70,7 @@ namespace WOA3.Model {
 			}
 #if DEBUG
 			if (Debug.debugOn) {
-				DebugUtils.drawBoundingBox(spriteBatch, this.BBox, Constants.DEBUG_BBOX_Color, Debug.debugLine);
+				DebugUtils.drawBoundingBox(spriteBatch, this.BBox, Debug.DEBUG_BBOX_Color, Debug.debugChip);
 			}
 #endif
 		}

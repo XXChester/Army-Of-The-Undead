@@ -16,7 +16,7 @@ using WOA3.Logic;
 using WOA3.Logic.Behaviours;
 
 namespace WOA3.Model {
-	public class Box : Entity {
+	public class Wall : Entity {
 
 		#region Class variables
 
@@ -27,7 +27,7 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Box(ContentManager content, Vector2 position)
+		public Wall(ContentManager content, Vector2 position)
 			:base(content) {
 
 			Texture2D texture = null;
@@ -36,7 +36,7 @@ namespace WOA3.Model {
 			StaticDrawable2DParams wallParams = new StaticDrawable2DParams {
 				Position = position,
 				Texture = texture,
-				Scale = new Vector2(.5f),
+				//Scale = new Vector2(.5f),
 				Origin = new Vector2(Constants.TILE_SIZE)
 			};
 			

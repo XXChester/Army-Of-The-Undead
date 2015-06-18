@@ -10,9 +10,11 @@ using GWNorthEngine.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using WOA3.Logic;
 
+using WOA3.Logic;
+using WOA3.Logic.AI;
 using WOA3.Model.Display;
+
 
 namespace WOA3.Engine {
 	/// <summary>
@@ -79,7 +81,7 @@ namespace WOA3.Engine {
 			ScriptManager.getInstance().LogFile = "Log.log";
 			if (StateManager.getInstance().CurrentGameState == GameState.Active || StateManager.getInstance().CurrentGameState == GameState.Waiting ||
 				StateManager.getInstance().CurrentGameState == GameState.GameOver) {
-				this.gameDisplay = new GameDisplay(GraphicsDevice, Content);
+				this.gameDisplay = new GameDisplay(GraphicsDevice, Content, "Map");
 			}
 #endif
 #endif
@@ -91,6 +93,8 @@ namespace WOA3.Engine {
 		/// all content.
 		/// </summary>
 		protected override void UnloadContent() {
+			this.gameDisplay.Dispose();
+			AIManager.getInstance().Dispose();
 			base.UnloadContent();
 		}
 
@@ -167,7 +171,7 @@ namespace WOA3.Engine {
 
 			if (InputManager.getInstance().wasKeyPressed(Keys.R)) {
 				SoundManager.getInstance().removeAllEmitters();
-				this.gameDisplay = new GameDisplay(GraphicsDevice, Content);
+				this.gameDisplay = new GameDisplay(GraphicsDevice, Content, "Map");
 			}
 			if (InputManager.getInstance().wasKeyPressed(Keys.Escape) ||
 			InputManager.getInstance().wasButtonPressed(PlayerIndex.One, Buttons.B)) {
@@ -204,7 +208,8 @@ namespace WOA3.Engine {
 		/// </summary>
 		/// <param name="gameTime">Provides a snapshot of timing values.</param>
 		protected override void Draw(GameTime gameTime) {
-			GraphicsDevice.Clear(Color.Yellow);
+			
+			GraphicsDevice.Clear(Color.Black);
 
 			base.spriteBatch.Begin();
 			this.activeDisplay.render(base.spriteBatch);

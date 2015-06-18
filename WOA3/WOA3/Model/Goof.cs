@@ -1,27 +1,34 @@
-﻿
+﻿using System;
+using System.Collections.Generic;
+
 using GWNorthEngine.Audio;
 using GWNorthEngine.Audio.Params;
+using GWNorthEngine.AI.AStar;
+using GWNorthEngine.AI.AStar.Params;
 using GWNorthEngine.Logic;
 using GWNorthEngine.Logic.Params;
 using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
 using GWNorthEngine.Utils;
+
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 
+using WOA3.Engine;
 using WOA3.Logic;
+using WOA3.Logic.AI;
 using WOA3.Logic.Behaviours;
 
 namespace WOA3.Model {
 	public class Goof : Entity, Scareable {
-		public enum State { Tracking, LostTarget }
+		public enum State { Tracking, LostTarget, Stopped, Pathing }
 		#region Class variables
-		private Tracking activeBehaviour;
-		private Tracking seekingBehaviour;
-		private LostTarget lostTargetBehaviour;
+		private TargetBehaviour activeBehaviour;
+		private TargetBehaviour seekingBehaviour;
+		private TargetBehaviour lostTargetBehaviour;
 		private Entity tracking;
 		private State previousState;
 		private Text2D scaredText;
@@ -36,10 +43,9 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Goof(ContentManager content, Vector2 position, Entity tracking)
+		public Goof(ContentManager content, Vector2 position)
 			:base(content) {
 
-			this.tracking = tracking;
 			this.Scared = new ScaredFactor();
 			
 			Base2DSpriteDrawable character = getCharacterSprite(content, position);
@@ -48,19 +54,19 @@ namespace WOA3.Model {
 			base.init(character);
 			
 			this.seekingBehaviour = new Tracking(position, SPEED);
-			this.lostTargetBehaviour = new LostTarget(this.seekingBehaviour.Position, this.seekingBehaviour.Target, SPEED);
+			this.lostTargetBehaviour = new LostTarget(this.seekingBehaviour.Position, this.seekingBehaviour.Position, SPEED);
 			this.activeBehaviour = this.seekingBehaviour;
 			this.CurrentState = State.Tracking;
 		}
 
 		private Base2DSpriteDrawable getCharacterSprite(ContentManager content, Vector2 position) {
-			Texture2D texture = LoadingUtils.load<Texture2D>(content, "player1");
+			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Ghost");
 
 			StaticDrawable2DParams characterParams = new StaticDrawable2DParams {
 				Position = getTextPosition(position),
 				Texture = texture,
-				Scale = new Vector2(.5f),
-				Origin = new Vector2(Constants.TILE_SIZE)
+				Origin = new Vector2(Constants.TILE_SIZE),
+				LightColour = Color.Red
 			};
 			return new StaticDrawable2D(characterParams);
 		}
@@ -79,9 +85,9 @@ namespace WOA3.Model {
 
 		#region Support methods
 		private Vector2 getTextPosition(Vector2 position) {
-			return Vector2.Subtract(position, new Vector2(0f, 40f));
+			return Vector2.Subtract(position, new Vector2(Constants.TILE_SIZE/2f, 50f));
 		}
-		private void swapBehaviours(Tracking newBehaviour, State state) {
+		private void swapBehaviours(TargetBehaviour newBehaviour, State state) {
 			if (!state.Equals(previousState)) {
 				this.LastKnownLocation = this.activeBehaviour.Target;
 				newBehaviour.Target = this.LastKnownLocation;
@@ -100,15 +106,40 @@ namespace WOA3.Model {
 			swapBehaviours(seekingBehaviour, State.Tracking);
 		}
 
-		private void fieldOfView() {
-			// Point + Direction * T
-			
-			//Ray x = base.
+		public void stop(Wall collisionWith) {
+			// if this bounding box is not the same as the bounding box of our target, go to A* to find a path
+			Vector2 direction = Vector2.Subtract(collisionWith.Position, Position);
+			BoundingBox bbox = CollisionGenerationUtils.getBBox(LastKnownLocation);
+			Nullable<float> distanceToTarget = CollisionUtils.castRay(bbox, Position, direction);
+			Nullable<float> distanceToWall = CollisionUtils.castRay(collisionWith.BBox, Position, direction);
+			if (distanceToTarget != null && distanceToTarget > distanceToWall) {
+				AIManager.getInstance().requestPath(LastKnownLocation.toPoint(), delegate(Stack<Point> path) {
+					if (this != null) {
+						if (path != null) {
+							Debug.log("A*ing this bitch");
+							TargetBehaviour pathingBehaviour = new Pathing(Position, SPEED, path);
+							swapBehaviours(pathingBehaviour, State.Pathing);
+						} else {
+							this.activeBehaviour.Target = this.Position;
+						}
+					}
+				});
+#if DEBUG
+				Debug.log("We hit a wall but our target is further away so turn to A*");
+
+#endif
+			} else {
+				this.activeBehaviour.Target = this.Position;
+			}
 		}
 
 		public void scare(float amount) {
 			this.Scared.scare(amount);
 			this.scaredText.WrittenText = this.Scared.Text;
+		}
+
+		public bool isStopped() {
+			return State.Stopped.Equals(this.CurrentState);
 		}
 
 		public override void update(float elapsed) {
@@ -128,6 +159,13 @@ namespace WOA3.Model {
 		public override void render(SpriteBatch spriteBatch) {
 			base.render(spriteBatch);
 			this.scaredText.render(spriteBatch);
+
+#if DEBUG
+			if (Debug.debugOn && !isStopped()) {
+				BoundingBox bbox = CollisionGenerationUtils.getBBoxHalf(((Tracking)this.activeBehaviour).Target);
+				DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Green, Debug.debugChip);
+			}
+#endif
 		}
 		#endregion Support methods
 	}

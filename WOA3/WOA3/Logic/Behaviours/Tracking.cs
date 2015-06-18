@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 
 namespace WOA3.Logic.Behaviours {
-	public class Tracking : Behaviour {
+	public class Tracking : TargetBehaviour {
 		private Vector2 target;
 		private bool recalculate;
 		private Vector2 originalDistance;

@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Configuration>
+  <Tile>
+    <Position>ToolBox0</Position>
+    <FileName>Quad.png</FileName>
+    <Value>NoMovements</Value>
+  </Tile>
+  <Tile>
+    <Position>ToolBox4</Position>
+    <FileName>DoubleTop.png</FileName>
+    <Value>NoMovements</Value>
+  </Tile>
+  <Tile>
+    <Position>ToolBox8</Position>
+    <FileName>DoubleLeft.png</FileName>
+    <Value>NoMovements</Value>
+  </Tile>
+  <Tile>
+    <Position>ToolBox12</Position>
+    <FileName>DoubleBottom.png</FileName>
+    <Value>NoMovements</Value>
+  </Tile>
+  <Tile>
+    <Position>ToolBox16</Position>
+    <FileName>DoubleRight.png</FileName>
+    <Value>NoMovements</Value>
+  </Tile>
+  <Tile>
+    <Position>ToolBox1</Position>
+    <FileName>Simple.png</FileName>
+    <Value>NoMovements</Value>
+  </Tile>
+</Configuration>

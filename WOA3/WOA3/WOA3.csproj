@@ -115,6 +115,15 @@
   <ItemGroup>
     <Compile Include="Constants.cs" />
     <Compile Include="Debug.cs" />
+    <Compile Include="Engine\Extensions.cs" />
+    <Compile Include="Logic\AI\AIManager.cs" />
+    <Compile Include="Logic\AI\PathRequest.cs" />
+    <Compile Include="Logic\Behaviours\Pathing.cs" />
+    <Compile Include="Logic\Behaviours\TargetBehaviour.cs" />
+    <Compile Include="Map\Delegates.cs" />
+    <Compile Include="Map\MapEditor.cs" />
+    <Compile Include="Logic\CollisionGenerationUtils.cs" />
+    <Compile Include="Map\MapLoader.cs" />
     <Compile Include="Engine\Visibility\EndPoint.cs" />
     <Compile Include="Engine\Visibility\EndPointComparer.cs" />
     <Compile Include="Engine\Visibility\PointLight.cs" />
@@ -127,16 +136,17 @@
     <Compile Include="Logic\Behaviours\LostTarget.cs" />
     <Compile Include="Logic\Behaviours\Tracking.cs" />
     <Compile Include="Logic\GameState.cs" />
-    <Compile Include="Logic\PositionUtils.cs" />
     <Compile Include="Logic\Scareable.cs" />
     <Compile Include="Logic\ScaredFactor.cs" />
+    <Compile Include="Logic\Skills\Shriek.cs" />
     <Compile Include="Logic\Skills\Skill.cs" />
     <Compile Include="Logic\Skills\Boo.cs" />
     <Compile Include="Logic\Skills\SkillResult.cs" />
     <Compile Include="Logic\SoundManager.cs" />
     <Compile Include="Logic\StateManager.cs" />
     <Compile Include="Logic\TransitionState.cs" />
-    <Compile Include="Model\Box.cs" />
+    <Compile Include="Map\SpecializedLoadResult.cs" />
+    <Compile Include="Model\Wall.cs" />
     <Compile Include="Model\Goof.cs" />
     <Compile Include="Model\Display\Cinematic.cs" />
     <Compile Include="Model\Display\GameDisplay.cs" />
@@ -145,6 +155,8 @@
     <Compile Include="Model\Display\IRenderable.cs" />
     <Compile Include="Model\Entity.cs" />
     <Compile Include="Model\Ghost.cs" />
+    <Compile Include="Model\Map.cs" />
+    <Compile Include="Model\RadiusRing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
