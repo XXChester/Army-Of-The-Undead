@@ -86,7 +86,7 @@ namespace WOA3.Model {
 		}
 
 		public override void render(SpriteBatch spriteBatch) {
-			this.rangeRing.render(spriteBatch);
+			//this.rangeRing.render(spriteBatch);
 			this.healthText.render(spriteBatch);
 			base.render(spriteBatch);
 		}

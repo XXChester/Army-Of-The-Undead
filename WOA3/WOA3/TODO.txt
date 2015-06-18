@@ -32,3 +32,4 @@
 []Change lostTarget to pathing behaviour
 []If we don't get a path, end the behaviour
 []If a ghost goes into a wall visible, the mobs get stuck
+[]AI manager crashes in weird scenarios

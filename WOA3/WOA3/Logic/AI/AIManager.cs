@@ -98,17 +98,17 @@ namespace WOA3.Logic.AI {
 				if (this.Board[end.Y, end.X] == BasePathFinder.TypeOfSpace.Unwalkable) {
 					Vector2 direction = Vector2.Normalize(start.toVector2() - end.toVector2());
 					// we now know our location relative to the end node
-					Point newEnd = Vector2.Subtract(direction, end.toVector2()).toPoint();
-					path = findPath(start, newEnd);
+					//Point newEnd = Vector2.Subtract(direction, end.toVector2()).toPoint();
+					//path = findPath(start, newEnd);
 					Debug.log("HERE WE ARE");
 					// we ran out of bounds
 					//if (path == null) {
 
 					//}
 #if DEBUG
-					string message = "End: " + end + "\tnewEnd: " + newEnd;
+				/*	string message = "End: " + end + "\tnewEnd: " + newEnd;
 					Debug.log(message);
-					ScriptManager.getInstance().log(message);
+					ScriptManager.getInstance().log(message);*/
 #endif
 				} else {
 					this.Board[end.Y, end.X] = BasePathFinder.TypeOfSpace.End;

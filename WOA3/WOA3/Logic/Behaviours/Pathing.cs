@@ -23,6 +23,7 @@ namespace WOA3.Logic.Behaviours {
 	public class Pathing : TargetBehaviour {
 		private Stack<Vector2> targets;
 		private BehaviourFinished callback;
+		private bool requestingPath;
 
 		private readonly float SPEED;
 
@@ -57,11 +58,13 @@ namespace WOA3.Logic.Behaviours {
 		}
 
 		public void init(Vector2 startingPosition, Vector2 endPosition) {
+			this.requestingPath = true;
 			this.Position = startingPosition;
 			AIManager.getInstance().requestPath(startingPosition.toPoint(), endPosition.toPoint(), delegate(Stack<Point> path) {
 				if (this != null) {
 					if (path != null) {
 						initTargets(path);
+						this.requestingPath = false;
 					}
 				}
 			});
@@ -84,8 +87,13 @@ namespace WOA3.Logic.Behaviours {
 			}
 		}
 
+		public void stop() {
+			this.Targets.Clear();
+		}
+
 		public void update(float elapsed) {
-			/*if (Targets.Count == 0) {
+			// if we do not have a path, try once more
+			/*if (Targets.Count == 0 && !requestingPath) {
 				init(Position);
 			}*/
 			if (Targets.Count > 0) {
@@ -106,7 +114,7 @@ namespace WOA3.Logic.Behaviours {
 					Target = Targets.Pop();
 				}
 			}
-			if (Targets.Count == 0) {
+			if (Targets.Count == 0 && !requestingPath) {
 				if (this.callback != null) {
 					this.callback.Invoke();
 				}

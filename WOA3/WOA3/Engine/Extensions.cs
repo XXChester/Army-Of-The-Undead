@@ -7,13 +7,16 @@ using Microsoft.Xna.Framework;
 
 namespace WOA3.Engine {
 	public static class Extensions {
+		private static Vector2 OFFSET = new Vector2(Constants.TILE_SIZE / 2f);
 		public static Vector2 toVector2(this Point point) {
-			return Constants.TILE_SIZE * new Vector2(point.X, point.Y);
+			return Vector2.Add(OFFSET, Constants.TILE_SIZE * new Vector2(point.X, point.Y));
 		}
 
 		public static Point toPoint(this Vector2 vector) {
-			int x = (int)(vector.X / Constants.TILE_SIZE);
-			int y = (int)(vector.Y / Constants.TILE_SIZE);
+			float xSize = vector.X -OFFSET.X;
+			float ySize = vector.Y -OFFSET.Y;
+			int x = (int)(xSize / Constants.TILE_SIZE);
+			int y = (int)(ySize / Constants.TILE_SIZE);
 			return new Point(x,y);
 		}
 		public static Rectangle toRectangle(this Point point) {

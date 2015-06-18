@@ -162,62 +162,73 @@ namespace WOA3.Model.Display {
 			// cast a ray from our chaser to the target. If this ray hits the target, test it against all other objects
 			Nullable<ClosestSeeable> closestSeeable = null;
 			foreach (var ghost in allGhosts) {
+				bool ghostInWall = false;
 				if (ghost.isVisible()) {
+				ghostInWall: if (ghostInWall) {
+					// if the ghost is in a wall, skip him
+					continue;
+					}
 					foreach (var mob in mobs) {
 						Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
 						Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
+						bool pathing = mob.isPathing();
+						bool hitWall = false;
+						Nullable<bool> canSee = null;
+						bool toBreak = false;
 						if (distanceToTarget != null) {
-							bool canSee = true;
-							bool pathing = mob.isPathing();
-							bool hitWall = false;
-							bool toBreak = false;
 							foreach (Wall wall in map.Walls) {
-								if (!mob.isIdle()) {
-									// are we going to collide with a wall?
-									/*if (!mob.isPathing() && wall.BBox.Intersects(mob.BoundingSphere)) {
-										pathing = true;
+								// is the ghost in a wall?
+								if (wall.BBox.Intersects(ghost.BBox)) {
+									ghostInWall = true;
+									goto ghostInWall;
+								}
+								if (wall.BBox.Intersects(mob.BBox)) {
+								//if (wall.BBox.Intersects(mob.BoundingSphere)) {
+									hitWall = true;
+									toBreak = true;
+									// no point reseting if we are already pathing
+									if (!mob.isPathing()) {
+										mob.pathToWaypoint();
+									}
+								}
+								if (!hitWall) {
+									// can we see the target
+									Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
+									// as soon as we cannot see the target, stop looking
+									if (distance != null && distance < distanceToTarget) {
+										canSee = false;
 										toBreak = true;
-									}*/
-									if (!mob.isPathing() && wall.BBox.Intersects(mob.BBox)) {
-										pathing = true;
-										hitWall = true;
-										toBreak = true;
+									} else {
+										canSee = true;
 									}
 								}
 
-								Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
-								if (distance != null && distance < distanceToTarget) {
-									canSee = false;
-								}
+								// if we are told to break, do not process any further
 								if (toBreak) {
 									break;
+								} else if (!hitWall && canSee == true) {
+									// is this ghost closer than the previous ghost
+									if (closestSeeable == null || ((ClosestSeeable)closestSeeable).Distance > distanceToTarget) {
+										closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget };
+									}
 								}
 							}
-							if (canSee && !pathing) {
-								if (closestSeeable == null || ((ClosestSeeable)closestSeeable).Distance > distanceToTarget) {
-									closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget };
-								}
-							}
-							float t = 0f;
-							if (closestSeeable != null) {
-								t = closestSeeable.Value.Distance;
-							}
-						//	Debug.log("canSee: " + canSee + "\tpathing: " + pathing + "\thitWall: " + hitWall + "\tidle: " + mob.isIdle());
-
-							if (pathing && !canSee) {
-								mob.pathToWaypoint();
+						}
+						/*if (canSee == true) {
+							Debug.log("CAN see me!!!");
+						} else {
+							Debug.log("CANNOT see me!!!");
+						}*/
+						// if we can see the target, and aren't hitting a wall, track him
+						//if (!hitWall && canSee == true &&  closestSeeable != null) {
+						//if (!mob.isPathing() && canSee == true && closestSeeable != null) {
+						if (!mob.isPathing()) {
+							if (canSee == true && closestSeeable != null) {
+								mob.Subscribe(this.ghostObserverHandler, ghost);
 							} else {
-								if (!pathing) {
-									if (hitWall) {
-										mob.stop();
-									}
-									if (closestSeeable == null) {
-										if (!mob.isStopped() && !mob.isIdle()) {
-											mob.lostTarget();
-										}
-									} else {
-										mob.Subscribe(this.ghostObserverHandler, ghost);
-									}
+								// we are lost
+								if (!mob.isLost()) {
+									mob.lostTarget();
 								}
 							}
 						}
@@ -225,6 +236,71 @@ namespace WOA3.Model.Display {
 				}
 			}
 		}
+
+
+
+								// if we are hitting a wall, we need to start pathing
+
+								//if (!mob.isIdle()) {
+
+
+
+
+
+								// are we going to collide with a wall?
+								/*if (!mob.isPathing() && wall.BBox.Intersects(mob.BoundingSphere)) {
+									pathing = true;
+									toBreak = true;
+								}*/
+								//if (!mob.isPathing() && wall.BBox.Intersects(mob.BBox)) {
+		/*	if (wall.BBox.Intersects(mob.BBox)) {
+				pathing = true;
+				hitWall = true;
+				toBreak = true;
+			}
+		//}
+
+		Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
+		if (distance != null && distance < distanceToTarget) {
+			canSee = false;
+		}
+		if (toBreak) {
+			break;
+		}
+	}
+	if (canSee && !pathing) {
+		if (closestSeeable == null || ((ClosestSeeable)closestSeeable).Distance > distanceToTarget) {
+			closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget };
+		}
+	}
+	float t = 0f;
+	if (closestSeeable != null) {
+		t = closestSeeable.Value.Distance;
+	}
+//	Debug.log("canSee: " + canSee + "\tpathing: " + pathing + "\thitWall: " + hitWall + "\tidle: " + mob.isIdle());
+
+	if (pathing && !canSee) {
+		mob.pathToWaypoint();
+	} else {
+		//if (!pathing) {
+			if (hitWall) {
+				//neverCallTHis!!!
+				//mob.stop();
+			}
+			if (closestSeeable == null) {
+				if (!mob.isStopped() && !mob.isIdle()) {
+					mob.lostTarget();
+				}
+			} else {
+				mob.Subscribe(this.ghostObserverHandler, ghost);
+			}
+		}
+	//}
+}
+}
+}
+}
+}*/
 
 		private struct ClosestSeeable {
 			public Ghost Ghost { get; set; }

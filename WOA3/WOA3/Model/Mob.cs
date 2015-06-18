@@ -105,18 +105,30 @@ namespace WOA3.Model {
 
 		private void trackTarget(Entity toTrack) {
 			this.tracking = toTrack;
-			swapBehaviours(seekingBehaviour, State.Tracking);
+			/*this.LastKnownLocation = this.activeBehaviour.Target;
+			this.CurrentState = State.Tracking;
+			this.seekingBehaviour.Position = base.Position;
+			this.seekingBehaviour.Target = this.LastKnownLocation;
+			this.activeBehaviour = this.seekingBehaviour;*/
+			swapBehaviours(this.seekingBehaviour, State.Tracking);
 		}
 
 
 		public void lostTarget() {
-			swapBehaviours(lostTargetBehaviour, State.Pathing);
-			this.pathingBehaviour.init(base.Position, this.LastKnownLocation);
+			/*this.LastKnownLocation = this.activeBehaviour.Target;
+			this.CurrentState = State.LostTarget;
+			this.lostTargetBehaviour.Position = base.Position;
+			this.lostTargetBehaviour.Target = this.LastKnownLocation;
+			this.activeBehaviour = this.lostTargetBehaviour;*/
+			swapBehaviours(this.lostTargetBehaviour, State.LostTarget);
 		}
 
 		public void pathToWaypoint() {
-			swapBehaviours(this.pathingBehaviour, State.Pathing);
-			this.pathingBehaviour.init(base.Position, this.LastKnownLocation);
+			//swapBehaviours(this.pathingBehaviour, State.Pathing);
+			//this.pathingBehaviour.init(base.Position, this.LastKnownLocation);
+			this.CurrentState = State.Pathing;
+			this.pathingBehaviour.init(base.Position, this.activeBehaviour.Target);
+			this.activeBehaviour = this.pathingBehaviour;
 		}
 
 		public void stop() {
@@ -133,6 +145,10 @@ namespace WOA3.Model {
 
 		public bool isPathing() {
 			return State.Pathing.Equals(this.CurrentState);
+		}
+
+		public bool isLost() {
+			return State.LostTarget.Equals(this.CurrentState);
 		}
 
 		public bool isIdle() {
@@ -168,7 +184,7 @@ namespace WOA3.Model {
 		public override void update(float elapsed) {
 			base.update(elapsed);
 
-			if (!isIdle()) {
+			//if (!isIdle()) {
 				// if we are tracking, update our target to the current prey's location
 				if (this.tracking != null) {
 					this.seekingBehaviour.Target = this.tracking.Position;
@@ -176,7 +192,7 @@ namespace WOA3.Model {
 				this.activeBehaviour.update(elapsed);
 				base.Position = this.activeBehaviour.Position;
 				updateBoundingSphere();
-			}
+		//	}
 
 			/*if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
 				this.activeBehaviour.Target = GWNorthEngine.Input.InputManager.getInstance().MousePosition;
@@ -198,8 +214,8 @@ namespace WOA3.Model {
 					BoundingBox bbox = CollisionGenerationUtils.getBBoxHalf(this.activeBehaviour.Target);
 					DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Green, Debug.debugChip);
 				}
+				DebugUtils.drawBoundingSphere(spriteBatch, BoundingSphere, Color.Pink, Debug.debugRing);
 			}
-			DebugUtils.drawBoundingSphere(spriteBatch, BoundingSphere, Color.Pink, Debug.debugRing);
 			if (GWNorthEngine.Input.InputManager.getInstance().wasKeyPressed(Microsoft.Xna.Framework.Input.Keys.Space)) {
 				Debug.log("Type: " + this.activeBehaviour +"\tpos: " + this.activeBehaviour.Position);
 			}
