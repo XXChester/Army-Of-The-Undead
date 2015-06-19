@@ -244,8 +244,10 @@ namespace WOA3.Model {
 		}
 
 		public virtual void Unsubscribe() {
-			this.unsubscriber.Dispose();
-			this.lostTarget();
+			if (this.unsubscriber != null) {
+				this.unsubscriber.Dispose();
+				this.lostTarget();
+			}
 		}
 
 		public void OnCompleted() {

@@ -78,13 +78,13 @@ namespace WOA3.Model {
 
 		#region Support methods
 		private void initSkills() {
-			VisualCallback appear = delegate() {
+			SkillFinished appear = delegate() {
 				int alpha = 255;
 				resetFadeEffect(this.fadeEffect, alpha, FadeEffect.FadeState.PartialIn);
 				resetFadeEffect(this.selectedFadeEffect, alpha, FadeEffect.FadeState.PartialIn);
 				this.state = State.Visisble;
 			};
-			VisualCallback disappear = delegate() {
+			SkillFinished disappear = delegate() {
 				int alpha = 75;
 				resetFadeEffect(this.fadeEffect, alpha, FadeEffect.FadeState.PartialOut);
 				resetFadeEffect(this.selectedFadeEffect, alpha, FadeEffect.FadeState.PartialOut);
@@ -92,7 +92,7 @@ namespace WOA3.Model {
 				this.observerHandler.notifyGhostChange(this);
 			};
 
-			VisualCallback shriek = delegate() {
+			SkillFinished shriek = delegate() {
 				int alpha = 255;
 				resetFadeEffect(this.fadeEffect, alpha, FadeEffect.FadeState.PartialIn);
 				resetFadeEffect(this.selectedFadeEffect, alpha, FadeEffect.FadeState.PartialIn);
@@ -104,7 +104,7 @@ namespace WOA3.Model {
 				EffectsManager.getInstance().Visuals.Add(effect);
 			};
 
-			VisualCallback boo = delegate() {
+			SkillFinished boo = delegate() {
 				int alpha = 255;
 				resetFadeEffect(this.fadeEffect, alpha, FadeEffect.FadeState.PartialIn);
 				resetFadeEffect(this.selectedFadeEffect, alpha, FadeEffect.FadeState.PartialIn);

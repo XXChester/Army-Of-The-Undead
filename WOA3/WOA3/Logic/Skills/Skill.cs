@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace WOA3.Logic.Skills {
 	public abstract class Skill {
-		private VisualCallback visualCallback;
+		private SkillFinished skillCallback;
 		private float lastUsedAt;
 
 		private readonly float DAMAGE;
@@ -18,13 +18,11 @@ namespace WOA3.Logic.Skills {
 
 		public bool CoolDownOver { get { return lastUsedAt == 0; } }
 
-		public Skill(float damage, int coolDown) : this(damage, coolDown, null) { }
-
-		public Skill(float damage, int coolDown, VisualCallback visualCallback) {
+		public Skill(float damage, int coolDown, SkillFinished skillCallback) {
 			DAMAGE = damage;
 			COOL_DOWN = coolDown * 1000;
 			this.lastUsedAt = 0f;
-			this.visualCallback = visualCallback;
+			this.skillCallback = skillCallback;
 		}
 
 		public virtual SkillResult perform(BoundingSphere boundingSphere) {
@@ -35,8 +33,8 @@ namespace WOA3.Logic.Skills {
 
 				this.lastUsedAt = COOL_DOWN;
 				result = new SkillResult() { Damage = DAMAGE * directionFactor, BoundingSphere = boundingSphere  };
-				if (this.visualCallback != null) {
-					this.visualCallback.Invoke();
+				if (this.skillCallback != null) {
+					this.skillCallback.Invoke();
 				}
 			}
 			return result;

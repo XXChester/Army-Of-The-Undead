@@ -12,6 +12,6 @@ namespace WOA3.Logic.Skills {
 
 		private const float DAMAGE = 2f;
 		private const int COOL_DOWN = -1;
-		public Shriek(VisualCallback visualCallback) : base(DAMAGE, COOL_DOWN, visualCallback) { }
+		public Shriek(SkillFinished skillCallback) : base(DAMAGE, COOL_DOWN, skillCallback) { }
 	}
 }

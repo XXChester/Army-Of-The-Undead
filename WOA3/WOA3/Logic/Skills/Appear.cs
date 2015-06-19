@@ -12,6 +12,6 @@ namespace WOA3.Logic.Skills {
 
 		private const float DAMAGE = 0f;
 		private const int COOL_DOWN = 1;
-		public Appear(VisualCallback visualCallback) : base(DAMAGE, COOL_DOWN, visualCallback) {	}
+		public Appear(SkillFinished skillCallback) : base(DAMAGE, COOL_DOWN, skillCallback) { }
 	}
 }

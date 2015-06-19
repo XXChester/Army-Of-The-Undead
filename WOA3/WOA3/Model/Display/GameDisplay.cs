@@ -65,11 +65,6 @@ namespace WOA3.Model.Display {
 				this.allGhosts.Clear();
 				this.mobs.Clear();
 				this.map = null;
-				/*this.backGround = new BackGround(this.content);
-				this.hud = new HUD(this.content);
-				this.foodManager = new FoodManager(content, this.rand);
-				this.portals = new PortalManager(content, this.rand);
-				this.walls = new WallManager(content, this.rand);*/
 			}
 			this.ghostObserverHandler = new GhostObservationHandler();
 			this.hud = new HUD(content);
@@ -292,7 +287,7 @@ namespace WOA3.Model.Display {
 								mob.pathToWaypoint();
 							}
 						} else if (!mob.isLost()) {
-							mob.lostTarget();
+							mob.Unsubscribe();
 						}
 					}
 				}
