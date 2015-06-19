@@ -22,7 +22,6 @@ namespace WOA3.Logic.StateMachine {
 
 		public void pushToTutorial() {
 			changeState(stateMachine.Tutorial);
-			WOA3.Logic.StateManager.getInstance().CurrentGameState = GameState.Active;
 			base.goToPreviousState();
 		}
 
@@ -31,7 +30,6 @@ namespace WOA3.Logic.StateMachine {
 		}
 		public override void goToNextState() {
 			changeState(stateMachine.GameDisplay);
-			WOA3.Logic.StateManager.getInstance().CurrentGameState = GameState.Active;
 			base.goToNextState();
 		}
 	}

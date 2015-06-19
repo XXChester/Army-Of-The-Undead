@@ -40,7 +40,8 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public TutorialDisplay(GraphicsDevice graphics, ContentManager content, GameStateMachine gameStateMachine) :base(graphics, content, "Tutorial", gameStateMachine) {			
+		public TutorialDisplay(GraphicsDevice graphics, ContentManager content, GameStateMachine gameStateMachine) :base(graphics, content, "Tutorial", gameStateMachine) {
+			gameStateMachine.LevelContext = null;
 			float xBuffer = 256;
 			float yBuffer = 128;
 			float leftSideX = Constants.RESOLUTION_X  - xBuffer;

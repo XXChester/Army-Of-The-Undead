@@ -34,11 +34,11 @@ namespace WOA3.Logic.StateMachine {
 
 			//this.CurrentState = this.CompanyCinematic;
 			//this.CurrentState = this.GameDevCinematic;
-			//this.CurrentState = this.MainMenu;
+			this.CurrentState = this.MainMenu;
 			//this.CurrentState = this.GameDisplay;
 			//this.CurrentState = this.GameOverState;
 			//this.CurrentState = Tutorial;
-			this.CurrentState = TutorialComplete;
+			//this.CurrentState = TutorialComplete;
 			this.CurrentState.reset();
 
 			setStates();

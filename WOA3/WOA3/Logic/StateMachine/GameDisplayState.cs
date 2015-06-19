@@ -17,6 +17,13 @@ namespace WOA3.Logic.StateMachine {
 		}
 
 		protected override IRenderable createInstance() {
+			if (stateMachine.LevelContext == null) {
+				LevelContext context = new LevelContext() {
+					Ghosts = new List<Model.Ghost>(),
+					MapIndex = 1
+				};
+				this.stateMachine.LevelContext = context;
+			}
 			return new GameDisplay(device, content, "Map" + stateMachine.LevelContext.MapIndex, stateMachine);
 		}
 
@@ -35,6 +42,10 @@ namespace WOA3.Logic.StateMachine {
 
 		public void goToGameOver() {
 			changeState(stateMachine.GameOverState);
+		}
+
+		public override void reset() {
+			base.reset();
 		}
 	}
 }
