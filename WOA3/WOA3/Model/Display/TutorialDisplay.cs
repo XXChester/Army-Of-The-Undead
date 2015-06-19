@@ -76,6 +76,7 @@ namespace WOA3.Model.Display {
 					break;
 				}
 				this.activeScenario = this.activeScenarios.Dequeue();
+				this.activeScenario.init();
 			}
 
 			this.scenario = active;
