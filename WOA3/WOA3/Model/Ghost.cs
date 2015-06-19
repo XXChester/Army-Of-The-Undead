@@ -34,7 +34,8 @@ namespace WOA3.Model {
 		private State state;
 		private GhostObservationHandler observerHandler;
 
-		private Dictionary<Keys, Skill> skills;
+		private Dictionary<Keys, Skill> aggressiveSkills;
+		private Dictionary<Keys, Skill> passiveskills;
 
 		private const float SPEED = .5f;//.2f;
 		#endregion Class variables
@@ -91,11 +92,13 @@ namespace WOA3.Model {
 				this.observerHandler.notifyGhostChange(this);
 			};
 
-			this.skills = new Dictionary<Keys, Skill>();
-			this.skills.Add(Keys.D1, new Boo(appear));
-			this.skills.Add(Keys.D2, new Shriek(appear));
-			this.skills.Add(Keys.D3, new Appear(appear));
-			this.skills.Add(Keys.D4, new Disappear(disappear));
+			this.aggressiveSkills = new Dictionary<Keys, Skill>();
+			this.aggressiveSkills.Add(Keys.D1, new Boo(appear));
+			this.aggressiveSkills.Add(Keys.D2, new Shriek(appear));
+
+			this.passiveskills = new Dictionary<Keys, Skill>();
+			this.passiveskills.Add(Keys.D3, new Appear(appear));
+			this.passiveskills.Add(Keys.D4, new Disappear(disappear));
 		}
 
 		private void resetFadeEffect(FadeEffect effect, int alphaAmount, FadeEffect.FadeState state) {
@@ -119,9 +122,20 @@ namespace WOA3.Model {
 
 		public override List<SkillResult> performSkills() {
 			List<SkillResult> results = new List<SkillResult>();
-			if (Selected && Constants.ALLOW_PLAYER_ATTACKS) {
+			if (Selected) {
 				List<Character> charactersInRange = this.CharactersInRange.Invoke(this.Range);
-				foreach (var skill in skills) {
+				if (Constants.ALLOW_PLAYER_ATTACKS) {
+					foreach (var skill in aggressiveSkills) {
+						if (InputManager.getInstance().wasKeyPressed(skill.Key)) {
+							CombatManager.getInstance().CombatRequests.Add(new CombatRequest() {
+								Skill = skill.Value,
+								Source = this,
+								Targets = charactersInRange
+							});
+						}
+					}
+				}
+				foreach (var skill in passiveskills) {
 					if (InputManager.getInstance().wasKeyPressed(skill.Key)) {
 						CombatManager.getInstance().CombatRequests.Add(new CombatRequest() {
 							Skill = skill.Value,
@@ -147,7 +161,10 @@ namespace WOA3.Model {
 
 			if (Selected) {
 				// update our skills
-				foreach (var skill in skills) {
+				foreach (var skill in aggressiveSkills) {
+					skill.Value.update(elapsed);
+				}
+				foreach (var skill in passiveskills) {
 					skill.Value.update(elapsed);
 				}
 

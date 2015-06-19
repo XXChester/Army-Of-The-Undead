@@ -23,20 +23,20 @@ using WOA3.Map;
 namespace WOA3.Model.Display {
 	public class GameDisplay : IRenderable {
 		#region Class variables
-		private ContentManager content;
-		private string mapName;
+		protected ContentManager content;
+		protected string mapName;
 
 
-		private Map map;
-		private HUD hud;
-		private List<Ghost> allGhosts = new List<Ghost>();
-		private List<Ghost> selectedGhosts = new List<Ghost>();
-		private List<Mob> mobs = new List<Mob>();
-		private GhostObservationHandler ghostObserverHandler;
-		private CharactersInRange mobsInRange;
-		private CharactersInRange ghostsInRange;
-		private OnDeath mobDeathFinish;
-		private CollisionCheck collisionCheck;
+		protected Map map;
+		protected HUD hud;
+		protected List<Ghost> allGhosts = new List<Ghost>();
+		protected List<Ghost> selectedGhosts = new List<Ghost>();
+		protected List<Mob> mobs = new List<Mob>();
+		protected GhostObservationHandler ghostObserverHandler;
+		protected CharactersInRange mobsInRange;
+		protected CharactersInRange ghostsInRange;
+		protected OnDeath mobDeathFinish;
+		protected CollisionCheck collisionCheck;
 
 #if DEBUG
 		private EditorCreator editorsCreator;
@@ -289,7 +289,7 @@ namespace WOA3.Model.Display {
 			public float Distance { get; set; }
 		}
 
-		public void update(float elapsed) {
+		public virtual void update(float elapsed) {
 			if (StateManager.getInstance().CurrentGameState == GameState.Active) {
 				foreach (var mob in mobs) {
 					mob.update(elapsed);
@@ -326,7 +326,7 @@ namespace WOA3.Model.Display {
 #endif
 		}
 
-		public void render(SpriteBatch spriteBatch) {
+		public virtual void render(SpriteBatch spriteBatch) {
 			foreach (var ghost in this.allGhosts) {
 				ghost.render(spriteBatch);
 			}

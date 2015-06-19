@@ -47,6 +47,7 @@ namespace WOA3.Model {
 		public State CurrentState { get; set; }
 		public float CorpseExplosionDamage { get { return 3; } }
 		public BoundingSphere BoundingSphere { get; set; }
+		public bool Inactive { get; set; }
 		#endregion Class properties
 
 		#region Constructor
@@ -57,7 +58,6 @@ namespace WOA3.Model {
 			base.init(character);
 
 			BehaviourFinished idleCallback = delegate() {
-				Debug.log("Idling");
 				swapBehaviours(this.idleBehaviour, State.Idle);
 			};
 			this.seekingBehaviour = new Tracking(position, SPEED, idleCallback, collisionCheck);
@@ -92,9 +92,6 @@ namespace WOA3.Model {
 		#region Support methods
 		private void swapBehaviours(TargetBehaviour newBehaviour, State state) {
 			if (!state.Equals(previousState)) {
-#if DEBUG
-				Debug.log("old: " + previousState + "\tnew: " + state + "\tLKL: " + LastKnownLocation);
-#endif
 				this.LastKnownLocation = this.activeBehaviour.Target;
 				newBehaviour.Target = this.LastKnownLocation;
 				newBehaviour.Position = this.activeBehaviour.Position;
@@ -134,11 +131,6 @@ namespace WOA3.Model {
 			this.activeBehaviour = this.pathingBehaviour;
 		}
 
-		public void correctCollision(Vector2 collisionDirection) {
-			GWNorthEngine.Scripting.ScriptManager.getInstance().log("Stuck: " + this.activeBehaviour.GetType());
-			Debug.log("STUCK");
-		}
-
 		public void stop() {
 #if DEBUG
 			Debug.log("Stoppping");
@@ -175,28 +167,31 @@ namespace WOA3.Model {
 		}
 
 		public override List<SkillResult> performSkills() {
-			List<SkillResult> results = new List<SkillResult>();
-			if (Constants.ALLOW_MOB_ATTACKS) {
-				List<Character> charactersInRange = this.CharactersInRange.Invoke(this.Range);
-				if (charactersInRange.Count > 0) {
-					foreach (var skill in skills) {
-						if (skill.CoolDownOver) {
-							CombatManager.getInstance().CombatRequests.Add(new CombatRequest() {
-								Skill = skill,
-								Source = this,
-								Targets = charactersInRange
-							});
+				List<SkillResult> results = new List<SkillResult>();
+				if (!Inactive) {
+					if (Constants.ALLOW_MOB_ATTACKS) {
+						List<Character> charactersInRange = this.CharactersInRange.Invoke(this.Range);
+						if (charactersInRange.Count > 0) {
+							foreach (var skill in skills) {
+								if (skill.CoolDownOver) {
+									CombatManager.getInstance().CombatRequests.Add(new CombatRequest() {
+										Skill = skill,
+										Source = this,
+										Targets = charactersInRange
+									});
+								}
+							}
 						}
 					}
 				}
-			}
 			return results;
 		}
 
 		public override void update(float elapsed) {
-			base.update(elapsed);
+			if (!Inactive) {
+				base.update(elapsed);
 
-			//if (!isIdle()) {
+				//if (!isIdle()) {
 				// if we are tracking, update our target to the current prey's location
 				if (this.tracking != null) {
 					this.seekingBehaviour.Target = this.tracking.Position;
@@ -204,39 +199,42 @@ namespace WOA3.Model {
 				this.activeBehaviour.update(elapsed);
 				base.Position = this.activeBehaviour.Position;
 				updateBoundingSphere();
-			//}
+				//}
 
 				// update our skills
 				foreach (var skill in skills) {
 					skill.update(elapsed);
 				}
 
-			/*if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
-				this.activeBehaviour.Target = GWNorthEngine.Input.InputManager.getInstance().MousePosition;
-				swapBehaviours(this.seekingBehaviour, State.Tracking);
-			}*/
-			/*if (!isPathing() && !isStopped() && activeBehaviour.Target.Equals(activeBehaviour.Position)) {
-				stop();
-			}*/
+				/*if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
+					this.activeBehaviour.Target = GWNorthEngine.Input.InputManager.getInstance().MousePosition;
+					swapBehaviours(this.seekingBehaviour, State.Tracking);
+				}*/
+				/*if (!isPathing() && !isStopped() && activeBehaviour.Target.Equals(activeBehaviour.Position)) {
+					stop();
+				}*/
 
-			this.previousState = CurrentState;
+				this.previousState = CurrentState;
+			}
 		}
 
 		public override void render(SpriteBatch spriteBatch) {
-			base.render(spriteBatch);
-			
+			if (!Inactive) {
+				base.render(spriteBatch);
+
 #if DEBUG
-			if (Debug.debugOn) {
-				if (!isStopped()) {
-					BoundingBox bbox = CollisionGenerationUtils.getBBoxHalf(this.activeBehaviour.Target);
-					DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Green, Debug.debugChip);
+				if (Debug.debugOn) {
+					if (!isStopped()) {
+						BoundingBox bbox = CollisionGenerationUtils.getBBoxHalf(this.activeBehaviour.Target);
+						DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Green, Debug.debugChip);
+					}
+					DebugUtils.drawBoundingSphere(spriteBatch, BoundingSphere, Color.Pink, Debug.debugRing);
 				}
-				DebugUtils.drawBoundingSphere(spriteBatch, BoundingSphere, Color.Pink, Debug.debugRing);
-			}
-			if (GWNorthEngine.Input.InputManager.getInstance().wasKeyPressed(Microsoft.Xna.Framework.Input.Keys.Space)) {
-				Debug.log("Type: " + this.activeBehaviour +"\tpos: " + this.activeBehaviour.Position);
-			}
+				if (GWNorthEngine.Input.InputManager.getInstance().wasKeyPressed(Microsoft.Xna.Framework.Input.Keys.Space)) {
+					Debug.log("Type: " + this.activeBehaviour + "\tpos: " + this.activeBehaviour.Position);
+				}
 #endif
+			}
 		}
 
 		public void Subscribe(GhostObservationHandler provider, Ghost ghost) {

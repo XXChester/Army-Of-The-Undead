@@ -289,8 +289,8 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Content Include="Data\TestMap1.xml">
-      <Name>TestMap1</Name>
+    <Content Include="Data\Tutorial.xml">
+      <Name>Tutorial</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -350,6 +350,41 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="TutorialUnitSelect.png">
+      <Name>TutorialUnitSelect</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="TutorialMovement.png">
+      <Name>TutorialMovement</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="TutorialEnemySpawn.png">
+      <Name>TutorialEnemySpawn</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="TutorialEvade.png">
+      <Name>TutorialEvade</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="TutorialKilling.png">
+      <Name>TutorialKilling</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="TutorialArmy.png">
+      <Name>TutorialArmy</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="TutorialComplete.png">
+      <Name>TutorialComplete</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\TestMapIdentifiers.xml">
@@ -368,9 +403,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\TestMap1Identifiers.xml">
+    <None Include="Data\TutorialIdentifiers.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <Name>TestMap1Identifiers</Name>
+      <Name>TutorialIdentifiers</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
     </None>

@@ -13,6 +13,8 @@ namespace WOA3.Logic.StateMachine {
 		public BaseGameState GameDevCinematic { get; set; }
 		public BaseGameState MainMenu { get; set; }
 		public BaseGameState GameDisplay { get; set; }
+		public BaseGameState Tutorial { get; set; }
+		public BaseGameState TutorialComplete { get; set; }
 
 		internal State CurrentState { get; set; }
 
@@ -20,9 +22,14 @@ namespace WOA3.Logic.StateMachine {
 			this.CompanyCinematic = new CompanyCinematicState(this, device, content);
 			this.GameDevCinematic = new GameDevSplashState(this, device, content);
 			this.GameDisplay = new GameDisplayState(this, device, content);
+			this.Tutorial = new TutorialState(this, device, content);
+			this.TutorialComplete = new TutorialCompleteState(this, device, content);
 
+			//this.CurrentState = this.CompanyCinematic;
 			this.CurrentState = this.GameDisplay;
-			//this.CurrentState = GameDevCinematic;
+			//this.CurrentState = Tutorial;
+			//this.CurrentState = TutorialComplete;
+
 			setStates();
 		}
 

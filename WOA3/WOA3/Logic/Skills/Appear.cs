@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 namespace WOA3.Logic.Skills {
 	public class Appear : Skill {
 
-		private const float DAMAGE = .5f;
+		private const float DAMAGE = 0f;
 		private const int COOL_DOWN = 1;
 		public Appear(VisualCallback visualCallback) : base(DAMAGE, COOL_DOWN, visualCallback) {	}
 	}

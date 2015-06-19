@@ -128,6 +128,8 @@
     <Compile Include="Logic\Skills\CorpseExplode.cs" />
     <Compile Include="Logic\StateMachine\BaseGameState.cs" />
     <Compile Include="Logic\StateMachine\CompanyCinematicState.cs" />
+    <Compile Include="Logic\StateMachine\TutorialCompleteState.cs" />
+    <Compile Include="Logic\StateMachine\TutorialState.cs" />
     <Compile Include="Logic\StateMachine\GameDisplayState.cs" />
     <Compile Include="Logic\StateMachine\GameDevSplashState.cs" />
     <Compile Include="Logic\StateMachine\GameStateMachine.cs" />
@@ -162,6 +164,14 @@
     <Compile Include="Logic\TransitionState.cs" />
     <Compile Include="Map\SpecializedLoadResult.cs" />
     <Compile Include="Model\Character.cs" />
+    <Compile Include="Model\Display\TutorialComplete.cs" />
+    <Compile Include="Model\Display\TutorialDisplay.cs" />
+    <Compile Include="Model\Scenarios\ArmyTutorial.cs" />
+    <Compile Include="Model\Scenarios\KillingTutorial.cs" />
+    <Compile Include="Model\Scenarios\EvadeTutorial.cs" />
+    <Compile Include="Model\Scenarios\EnemySpawnTutorial.cs" />
+    <Compile Include="Model\Scenarios\MovementTutorial.cs" />
+    <Compile Include="Model\Scenarios\TutorialScenario.cs" />
     <Compile Include="Model\TextPopup.cs" />
     <Compile Include="Model\HUDIcon.cs" />
     <Compile Include="Model\HUD.cs" />

@@ -40,8 +40,15 @@ WOAContent\ud3.xnb
 WOAContent\ud4.xnb
 WOAContent\ud5.xnb
 WOAContent\Monster1.xnb
+WOAContent\TutorialUnitSelect.xnb
+WOAContent\TutorialMovement.xnb
+WOAContent\TutorialEnemySpawn.xnb
+WOAContent\TutorialEvade.xnb
+WOAContent\TutorialKilling.xnb
+WOAContent\TutorialArmy.xnb
+WOAContent\TutorialComplete.xnb
 WOAContent\Background.wma
-WOAContent\Data\TestMap1.xml
+WOAContent\Data\Tutorial.xml
 WOAContent\Data\MapIdentifiers.xml
 WOAContent\Data\Map2.XML
 WOAContent\Data\Map2Identifiers.xml
@@ -49,4 +56,4 @@ WOAContent\Data\IdentifiersTemplate.xml
 WOAContent\Data\Map.XML
 WOAContent\Data\TestMapIdentifiers.xml
 WOAContent\Data\TestMap.xml
-WOAContent\Data\TestMap1Identifiers.xml
+WOAContent\Data\TutorialIdentifiers.xml

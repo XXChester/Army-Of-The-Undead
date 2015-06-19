@@ -10,19 +10,18 @@ using WOA3.Model.Display;
 
 
 namespace WOA3.Logic.StateMachine {
-	class GameDisplayState : BaseGameState {
-
-		public GameDisplayState(GameStateMachine stateMachine, GraphicsDevice device,  ContentManager content)
+	class TutorialState : BaseGameState {
+		public TutorialState(GameStateMachine stateMachine, GraphicsDevice device, ContentManager content)
 			: base(stateMachine, device, content, null) {
 				reset();
 		}
 
-		private IRenderable createInstance() {
-			return new GameDisplay(device, content, "Tutorial");
+		protected virtual IRenderable createInstance() {
+			return new TutorialDisplay(device, content, this.stateMachine);
 		}
 
 		public override void goToNextState() {
-			changeState(stateMachine.GameDevCinematic);
+			changeState(stateMachine.TutorialComplete);
 		}
 
 		public override void setStates() {
