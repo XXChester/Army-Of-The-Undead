@@ -51,23 +51,22 @@ public 	class MenuDisplay : BaseMenu {
 				ScaleUpTo = 1.1f
 			};
 			
-			float x = Constants.RESOLUTION_X / 10;
 			float leftSideX = Constants.RESOLUTION_X / 2 - 25f;
 			
 
-			Vector2 position = new Vector2(leftSideX, 200f);
 			Vector2 origin = new Vector2(90f, 64f);
-			position = new Vector2(position.X, position.Y + 275f);
+			Vector2 position = new Vector2(leftSideX, 475f);
+			Vector2 scale = new Vector2(1f, .5f);
 			TexturedEffectButtonParams buttonParms = new TexturedEffectButtonParams {
 				Position = position,
 				Origin = origin,
-				Scale = new Vector2(1f),
+				Scale = scale,
 				Effects = new List<BaseEffect> {
 					new PulseEffect(this.effectParms)
 				},
 				PickableArea = getRect(origin, position),
 				ResetDelegate = delegate(StaticDrawable2D button) {
-					button.Scale = new Vector2(1f);
+					button.Scale = scale;
 				}
 			};
 			this.buttons = new List<TexturedEffectButton>();
