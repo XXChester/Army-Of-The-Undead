@@ -174,7 +174,6 @@ namespace WOA3.Model.Display {
 			}
 			foreach (var ghost in selectedGhosts) {
 				ghost.performSkills();
-				ghost.update(elapsed);
 			}
 
 			//check for dead
@@ -305,6 +304,9 @@ namespace WOA3.Model.Display {
 			if (StateManager.getInstance().CurrentGameState == GameState.Active) {
 				foreach (var mob in mobs) {
 					mob.update(elapsed);
+				}
+				foreach (var ghost in this.allGhosts) {
+					ghost.update(elapsed);
 				}
 
 				SoundManager.getInstance().update();
