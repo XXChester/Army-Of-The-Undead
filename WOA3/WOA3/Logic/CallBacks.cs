@@ -15,4 +15,5 @@ namespace WOA3.Logic {
 	public delegate void SkillFinished();
 	public delegate void OnDeath(Vector2 position);
 	public delegate List<Character> CharactersInRange(BoundingSphere range);
+	public delegate bool CollisionCheck(Vector2 newPosition);
 }

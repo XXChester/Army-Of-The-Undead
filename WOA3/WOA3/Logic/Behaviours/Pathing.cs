@@ -23,6 +23,7 @@ namespace WOA3.Logic.Behaviours {
 	public class Pathing : TargetBehaviour {
 		private Stack<Vector2> targets;
 		private BehaviourFinished callback;
+		private CollisionCheck collisionCheck;
 		private bool requestingPath;
 
 		private readonly float SPEED;
@@ -40,17 +41,12 @@ namespace WOA3.Logic.Behaviours {
 
 		public Vector2 Position { get; set; }
 
-		public Pathing(Vector2 startingPosition, float speed, BehaviourFinished callback) {
+		public Pathing(Vector2 startingPosition, float speed, BehaviourFinished callback, CollisionCheck collisionCheck) {
 			this.SPEED = speed;
 			this.targets = new Stack<Vector2>();
 			this.Position = startingPosition;
 			this.callback = callback;
-		}
-		public Pathing(Vector2 startingPosition, float speed, Stack<Point> points) {
-			this.targets = new Stack<Vector2>();
-			this.Position = startingPosition;
-			this.SPEED = speed;
-			initTargets(points);
+			this.collisionCheck = collisionCheck;
 		}
 
 		public void init(Vector2 startingPosition) {
@@ -59,6 +55,7 @@ namespace WOA3.Logic.Behaviours {
 
 		public void init(Vector2 startingPosition, Vector2 endPosition) {
 			this.requestingPath = true;
+			this.Targets.Clear();
 			this.Position = startingPosition;
 			AIManager.getInstance().requestPath(startingPosition.toPoint(), endPosition.toPoint(), delegate(Stack<Point> path) {
 				if (this != null) {
@@ -70,9 +67,8 @@ namespace WOA3.Logic.Behaviours {
 			});
 		}
 
-		private void initTargets(Stack<Point> points) {
+		protected void initTargets(Stack<Point> points) {
 			if (points.Count > 0) {
-				this.Targets.Clear();
 				Point myPosition = Position.toPoint();
 				List<Point> reversedPoints = points.ToList<Point>();
 				reversedPoints.Reverse();
@@ -101,7 +97,11 @@ namespace WOA3.Logic.Behaviours {
 				Vector2 direction = Vector2.Normalize(Target - Position);
 
 				Vector2 newPosition = Position + direction * SPEED * elapsed;
-				//float distanceBetweenPositions = Vector2.Distance(Target, Position);
+				/*if (this.collisionCheck != null && this.collisionCheck.Invoke(newPosition)) {
+					Targets.Clear();
+					this.callback.Invoke();
+					return;
+				}*/
 				float distanceBetweenPositions = Vector2.Distance(Target, newPosition);
 				if (distanceBetweenPositions >= distance) {
 					newPosition = Target;

@@ -3,8 +3,6 @@ WOAContent\Logo.xnb
 WOAContent\Quad.xnb
 WOAContent\Ghost.xnb
 WOAContent\RadiusRing.xnb
-WOAContent\Background.xnb
-WOAContent\SpriteFont1.xnb
 WOAContent\DoubleBottom.xnb
 WOAContent\DoubleLeft.xnb
 WOAContent\DoubleRight.xnb
@@ -40,6 +38,8 @@ WOAContent\Tile6.xnb
 WOAContent\Tile7.xnb
 WOAContent\Tile8.xnb
 WOAContent\Tile9.xnb
+WOAContent\Background.xnb
+WOAContent\SpriteFont1.xnb
 WOAContent\Background.wma
 WOAContent\Data\TestMap1.xml
 WOAContent\Data\MapIdentifiers.xml

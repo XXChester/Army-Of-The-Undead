@@ -16,11 +16,20 @@ using Microsoft.Xna.Framework.Graphics;
 
 
 namespace WOA3.Logic.Behaviours {
-	public class LostTarget : Tracking {
+	public class IdleBehaviour : TargetBehaviour{
 
-		public LostTarget(Vector2 startingPosition, Vector2 lastKnownPosition, float speed, BehaviourFinished callback)
-		:base(startingPosition, speed, callback, null){
-			this.Target = lastKnownPosition;
+		public Vector2 Target { get; set; }
+
+		public Vector2 Position { get; set; }
+
+
+		public IdleBehaviour(Vector2 startingPosition) {
+			this.Position = startingPosition;
+			this.Target = this.Position;
+		}
+
+		public void update(float elapsed) {
+			
 		}
 	}
 }

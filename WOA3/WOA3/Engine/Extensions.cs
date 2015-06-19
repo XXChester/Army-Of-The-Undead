@@ -7,7 +7,8 @@ using Microsoft.Xna.Framework;
 
 namespace WOA3.Engine {
 	public static class Extensions {
-		private static Vector2 OFFSET = new Vector2(Constants.TILE_SIZE / 2f);
+		//private static Vector2 OFFSET = new Vector2(Constants.TILE_SIZE / 2f);
+		private static Vector2 OFFSET = new Vector2(0f);
 		public static Vector2 toVector2(this Point point) {
 			return Vector2.Add(OFFSET, Constants.TILE_SIZE * new Vector2(point.X, point.Y));
 		}

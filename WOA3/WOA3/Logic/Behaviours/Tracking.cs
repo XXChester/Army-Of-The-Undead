@@ -19,19 +19,21 @@ namespace WOA3.Logic.Behaviours {
 	public class Tracking : TargetBehaviour {
 
 		private BehaviourFinished callback;
+		private CollisionCheck collisionCheck;
 		private readonly float SPEED;
 
 		public Vector2 Target { get; set; }
 
 		public Vector2 Position { get; set; }
 
-		public Tracking(Vector2 startingPosition, float speed) :this(startingPosition, speed, null) {}
+		public Tracking(Vector2 startingPosition, float speed) :this(startingPosition, speed, null, null) {}
 
-		public Tracking(Vector2 startingPosition, float speed, BehaviourFinished callback) {
+		public Tracking(Vector2 startingPosition, float speed, BehaviourFinished callback, CollisionCheck collisionCheck) {
 			this.Position = startingPosition;
 			this.Target = this.Position;
 			this.SPEED = speed;
 			this.callback = callback;
+			this.collisionCheck = collisionCheck;
 		}
 
 
@@ -41,11 +43,13 @@ namespace WOA3.Logic.Behaviours {
 				Vector2 direction = Vector2.Normalize(Target - Position);
 
 				Vector2 newPosition = Position + direction * SPEED * elapsed;
-				if (Vector2.Distance(Position, newPosition) >= distance) {
-					Position = Target;
-				} else {
-					Position = newPosition;
-				}
+				//if (this.collisionCheck == null || (this.collisionCheck != null && this.collisionCheck.Invoke(newPosition))) {
+					if (Vector2.Distance(Position, newPosition) >= distance) {
+						Position = Target;
+					} else {
+						Position = newPosition;
+					}
+				//}
 			} else {
 				if (this.callback != null) {
 					this.callback.Invoke();

@@ -100,6 +100,7 @@ namespace WOA3.Logic.AI {
 					// we now know our location relative to the end node
 					//Point newEnd = Vector2.Subtract(direction, end.toVector2()).toPoint();
 					//path = findPath(start, newEnd);
+					path.Add(start);
 					Debug.log("HERE WE ARE");
 					// we ran out of bounds
 					//if (path == null) {

@@ -69,6 +69,11 @@ namespace WOA3.Model {
 			return Vector2.Subtract(position, new Vector2(-6f, Constants.TILE_SIZE));
 		}
 
+
+		/*protected override BoundingBox getBBox() {
+			return CollisionGenerationUtils.getCharacterBBox(this.Position);
+		}*/
+
 		public abstract List<SkillResult> performSkills();
 		public abstract Skill die();
 

@@ -32,7 +32,6 @@ namespace WOA3.Model {
 			StaticDrawable2DParams wallParams = new StaticDrawable2DParams {
 				Position = position,
 				Texture = texture,
-				//Scale = new Vector2(.5f),
 				Origin = new Vector2(Constants.TILE_SIZE/2)
 			};
 			

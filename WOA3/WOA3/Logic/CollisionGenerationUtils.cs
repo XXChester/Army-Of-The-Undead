@@ -58,5 +58,11 @@ namespace WOA3.Logic {
 				new Vector3(Vector2.Subtract(position, new Vector2(Constants.TILE_SIZE )), 0f),
 				new Vector3(Vector2.Add(position, new Vector2(Constants.TILE_SIZE)), 0f));
 		}
+
+		public static BoundingBox getCharacterBBox(Vector2 position) {
+			return new BoundingBox(
+				new Vector3(Vector2.Add(position, new Vector2(-(Constants.TILE_SIZE /3), Constants.TILE_SIZE / 4)), 0f),
+				new Vector3(Vector2.Add(position, new Vector2(Constants.TILE_SIZE / 3, Constants.TILE_SIZE / 2)), 0f));
+		}
 	}
 }

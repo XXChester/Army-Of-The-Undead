@@ -30,12 +30,14 @@ namespace WOA3.Model {
 		private TargetBehaviour activeBehaviour;
 		private TargetBehaviour seekingBehaviour;
 		private TargetBehaviour lostTargetBehaviour;
+		private TargetBehaviour idleBehaviour;
 		private Pathing pathingBehaviour;
 		private Entity tracking;
 		private State previousState;
 		private IDisposable unsubscriber;
 		private List<Skill> skills;
 		private OnDeath onDeath;
+		private Point previousPoint;
 
 		private const float SPEED = .1f;
 		#endregion Class variables
@@ -48,7 +50,7 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Mob(ContentManager content, Vector2 position, CharactersInRange charactersInRange, OnDeath onDeath)
+		public Mob(ContentManager content, Vector2 position, CharactersInRange charactersInRange, OnDeath onDeath, CollisionCheck collisionCheck)
 			:base(content, position, SPEED, charactersInRange) {
 			
 			StaticDrawable2D character = getCharacterSprite(content, position);
@@ -56,15 +58,17 @@ namespace WOA3.Model {
 
 			BehaviourFinished idleCallback = delegate() {
 				Debug.log("Idling");
-				this.CurrentState = State.Idle;
+				swapBehaviours(this.idleBehaviour, State.Idle);
 			};
-			this.seekingBehaviour = new Tracking(position, SPEED, idleCallback);
+			this.seekingBehaviour = new Tracking(position, SPEED, idleCallback, collisionCheck);
 			this.lostTargetBehaviour = new LostTarget(this.seekingBehaviour.Position, this.seekingBehaviour.Position, SPEED, idleCallback);
-			this.pathingBehaviour = new Pathing(position, SPEED, idleCallback);
+			this.pathingBehaviour = new Pathing(position, SPEED, idleCallback, collisionCheck);
+			this.idleBehaviour = new IdleBehaviour(position);
 			this.activeBehaviour = this.seekingBehaviour;
 			this.CurrentState = State.Idle;
 			this.onDeath = onDeath;
 			updateBoundingSphere();
+			this.previousPoint = base.Position.toPoint();
 			
 			this.skills = new List<Skill>();
 			this.skills.Add(new HolySwirl(2f));
@@ -131,6 +135,11 @@ namespace WOA3.Model {
 			this.activeBehaviour = this.pathingBehaviour;
 		}
 
+		public void correctCollision(Vector2 collisionDirection) {
+			GWNorthEngine.Scripting.ScriptManager.getInstance().log("Stuck: " + this.activeBehaviour.GetType());
+			Debug.log("STUCK");
+		}
+
 		public void stop() {
 #if DEBUG
 			Debug.log("Stoppping");
@@ -145,6 +154,10 @@ namespace WOA3.Model {
 
 		public bool isPathing() {
 			return State.Pathing.Equals(this.CurrentState);
+		}
+
+		public bool isTracking() {
+			return State.Tracking.Equals(this.CurrentState);
 		}
 
 		public bool isLost() {
@@ -192,7 +205,7 @@ namespace WOA3.Model {
 				this.activeBehaviour.update(elapsed);
 				base.Position = this.activeBehaviour.Position;
 				updateBoundingSphere();
-		//	}
+			//}
 
 			/*if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
 				this.activeBehaviour.Target = GWNorthEngine.Input.InputManager.getInstance().MousePosition;
