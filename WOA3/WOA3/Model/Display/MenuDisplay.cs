@@ -30,7 +30,7 @@ public 	class MenuDisplay : BaseMenu {
 		private GameStateMachine stateMachine;
 
 		private List<TexturedEffectButton> buttons;
-		private readonly string[] BUTTON_NAMES = { "Tutorial", "PlayGame", "Exit" };
+		private readonly string[] BUTTON_NAMES = { "Tutorial", "Play", "Exit" };
 		private readonly Color DEFAULT = Color.Red;
 		private readonly Vector2 DEFAULT_SCALE = new Vector2(1f, .75f);
 		#endregion Class variables

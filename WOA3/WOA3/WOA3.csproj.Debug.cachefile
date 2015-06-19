@@ -46,7 +46,6 @@ WOAContent\TutorialKilling.xnb
 WOAContent\TutorialArmy.xnb
 WOAContent\TutorialComplete.xnb
 WOAContent\Exit.xnb
-WOAContent\PlayGame.xnb
 WOAContent\Tutorial.xnb
 WOAContent\Reset.xnb
 WOAContent\Menu.xnb
@@ -58,6 +57,8 @@ WOAContent\Restart.xnb
 WOAContent\WaveEffect.xnb
 WOAContent\Monster1Death.xnb
 WOAContent\Monster2Death.xnb
+WOAContent\Orb.xnb
+WOAContent\Play.xnb
 WOAContent\Background.wma
 WOAContent\Data\Tutorial.xml
 WOAContent\Data\Map2Identifiers.xml

@@ -10,6 +10,6 @@ using Microsoft.Xna.Framework.Input;
 namespace WOA3.Logic.Skills {
 	public class HolySwirl : Skill {
 		private const int COOL_DOWN = 1;
-		public HolySwirl(float damage, SkillFinished skillFinished) : base(damage, 1, skillFinished) { }
+		public HolySwirl(float damage, SkillFinished skillFinished) : base(damage, COOL_DOWN, skillFinished) { }
 	}
 }

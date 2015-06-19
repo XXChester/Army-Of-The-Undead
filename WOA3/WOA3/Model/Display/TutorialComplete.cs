@@ -17,7 +17,7 @@ namespace WOA3.Model.Display {
 		private GameStateMachine gameStateMachine;
 		private List<TexturedEffectButton> buttons;
 
-		private readonly string[] BUTTON_NAMES = { "Playgame", "Menu"};
+		private readonly string[] BUTTON_NAMES = { "Play", "Menu"};
 		private const float WAIT_TIME = 1500f;
 		#endregion Class variables
 

@@ -124,6 +124,7 @@
     <Compile Include="Logic\CombatManager.cs" />
     <Compile Include="Logic\CombatRequest.cs" />
     <Compile Include="Logic\GhostObservationHandler.cs" />
+    <Compile Include="Logic\Skills\FireBurst.cs" />
     <Compile Include="Logic\Skills\HolySwirl.cs" />
     <Compile Include="Logic\Skills\CorpseExplode.cs" />
     <Compile Include="Logic\StateMachine\BaseGameState.cs" />

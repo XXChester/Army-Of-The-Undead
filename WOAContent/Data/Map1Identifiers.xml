@@ -16,5 +16,45 @@
       <Y>11</Y>
       <Type>Yeti</Type>
     </Monster>
+    <Monster>
+      <X>2</X>
+      <Y>9</Y>
+      <Type>Yeti</Type>
+    </Monster>
+    <Monster>
+      <X>38</X>
+      <Y>18</Y>
+      <Type>Yeti</Type>
+    </Monster>
+    <Monster>
+      <X>13</X>
+      <Y>1</Y>
+      <Type>Devil</Type>
+    </Monster>
+    <Monster>
+      <X>34</X>
+      <Y>4</Y>
+      <Type>Devil</Type>
+    </Monster>
+    <Monster>
+      <X>12</X>
+      <Y>19</Y>
+      <Type>Devil</Type>
+    </Monster>
+    <Monster>
+      <X>28</X>
+      <Y>12</Y>
+      <Type>Yeti</Type>
+    </Monster>
+    <Monster>
+      <X>32</X>
+      <Y>16</Y>
+      <Type>Devil</Type>
+    </Monster>
+    <Monster>
+      <X>29</X>
+      <Y>6</Y>
+      <Type>Yeti</Type>
+    </Monster>
   </MonsterInformation>
 </MapIdentifier>

@@ -453,8 +453,10 @@ namespace WOA3.Model.Display {
 				}
 			}
 #if DEBUG
-			foreach (var box in this.bboxes) {
-				DebugUtils.drawVector3s(spriteBatch, box[1], box[0], Color.Pink, Debug.debugChip);
+			if (Debug.debugOn) {
+				foreach (var box in this.bboxes) {
+					DebugUtils.drawVector3s(spriteBatch, box[1], box[0], Color.Pink, Debug.debugChip);
+				}
 			}
 #endif
 		//	this.hud.render(spriteBatch);
