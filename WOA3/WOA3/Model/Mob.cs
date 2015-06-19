@@ -168,7 +168,7 @@ namespace WOA3.Model {
 
 		public override Skill die() {
 			if (this.onDeath != null) {
-				this.onDeath.Invoke(base.Position);
+				this.onDeath.Invoke(this);
 			}
 			return new CorpseExplode(CorpseExplosionDamage);
 		}

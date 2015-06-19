@@ -4,10 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-using GWNorthEngine.Input;
-using GWNorthEngine.Utils;
+using GWNorthEngine.Audio;
+using GWNorthEngine.Audio.Params;
+using GWNorthEngine.Logic;
+using GWNorthEngine.Logic.Params;
 using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
+using GWNorthEngine.Model.Effects;
+using GWNorthEngine.Model.Effects.Params;
+using GWNorthEngine.Utils;
+using GWNorthEngine.Input;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -34,6 +40,7 @@ namespace WOA3.Model.Display {
 		protected List<Ghost> allGhosts = new List<Ghost>();
 		protected List<Ghost> selectedGhosts = new List<Ghost>();
 		protected List<Mob> mobs = new List<Mob>();
+		protected List<Base2DSpriteDrawable> deadMobs = new List<Base2DSpriteDrawable>();
 		protected GhostObservationHandler ghostObserverHandler;
 		protected CharactersInRange mobsInRange;
 		protected CharactersInRange ghostsInRange;
@@ -143,8 +150,33 @@ namespace WOA3.Model.Display {
 		}
 
 		private void initDelegates() {
-			this.mobDeathFinish = delegate(Vector2 position) {
+			this.mobDeathFinish = delegate(Character character) {
+				String texture = "Monster1";
+				if (character.GetType() == typeof(Yeti)) {
+					texture = "Monster2";
+				}
+				texture += "Death";
+				Vector2 position = character.Position;
+				int frames = 10;
+				float speed = 100f;
+				BaseAnimationManagerParams animationParms = new BaseAnimationManagerParams() {
+					AnimationState = AnimationState.PlayForwardOnce,
+					TotalFrameCount = frames,
+					FrameRate = speed,
+				};
+				Animated2DSpriteLoadSingleRowBasedOnTexture parms = new Animated2DSpriteLoadSingleRowBasedOnTexture() {
+					AnimationParams = animationParms,
+					//Position = Vector2.Subtract(position, new Vector2(Constants.TILE_SIZE)),
+					Position = position,
+					LightColour = Color.White,
+					Origin = new Vector2(Constants.TILE_SIZE),
+					Texture = LoadingUtils.load<Texture2D>(content, texture)
+				};
+				
+
+				Animated2DSprite deathSprite = new Animated2DSprite(parms); ;
 				this.allGhosts.Add(new Ghost(content, position, this.ghostObserverHandler, this.mobsInRange));
+				this.deadMobs.Add(deathSprite);
 			};
 			this.ghostsInRange = delegate(BoundingSphere range) {
 				return getCharactersInRange<Ghost>(range, this.allGhosts);
@@ -359,6 +391,11 @@ namespace WOA3.Model.Display {
 			foreach (var mob in mobs) {
 				mob.update(elapsed);
 			}
+			foreach (var dead in this.deadMobs) {
+				if (dead != null) {
+					dead.update(elapsed);
+				}
+			}
 			foreach (var ghost in this.allGhosts) {
 				ghost.update(elapsed);
 				if (!atleastOneGhostAlive && !ghost.Health.amIDead()) {
@@ -415,6 +452,11 @@ namespace WOA3.Model.Display {
 
 			foreach (var mob in mobs) {
 				mob.render(spriteBatch);
+			}
+			foreach (var dead in this.deadMobs) {
+				if (dead != null) {
+					dead.render(spriteBatch);
+				}
 			}
 #if DEBUG
 			foreach (var box in this.bboxes) {
