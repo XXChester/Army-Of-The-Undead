@@ -33,7 +33,7 @@ namespace WOA3.Model.Scenarios {
 		}
 
 		public override void update(float elapsed) {
-			if (hasBeenChased && !this.ghost.isVisible() && this.mob.isIdle()) {
+			if (hasBeenChased && !this.ghost.isVisible() && this.mob.isIdle() && this.ghost.BBox.Intersects(this.goal)) {
 				this.Completed = true;
 			}
 
