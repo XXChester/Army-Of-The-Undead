@@ -27,9 +27,9 @@ using WOA3.Model.Scenarios;
 namespace WOA3.Model.Display {
 	public class TutorialDisplay : GameDisplay {
 		#region Class variables
-		private TutorialScenario activeScenario;
+		private BaseTutorialScenario activeScenario;
 		private GameStateMachine gameStateMachine;
-		private Queue<TutorialScenario> activeScenarios;
+		private Queue<BaseTutorialScenario> activeScenarios;
 		private int scenario;
 		private List<TexturedEffectButton> buttons;
 
@@ -60,16 +60,14 @@ namespace WOA3.Model.Display {
 		
 		private void init(int active) {
 			base.init(true);
-			Constants.ALLOW_MOB_ATTACKS = false;
-			Constants.ALLOW_PLAYER_ATTACKS = false;
 			Ghost ghost = this.allGhosts[0];
 			Mob mob = this.mobs[0];
 			mob.Inactive = true;
 
-			this.activeScenarios = new Queue<TutorialScenario>();
-			this.activeScenarios.Enqueue(new TutorialScenario(content, "Unitselect", ghost, mob));
+			this.activeScenarios = new Queue<BaseTutorialScenario>();
+			/*this.activeScenarios.Enqueue(new SelectionTutorial(content, "Unitselect", ghost, mob));
 			this.activeScenarios.Enqueue(new MovementTutorial(content, "Movement", ghost, mob));
-			this.activeScenarios.Enqueue(new EnemySpawnTutorial(content, "EnemySpawn", ghost, mob));
+			this.activeScenarios.Enqueue(new EnemySpawnTutorial(content, "EnemySpawn", ghost, mob));*/
 			this.activeScenarios.Enqueue(new EvadeTutorial(content, "Evade", ghost, mob));
 			this.activeScenarios.Enqueue(new KillingTutorial(content, "Killing", ghost, mob, this.allGhosts));
 			this.activeScenarios.Enqueue(new ArmyTutorial(content, "Army", ghost, mob, allGhosts, this.gameStateMachine));
@@ -109,6 +107,7 @@ namespace WOA3.Model.Display {
 				if (this.activeScenario.Completed) {
 					if (this.activeScenarios.Count > 0) {
 						this.activeScenario = this.activeScenarios.Dequeue();
+						this.activeScenario.init();
 						this.scenario ++;
 					}
 				}

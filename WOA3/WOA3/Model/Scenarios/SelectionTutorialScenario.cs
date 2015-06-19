@@ -19,26 +19,18 @@ using WOA3.Logic.Skills;
 using WOA3.Logic.AI;
 using WOA3.Engine;
 using WOA3.Map;
+
 namespace WOA3.Model.Scenarios {
-	public class MovementTutorial : BaseTutorialScenario {
-		protected Texture2D chip;
-		protected BoundingBox goal;
+	public class SelectionTutorial : BaseTutorialScenario {
 
-		public MovementTutorial(ContentManager content, string scenarioName, Ghost ghost, Mob mob)
-		:base(content, scenarioName, ghost, mob) {
-				this.goal = new BoundingBox(new Vector3(320, 60, 0), new Vector3(400, 110, 0));
-				this.chip = LoadingUtils.load<Texture2D>(content, "chip");
+		public SelectionTutorial(ContentManager content, string scenarioName, Ghost ghost, Mob mob) : base(content, scenarioName, ghost, mob) {
+		
 		}
-
 		public override void update(float elapsed) {
-			if (this.ghost.BBox.Intersects(goal)) {
+			if (ghost.Selected) {
 				this.Completed = true;
 			}
 		}
 
-		public override void render(SpriteBatch spriteBatch) {
-			base.render(spriteBatch);
-			DebugUtils.drawBoundingBox(spriteBatch, this.goal, Color.Green, chip);
-		}
 	}
 }

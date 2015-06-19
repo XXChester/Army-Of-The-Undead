@@ -21,7 +21,7 @@ using WOA3.Engine;
 using WOA3.Map;
 
 namespace WOA3.Model.Scenarios {
-	public class TutorialScenario {
+	public abstract class BaseTutorialScenario {
 		private StaticDrawable2D tutorialHelp;
 		protected Ghost ghost;
 		protected Mob mob;
@@ -29,7 +29,10 @@ namespace WOA3.Model.Scenarios {
 		public bool Completed { get; set; }
 
 
-		public TutorialScenario(ContentManager content, string scenarioName, Ghost ghost, Mob mob) {
+		public BaseTutorialScenario(ContentManager content, string scenarioName, Ghost ghost, Mob mob) {
+			Constants.ALLOW_MOB_ATTACKS = false;
+			Constants.ALLOW_PLAYER_ATTACKS = false;
+
 			this.ghost = ghost;
 			this.mob = mob;
 
@@ -42,10 +45,10 @@ namespace WOA3.Model.Scenarios {
 			};
 			this.tutorialHelp = new StaticDrawable2D(parms);
 		}
-		public virtual void update(float elapsed) {
-			if (ghost.Selected) {
-				this.Completed = true;
-			}
+		public abstract void update(float elapsed);
+
+		public virtual void init() {
+
 		}
 
 		public virtual void render(SpriteBatch spriteBatch) {
