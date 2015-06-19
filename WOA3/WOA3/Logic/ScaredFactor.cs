@@ -32,9 +32,10 @@ namespace WOA3.Logic {
 		private const String KEY_DEAD = "Dead";
 
 		public String Text { get { return this.factor.ToString(); } }
+		public float Factor { get { return this.factor; } }
 		
 
-		public ScaredFactor() {
+		public ScaredFactor(float health) {
 			states = new Dictionary<string, ScaredState>();
 			states.Add(KEY_DEAD, new ScaredState() { LowerBound = float.MinValue, UpperBound = 0.00001f});
 			states.Add(KEY_PETRIFIED, new ScaredState() { LowerBound = 0.00001f, UpperBound = 2.5f });
@@ -42,7 +43,7 @@ namespace WOA3.Logic {
 			states.Add(KEY_COURAGEOUS, new ScaredState() { LowerBound = 5f,  UpperBound = float.MaxValue });
 
 			this.myState = states[KEY_STANDARD];
-			this.factor = 5;
+			this.factor = health;
 		}
 
 		public bool amIState(String key) {

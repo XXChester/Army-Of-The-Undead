@@ -17,6 +17,8 @@ namespace WOA3.Logic.StateMachine {
 		public BaseGameState TutorialComplete { get; set; }
 		public BaseGameState GameOverState { get; set; }
 
+		public LevelContext LevelContext { get; set; }
+
 		internal State CurrentState { get; set; }
 
 		public GameStateMachine(GraphicsDevice device, ContentManager content) {
@@ -27,6 +29,10 @@ namespace WOA3.Logic.StateMachine {
 			this.TutorialComplete = new TutorialCompleteState(this, device, content);
 			this.MainMenu = new MainMenuState(this, device, content);
 			this.GameOverState = new GameOverState(this, device, content);
+
+			this.LevelContext = new LevelContext() {
+				MapIndex = 1
+			};
 
 			//this.CurrentState = this.CompanyCinematic;
 			//this.CurrentState = this.GameDevCinematic;
@@ -65,6 +71,7 @@ namespace WOA3.Logic.StateMachine {
 			this.GameDevCinematic.Dispose();
 			this.MainMenu.Dispose();
 			this.GameDisplay.Dispose();
+			this.GameOverState.Dispose();
 			this.Tutorial.Dispose();
 			this.TutorialComplete.Dispose();
 		}

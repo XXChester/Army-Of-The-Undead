@@ -144,8 +144,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\MapIdentifiers.xml">
-      <Name>MapIdentifiers</Name>
+    <None Include="Data\Map2Identifiers.xml">
+      <Name>Map2Identifiers</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -200,8 +200,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Data\Map.XML">
-      <Name>Map</Name>
+    <None Include="Data\Map2.XML">
+      <Name>Map2</Name>
       <Importer>XmlImporter</Importer>
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

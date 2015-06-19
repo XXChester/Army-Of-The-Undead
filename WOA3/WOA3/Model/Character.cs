@@ -42,11 +42,11 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Character(ContentManager content, Vector2 position, float speed, CharactersInRange charactersInRange)
+		public Character(ContentManager content, Vector2 position, float speed, CharactersInRange charactersInRange, float health)
 			: base(content) {
 			this.SPEED = speed;
 			this.rangeRing = new RadiusRing(content, position);
-			this.Health = new ScaredFactor();
+			this.Health = new ScaredFactor(health);
 			this.charactersInRange = charactersInRange;
 			createHealthText(position);
 		}

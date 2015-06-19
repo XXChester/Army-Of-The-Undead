@@ -17,7 +17,7 @@ namespace WOA3.Logic.StateMachine {
 		}
 
 		protected override IRenderable createInstance() {
-			return new GameDisplay(device, content, "Map1", stateMachine);
+			return new GameDisplay(device, content, "Map" + stateMachine.LevelContext.MapIndex, stateMachine);
 		}
 
 		public override void goToPreviousState() {
@@ -25,12 +25,19 @@ namespace WOA3.Logic.StateMachine {
 			base.goToPreviousState();
 		}
 
-		public void goToGameOver() {
-			changeState(stateMachine.GameOverState);
+		public override void goToNextState() {
+			LevelContext context = stateMachine.LevelContext;
+			context.MapIndex += 1;
+			stateMachine.LevelContext = context;
+			changeState(stateMachine.GameDisplay);
+			base.goToNextState();
 		}
 
-		public override void setStates() {
-			StateManager.getInstance().CurrentGameState = GameState.Active;
+		public void goToGameOver() {
+			LevelContext context = stateMachine.LevelContext;
+			context.MapIndex = 1;
+			stateMachine.LevelContext = context;
+			changeState(stateMachine.GameOverState);
 		}
 	}
 }

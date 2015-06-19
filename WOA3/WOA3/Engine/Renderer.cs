@@ -171,7 +171,7 @@ namespace WOA3.Engine {
 			InputManager.getInstance().wasButtonPressed(PlayerIndex.One, Buttons.B)) {
 				MapEditor.getInstance().logEntries();
 				//SpawnGenerator.getInstance().Running = false;
-				this.Exit();
+				//this.Exit();
 			}
 			Debug.update();
 #endif

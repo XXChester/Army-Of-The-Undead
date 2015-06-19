@@ -3,7 +3,7 @@
 []Menu screen
 []Map screen
 []Transitions
-[]Map win conditions
+[*]Map win conditions
 []Map progression
 [*]Tutorial
 []Storyboard
@@ -39,3 +39,4 @@
 [*]if you assign a ghost to move, but de-select him, he stops moving until you select him again
 []Fix cool downs
 []AI Bounding box checks between player and ghost work....but in open spaces they do not as the boxes are axis aligned and not rotatable. Need pixel collision.
+[]context change includes ghost being destroyed

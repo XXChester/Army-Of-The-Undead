@@ -70,10 +70,8 @@ namespace WOA3.Model {
 		}
 
 		public virtual void render(SpriteBatch spriteBatch) {
-			if (StateManager.getInstance().CurrentGameState == GameState.Active) {
-				if (this.image != null) {
-					this.image.render(spriteBatch);
-				}
+			if (this.image != null) {
+				this.image.render(spriteBatch);
 			}
 #if DEBUG
 			if (Debug.debugOn) {

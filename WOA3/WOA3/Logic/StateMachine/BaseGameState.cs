@@ -26,6 +26,7 @@ namespace WOA3.Logic.StateMachine {
 		protected abstract IRenderable createInstance();
 
 		protected void changeState(State newState) {
+			setStates();
 			stateMachine.CurrentState = newState;
 			stateMachine.CurrentState.reset();
 		}
@@ -42,7 +43,7 @@ namespace WOA3.Logic.StateMachine {
 			
 		}
 
-		public virtual void setStates() {
+		public void setStates() {
 			StateManager.getInstance().CurrentGameState = GameState.Waiting;
 		}
 

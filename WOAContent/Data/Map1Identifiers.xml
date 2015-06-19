@@ -1,0 +1,20 @@
+﻿<MapIdentifier>
+  <PlayerInformation>
+    <PlayerStart>
+      <X>3</X>
+      <Y>3</Y>
+    </PlayerStart>
+  </PlayerInformation>
+  <MonsterInformation>
+    <Monster>
+      <X>26</X>
+      <Y>3</Y>
+      <Type>Devil</Type>
+    </Monster>
+    <Monster>
+      <X>15</X>
+      <Y>11</Y>
+      <Type>Yeti</Type>
+    </Monster>
+  </MonsterInformation>
+</MapIdentifier>

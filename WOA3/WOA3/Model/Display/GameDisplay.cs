@@ -41,7 +41,7 @@ namespace WOA3.Model.Display {
 
 #if DEBUG
 		private EditorCreator editorsCreator;
-		private List<Vector3[]> bboxes;
+		private List<Vector3[]> bboxes= new List<Vector3[]>();
 #endif
 		#endregion Class variables
 
@@ -71,6 +71,19 @@ namespace WOA3.Model.Display {
 			this.hud = new HUD(content);
 			initDelegates();
 			loadMap();
+			// if we have ghosts left over, we need to preserve them
+			if (this.gameStateMachine.LevelContext.Ghosts != null) {
+				Ghost primary = this.allGhosts[0];
+				Ghost ghost = null;
+				for (int i = 1; i <= this.gameStateMachine.LevelContext.Ghosts.Count; i++) {
+					ghost = this.gameStateMachine.LevelContext.Ghosts[i - i];
+					float factor = ghost.Health.Factor; 
+					if (factor > 0) {
+						Vector2 newPosition = Vector2.Add(primary.Position, new Vector2(i * (Constants.TILE_SIZE / 2)));
+						this.allGhosts.Add(new Ghost(content, newPosition, this.ghostObserverHandler, this.mobsInRange, factor));
+					}
+				}
+			}
 			CombatManager.getInstance().init();
 			EffectsManager.getInstance().init();
 		}
@@ -101,13 +114,19 @@ namespace WOA3.Model.Display {
 			}
 
 			foreach (var mobInfo in monsterInfos) {
-				if (mobInfo.TypeOfMob == MonsterType.Devil) {
-					this.mobs.Add(new Devil(content, mobInfo.Start.toVector2(), this.ghostsInRange, this.mobDeathFinish, this.collisionCheck));
-				} else if (mobInfo.TypeOfMob == MonsterType.Yeti) {
-					this.mobs.Add(new Yeti(content, mobInfo.Start.toVector2(), this.ghostsInRange, this.mobDeathFinish, this.collisionCheck));
-				}
+				this.mobs.Add(createMob(mobInfo.Start.toVector2(), mobInfo.TypeOfMob));
 			}
 			this.allGhosts.Add(new Ghost(content, ghostStart.toVector2(), this.ghostObserverHandler, this.mobsInRange));
+		}
+
+		private Mob createMob(Vector2 position, MonsterType typeOfMob) {
+			Mob mob = null;
+			if (typeOfMob == MonsterType.Devil) {
+				mob = new Devil(content, position, this.ghostsInRange, this.mobDeathFinish, this.collisionCheck);
+			} else if (typeOfMob == MonsterType.Yeti) {
+				mob = new Yeti(content, position, this.ghostsInRange, this.mobDeathFinish, this.collisionCheck);
+			}
+			return mob;
 		}
 
 		private List<Character> getCharactersInRange<T>(BoundingSphere range, List<T> all) where T : Character {
@@ -321,24 +340,33 @@ namespace WOA3.Model.Display {
 		}
 
 		public virtual void update(float elapsed) {
-			if (StateManager.getInstance().CurrentGameState == GameState.Active) {
-				bool atleastOneAlive = false;
+			if (this.gameStateMachine.CurrentState.Equals(this.gameStateMachine.GameDisplay)) {
+				bool atleastOneGhostAlive = false;
+				bool atleastOneMobAlive = false;
 				foreach (var mob in mobs) {
 					mob.update(elapsed);
+					if (!atleastOneMobAlive && !mob.Health.amIDead()) {
+						atleastOneMobAlive = true;
+					}
 				}
 				foreach (var ghost in this.allGhosts) {
 					ghost.update(elapsed);
-					if (!atleastOneAlive && !ghost.Health.amIDead()) {
-						atleastOneAlive = true;
+					if (!atleastOneGhostAlive && !ghost.Health.amIDead()) {
+						atleastOneGhostAlive = true;
 					}
 				}
-				if (!atleastOneAlive) {
-					((GameDisplayState)this.gameStateMachine.CurrentState).goToGameOver();
-				}
-
 
 				updateFieldOfView(elapsed);
 				updateSkills(elapsed);
+
+				if (!atleastOneGhostAlive) {
+					((GameDisplayState)this.gameStateMachine.CurrentState).goToGameOver();
+				} else if (!atleastOneMobAlive) {
+					LevelContext context = gameStateMachine.LevelContext;
+					context.Ghosts = this.allGhosts;
+					gameStateMachine.LevelContext = context;
+					this.gameStateMachine.goToNextState();
+				}
 
 				if (InputManager.getInstance().wasLeftButtonPressed()) {
 					if (!InputManager.getInstance().isKeyDown(Keys.LeftShift)) {

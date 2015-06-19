@@ -46,7 +46,11 @@ namespace WOA3.Model {
 
 		#region Constructor
 		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange)
-			: base(content, position, SPEED, charactersInRange) {
+			: this(content, position, observerHandler, charactersInRange, 5f) {
+		}
+
+		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange, float health)
+			: base(content, position, SPEED, charactersInRange, health) {
 			
 			this.observerHandler = observerHandler;
 			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Ghost");

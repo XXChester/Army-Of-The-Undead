@@ -130,6 +130,7 @@
     <Compile Include="Logic\StateMachine\CompanyCinematicState.cs" />
     <Compile Include="Logic\StateMachine\GameOverState.cs" />
     <Compile Include="Logic\StateMachine\MainMenuState.cs" />
+    <Compile Include="Logic\StateMachine\LevelContext.cs" />
     <Compile Include="Logic\StateMachine\TutorialCompleteState.cs" />
     <Compile Include="Logic\StateMachine\TutorialState.cs" />
     <Compile Include="Logic\StateMachine\GameDisplayState.cs" />
