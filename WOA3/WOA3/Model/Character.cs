@@ -94,6 +94,11 @@ namespace WOA3.Model {
 			//this.rangeRing.render(spriteBatch);
 			this.healthText.render(spriteBatch);
 			base.render(spriteBatch);
+#if DEBUG
+			if (Debug.debugOn) {
+				DebugUtils.drawBoundingBox(spriteBatch, CollisionGenerationUtils.getBBoxHalf(base.Position), Color.Yellow, Debug.debugChip);
+			}
+#endif
 		}
 		#endregion Support methods
 	}

@@ -24,5 +24,13 @@ namespace WOA3.Engine {
 			Vector2 v = point.toVector2();
 			return new Rectangle((int)v.X, (int)v.Y, (int)Constants.TILE_SIZE, (int)Constants.TILE_SIZE);
 		}
+
+		public static Vector3 toVector3(this Vector2 vector) {
+			return new Vector3(vector, 0f);
+		}
+
+		public static Vector2 toVector2(this Vector3 vector) {
+			return new Vector2(vector.X, vector.Y);
+		}
 	}
 }

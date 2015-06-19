@@ -87,7 +87,7 @@ namespace WOA3.Model {
 			StaticDrawable2DParams characterParams = new StaticDrawable2DParams {
 				Position = position,
 				Texture = texture,
-				Origin = new Vector2(Constants.TILE_SIZE/2),
+				Origin = new Vector2(Constants.TILE_SIZE/2, Constants.TILE_SIZE),
 			};
 			return new StaticDrawable2D(characterParams);
 		}

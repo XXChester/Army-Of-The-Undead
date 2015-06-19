@@ -54,7 +54,7 @@ namespace WOA3.Model.Display {
 			this.mapName = mapName;
 			this.gameStateMachine = stateMachine;
 			init(true);
-			Constants.ALLOW_MOB_ATTACKS = true;
+			Constants.ALLOW_MOB_ATTACKS = false;
 			Constants.ALLOW_PLAYER_ATTACKS = true;
 		}
 		#endregion Constructor
@@ -218,28 +218,52 @@ namespace WOA3.Model.Display {
 		}
 
 		private ClosestSeeable getClosestGhost() {
+			List<ClosestSeeable> potentialTargets = new List<ClosestSeeable>();
 			ClosestSeeable closestSeeable = null;
+			
+
+			//THIS IS CAUSING EVERY MOB TO BE NOTIFIED OF THE PLAYER!!!
+
+
+			Vector3 min, max;
 			foreach (var ghost in allGhosts) {
 				foreach (var mob in mobs) {
+					min = Vector2.Min(ghost.Position, mob.Position).toVector3();
+					max = Vector2.Max(ghost.Position, mob.Position).toVector3();
+					BoundingBox bbox = new BoundingBox(min, max);
 					Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
 					Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
 					bool canSee = true;
 					if (distanceToTarget != null) {
 						foreach (Wall wall in map.Walls) {
-							Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
-							// as soon as we cannot see the target, stop looking
-							if (distance != null && distance < distanceToTarget) {
+							if (wall.BBox.Intersects(bbox)) {
 								canSee = false;
 								break;
+							} else {
+								Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
+								// as soon as we cannot see the target, stop looking
+								if (distance != null && distance < distanceToTarget) {
+									canSee = false;
+									break;
+								}
 							}
 						}
 						if (canSee) {
 							if (closestSeeable == null || ((ClosestSeeable)closestSeeable).Distance > distanceToTarget) {
-								closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget };
+								//closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget };
+								closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget, Mob = mob };
+								potentialTargets.Add(closestSeeable);
 							}
 						}
 					}
 				}
+			}
+
+			if (potentialTargets.Count > 0) {
+				String test = "";
+			}
+			foreach (var item in potentialTargets) {
+				
 			}
 			return closestSeeable;
 		}
@@ -297,6 +321,7 @@ namespace WOA3.Model.Display {
 		private class ClosestSeeable {
 			public Ghost Ghost { get; set; }
 			public float Distance { get; set; }
+			public Mob Mob { get; set; }
 		}
 
 		public virtual void update(float elapsed) {

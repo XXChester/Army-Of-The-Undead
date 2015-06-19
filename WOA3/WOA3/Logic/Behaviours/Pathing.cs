@@ -100,7 +100,6 @@ namespace WOA3.Logic.Behaviours {
 
 				Vector2 newPosition = Position + direction * SPEED * elapsed;
 				if (this.collisionCheck != null && this.collisionCheck.Invoke(newPosition)) {
-					Targets.Clear();
 					this.restartPathing.Invoke();
 					return;
 				}
@@ -123,7 +122,8 @@ namespace WOA3.Logic.Behaviours {
 					Debug.log("NAN: " + Position + "\tCount: " + Targets.Count+"\tnewPosition: " + newPosition);
 					//Target = Targets.Pop();
 					//Position = new Vector2(x, y);
-					this.callback.Invoke();
+					//this.callback.Invoke();
+					this.restartPathing.Invoke();
 				}
 			}
 			if (Targets.Count == 0 && !requestingPath) {
