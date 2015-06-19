@@ -21,8 +21,8 @@ namespace WOA3.Logic.StateMachine {
 			return new GameDisplay(device, content, "Tutorial");
 		}
 
-		public override void goToNextState() {
-			changeState(stateMachine.GameDevCinematic);
+		public override void goToPreviousState() {
+			changeState(stateMachine.MainMenu);
 		}
 
 		public override void setStates() {

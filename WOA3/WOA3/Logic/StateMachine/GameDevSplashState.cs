@@ -15,9 +15,12 @@ namespace WOA3.Logic.StateMachine {
 		public GameDevSplashState(GameStateMachine stateMachine, GraphicsDevice device, ContentManager content)
 			: base(stateMachine, device, content, new Cinematic(content, "SplashScreen")) { }
 
+		public override void goToPreviousState() {
+			changeState(stateMachine.MainMenu);
+		}
+
 		public override void goToNextState() {
-			changeState(stateMachine.Tutorial);
-			WOA3.Logic.StateManager.getInstance().CurrentGameState = GameState.Active;
+			goToPreviousState();
 		}
 	}
 }

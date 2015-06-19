@@ -24,9 +24,12 @@ namespace WOA3.Logic.StateMachine {
 			this.GameDisplay = new GameDisplayState(this, device, content);
 			this.Tutorial = new TutorialState(this, device, content);
 			this.TutorialComplete = new TutorialCompleteState(this, device, content);
+			this.MainMenu = new MainMenuState(this, device, content);
 
-			//this.CurrentState = this.CompanyCinematic;
-			this.CurrentState = this.GameDisplay;
+			this.CurrentState = this.CompanyCinematic;
+			//this.CurrentState = this.GameDevCinematic;
+			//this.CurrentState = this.MainMenu;
+			//this.CurrentState = this.GameDisplay;
 			//this.CurrentState = Tutorial;
 			//this.CurrentState = TutorialComplete;
 
@@ -56,7 +59,10 @@ namespace WOA3.Logic.StateMachine {
 		public void Dispose() {
 			this.CompanyCinematic.Dispose();
 			this.GameDevCinematic.Dispose();
+			this.MainMenu.Dispose();
 			this.GameDisplay.Dispose();
+			this.Tutorial.Dispose();
+			this.TutorialComplete.Dispose();
 		}
 	}
 }

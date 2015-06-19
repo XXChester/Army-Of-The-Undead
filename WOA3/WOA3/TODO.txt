@@ -33,4 +33,6 @@
 []If a ghost goes into a wall visible, the mobs get stuck
 []AI manager crashes in weird scenarios
 []AI follows the player into a wall if the player clicks in (try around the border)
-[]Tutorial reset
+[]Tutorial Scenario reset
+[]Screen reset on push
+[]Tutorial can attack the mob before the correct stage

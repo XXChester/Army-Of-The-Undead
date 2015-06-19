@@ -171,11 +171,13 @@ namespace WOA3.Engine {
 			InputManager.getInstance().wasButtonPressed(PlayerIndex.One, Buttons.B)) {
 				MapEditor.getInstance().logEntries();
 				//SpawnGenerator.getInstance().Running = false;
-				this.Exit();
+				//this.Exit();
 			}
 
 #endif
 			if (InputManager.getInstance().wasKeyPressed(Keys.Escape)) {
+				this.stateMachine.goToPreviousState();
+			} else if (InputManager.getInstance().wasKeyPressed(Keys.Enter)) {
 				this.stateMachine.goToNextState();
 			}
 

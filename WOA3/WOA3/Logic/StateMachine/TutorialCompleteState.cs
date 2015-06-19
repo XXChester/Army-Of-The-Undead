@@ -15,6 +15,10 @@ namespace WOA3.Logic.StateMachine {
 			: base(stateMachine, device, content, new TutorialComplete(content)) {
 		}
 
+		public override void goToPreviousState() {
+			changeState(stateMachine.MainMenu);
+		}
+
 		public override void goToNextState() {
 			changeState(stateMachine.GameDisplay);
 		}

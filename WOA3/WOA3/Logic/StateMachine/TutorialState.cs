@@ -20,6 +20,10 @@ namespace WOA3.Logic.StateMachine {
 			return new TutorialDisplay(device, content, this.stateMachine);
 		}
 
+		public override void goToPreviousState() {
+			changeState(stateMachine.MainMenu);
+		}
+
 		public override void goToNextState() {
 			changeState(stateMachine.TutorialComplete);
 		}
