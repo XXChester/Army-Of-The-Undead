@@ -17,7 +17,7 @@ namespace WOA3.Logic.StateMachine {
 		}
 
 		protected override IRenderable createInstance() {
-			return new GameDisplay(device, content, "Map", stateMachine);
+			return new GameDisplay(device, content, "Map1", stateMachine);
 		}
 
 		public override void goToPreviousState() {

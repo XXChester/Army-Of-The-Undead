@@ -41,6 +41,7 @@ namespace WOA3.Model.Display {
 
 #if DEBUG
 		private EditorCreator editorsCreator;
+		private List<Vector3[]> bboxes;
 #endif
 		#endregion Class variables
 
@@ -218,13 +219,7 @@ namespace WOA3.Model.Display {
 		}
 
 		private ClosestSeeable getClosestGhost() {
-			List<ClosestSeeable> potentialTargets = new List<ClosestSeeable>();
 			ClosestSeeable closestSeeable = null;
-			
-
-			//THIS IS CAUSING EVERY MOB TO BE NOTIFIED OF THE PLAYER!!!
-
-
 			Vector3 min, max;
 			foreach (var ghost in allGhosts) {
 				foreach (var mob in mobs) {
@@ -250,35 +245,36 @@ namespace WOA3.Model.Display {
 						}
 						if (canSee) {
 							if (closestSeeable == null || ((ClosestSeeable)closestSeeable).Distance > distanceToTarget) {
-								//closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget };
-								closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget, Mob = mob };
-								potentialTargets.Add(closestSeeable);
+								closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget };
 							}
 						}
 					}
 				}
 			}
-
-			if (potentialTargets.Count > 0) {
-				String test = "";
-			}
-			foreach (var item in potentialTargets) {
-				
-			}
 			return closestSeeable;
 		}
 
 		private void updateFieldOfView(float elapsed) {
+			bboxes = new List<Vector3[]>();
 			// cast a ray from our chaser to the target. If this ray hits the target, test it against all other objects
 			ClosestSeeable closestSeeable = getClosestGhost();
 			foreach (var ghost in allGhosts) {
 				Wall collidedWith = null;
 				if (ghost.isVisible()) {
 					foreach (var mob in mobs) {
-						Vector3 min = Vector2.Min(ghost.Position, mob.Position).toVector3();
-						Vector3 max = Vector2.Max(ghost.Position, mob.Position).toVector3();
-						BoundingBox bbox = new BoundingBox(min, max);
-
+						//Vector3 min = Vector2.Min(ghost.Position, mob.Position).toVector3();
+						//Vector3 max = Vector2.Max(ghost.Position, mob.Position).toVector3();
+						Vector3 left = new Vector2(ghost.Position.X, mob.Position.Y).toVector3();
+						Vector3 right = new Vector2(mob.Position.X, ghost.Position.Y).toVector3();
+						//Vector3 min = ghost.Position.toVector3();
+						//Vector3 max =mob.Position.toVector3();
+						BoundingBox bbox = new BoundingBox(left, right);
+						
+#if DEBUG
+						if (mob.GetType() ==  typeof(Devil)) {
+							this.bboxes.Add(new Vector3[] { left, right });
+						}
+#endif
 						Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
 						Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
 						bool pathing = mob.isPathing();
@@ -287,10 +283,6 @@ namespace WOA3.Model.Display {
 						if (distanceToTarget != null) {
 							foreach (Wall wall in map.Walls) {
 								// is the ghost in a wall?
-								if (wall.BBox.Intersects(ghost.BBox)) {
-								//	ghostInWall = true;
-								//	goto ghostInWall;
-								}
 								//if (wall.BBox.Intersects(mob.BBox)) {
 								if (wall.BBox.Intersects(mob.BoundingSphere)) {
 									hitWall = true;
@@ -326,7 +318,6 @@ namespace WOA3.Model.Display {
 		private class ClosestSeeable {
 			public Ghost Ghost { get; set; }
 			public float Distance { get; set; }
-			public Mob Mob { get; set; }
 		}
 
 		public virtual void update(float elapsed) {
@@ -386,6 +377,11 @@ namespace WOA3.Model.Display {
 			foreach (var mob in mobs) {
 				mob.render(spriteBatch);
 			}
+#if DEBUG
+			foreach (var box in this.bboxes) {
+				DebugUtils.drawVector3s(spriteBatch, box[1], box[0], Color.Pink, Debug.debugChip);
+			}
+#endif
 		//	this.hud.render(spriteBatch);
 		}
 		#endregion Support methods

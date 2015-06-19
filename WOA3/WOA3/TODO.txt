@@ -22,7 +22,7 @@
 []2 wall passes, one for bottom and right sides being on a higher layer, left and top sides being on a lower layer...gives a true illusion of passing through the wall
 [*]If the ghost is hidden and uses skills, he will appear without the fear bonus
 [*]Bug in A* implementation that when the target position is inside of a block, it doesn't return a path
-[]AI can walk through walls sometimes
+[*]AI can walk through walls sometimes
 [*]Once we change to pathing but get around the walls, we should ray cast the target to see if we can go back to tracking the lost target
 []Enemy AI needs to stop when close and start fighting
 [*]Seems as once a single enemy can see the ghost, they all can
@@ -31,10 +31,11 @@
 [*]Mobs only perform their skills once, after that they cannot find ghosts in range
 [*]If we don't get a path, end the behaviour
 [*]If a ghost goes into a wall visible, the mobs get stuck
-[]AI manager crashes in weird scenarios
-[]AI follows the player into a wall if the player clicks in (try around the border)
+[*]AI manager crashes in weird scenarios
+[*]AI follows the player into a wall if the player clicks in (try around the border)
 [*]Tutorial Scenario reset
 [*]Screen reset on push
 [*]Tutorial can attack the mob before the correct stage
 [*]if you assign a ghost to move, but de-select him, he stops moving until you select him again
 []Fix cool downs
+[]AI Bounding box checks between player and ghost work....but in open spaces they do not as the boxes are axis aligned and not rotatable. Need pixel collision.
