@@ -5,7 +5,7 @@
 []Transitions
 []Map win conditions
 []Map progression
-[]Tutorial
+[*]Tutorial
 []Storyboard
 []Title
 []Option screen
@@ -23,7 +23,7 @@
 [*]If the ghost is hidden and uses skills, he will appear without the fear bonus
 [*]Bug in A* implementation that when the target position is inside of a block, it doesn't return a path
 []AI can walk through walls sometimes
-[]Once we change to pathing but get around the walls, we should ray cast the target to see if we can go back to tracking the lost target
+[*]Once we change to pathing but get around the walls, we should ray cast the target to see if we can go back to tracking the lost target
 []Enemy AI needs to stop when close and start fighting
 []Seems as once a single enemy can see the ghost, they all can
 []can damage through walls

@@ -4,12 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-using GWNorthEngine.Input;
-using GWNorthEngine.Utils;
+using GWNorthEngine.Audio;
+using GWNorthEngine.Audio.Params;
+using GWNorthEngine.Logic;
+using GWNorthEngine.Logic.Params;
 using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
 using GWNorthEngine.Model.Effects;
 using GWNorthEngine.Model.Effects.Params;
+using GWNorthEngine.Utils;
+using GWNorthEngine.Input;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -52,6 +56,26 @@ namespace WOA3.Model {
 			buttonParms.Position = new Vector2(buttonParms.Position.X, buttonParms.Position.Y + SPACE * 1.3f);
 			buttonParms.PickableArea = CollisionGenerationUtils.getButtonRectangle(origin, buttonParms.Position);
 			return new TexturedEffectButton(buttonParms);
+		}
+
+
+		public static Base2DSpriteDrawable generateWaveEffect(ContentManager content, Vector2 position, Color light, out float effectLife) {
+			int frames = 6;
+			float speed = 15f;
+			BaseAnimationManagerParams animationParms = new BaseAnimationManagerParams() {
+				AnimationState = AnimationState.PlayForwardOnce,
+				TotalFrameCount = frames,
+				FrameRate = speed,
+			};
+			Animated2DSpriteLoadSingleRowBasedOnTexture parms = new Animated2DSpriteLoadSingleRowBasedOnTexture() {
+				AnimationParams = animationParms,
+				Position = Vector2.Subtract(position, new Vector2(Constants.TILE_SIZE)),
+				LightColour = light,
+				Origin = new Vector2(Constants.TILE_SIZE),
+				Texture = LoadingUtils.load<Texture2D>(content, "WaveEffect")
+			};
+			effectLife = frames * speed;
+			return new Animated2DSprite(parms);
 		}
 	}
 }

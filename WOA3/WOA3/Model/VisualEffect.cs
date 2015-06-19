@@ -27,13 +27,14 @@ namespace WOA3.Model {
 	public class VisualEffect {
 		private float elapsed;
 
-		private const float TIME_TO_LIVE = 100;
+		private readonly float TIME_TO_LIVE;
 
-		public StaticDrawable2D Image { get; set; }
+		public Base2DSpriteDrawable Image { get; set; }
 		public bool UpForRemoval { get; set; }
 
-		public VisualEffect(StaticDrawable2D image) {
+		public VisualEffect(Base2DSpriteDrawable image, float timeToLive) {
 			this.Image = image;
+			this.TIME_TO_LIVE = timeToLive;
 		}
 
 

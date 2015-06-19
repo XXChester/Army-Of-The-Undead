@@ -98,20 +98,9 @@ namespace WOA3.Model {
 				resetFadeEffect(this.selectedFadeEffect, alpha, FadeEffect.FadeState.PartialIn);
 				this.state = State.Visisble;
 
-				StaticDrawable2DParams parms = new StaticDrawable2DParams() {
-					Position = Vector2.Add(base.Position, new Vector2(0f, Constants.TILE_SIZE /4)),
-					LightColour = Color.Orange,
-					Origin = new Vector2(Constants.TILE_SIZE),
-					Texture = LoadingUtils.load<Texture2D>(content, "Wave")
-				};
-				ScaleOverTimeEffectParams scaleParms = new ScaleOverTimeEffectParams() {
-					ScaleBy = new Vector2(300f, 150f)
-				};
-				ScaleOverTimeEffect scaleEffect = new ScaleOverTimeEffect(scaleParms);
-
-				StaticDrawable2D shockWave = new StaticDrawable2D(parms);
-				shockWave.addEffect(scaleEffect);
-				VisualEffect effect = new VisualEffect(shockWave);
+				float effectLife;
+				Base2DSpriteDrawable shockWave = ModelGenerationUtil.generateWaveEffect(content, base.Position, Color.Orange, out effectLife);
+				VisualEffect effect = new VisualEffect(shockWave, effectLife);
 				EffectsManager.getInstance().Visuals.Add(effect);
 			};
 
@@ -121,20 +110,10 @@ namespace WOA3.Model {
 				resetFadeEffect(this.selectedFadeEffect, alpha, FadeEffect.FadeState.PartialIn);
 				this.state = State.Visisble;
 
-				StaticDrawable2DParams parms = new StaticDrawable2DParams() {
-					Position = Vector2.Add(base.Position, new Vector2(0f, Constants.TILE_SIZE / 4)),
-					LightColour = Color.Green,
-					Origin = new Vector2(Constants.TILE_SIZE),
-					Texture = LoadingUtils.load<Texture2D>(content, "Wave")
-				};
-				ScaleOverTimeEffectParams scaleParms = new ScaleOverTimeEffectParams() {
-					ScaleBy = new Vector2(300f, 150f)
-				};
-				ScaleOverTimeEffect scaleEffect = new ScaleOverTimeEffect(scaleParms);
 
-				StaticDrawable2D shockWave = new StaticDrawable2D(parms);
-				shockWave.addEffect(scaleEffect);
-				VisualEffect effect = new VisualEffect(shockWave);
+				float effectLife;
+				Base2DSpriteDrawable shockWave = ModelGenerationUtil.generateWaveEffect(content, base.Position, Color.Green, out effectLife);
+				VisualEffect effect = new VisualEffect(shockWave, effectLife);
 				EffectsManager.getInstance().Visuals.Add(effect);
 			};
 
