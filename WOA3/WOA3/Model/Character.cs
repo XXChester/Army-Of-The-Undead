@@ -28,17 +28,18 @@ namespace WOA3.Model {
 	public abstract class Character : Entity {
 		#region Class variables
 		protected RadiusRing rangeRing;
-		private Text2D healthText;
 		private CharactersInRange charactersInRange;
+		private HealthBar healthBar;
 
 		private readonly float SPEED;
 		#endregion Class variables
 
 		#region Class propeties
 		//public Character Target { get; set; }
-		public ScaredFactor Health { get; set; }
 		public BoundingSphere Range { get { return this.rangeRing.BoundingSphere; } }
 		public CharactersInRange CharactersInRange { get { return this.charactersInRange; } }
+		public bool AmIDead { get { return this.healthBar.Health <= 0f; } }
+		public float Health { get { return this.healthBar.Health; } }
 		#endregion Class properties
 
 		#region Constructor
@@ -46,30 +47,12 @@ namespace WOA3.Model {
 			: base(content) {
 			this.SPEED = speed;
 			this.rangeRing = new RadiusRing(content, position);
-			this.Health = new ScaredFactor(health);
 			this.charactersInRange = charactersInRange;
-			createHealthText(position);
+			this.healthBar = new HealthBar(content, position);
 		}
 		#endregion Constructor
 
 		#region Support methods
-		private Text2D createHealthText(Vector2 position) {
-			Text2DParams textParams = new Text2DParams() {
-				Position = getTextPosition(position),
-				LightColour = Constants.TEXT_COLOUR,
-				WrittenText = this.Health.Text,
-				Origin = new Vector2(Constants.TILE_SIZE / 2),
-				Font = Constants.FONT
-			};
-			this.healthText = new Text2D(textParams);
-			return this.healthText;
-		}
-
-		private Vector2 getTextPosition(Vector2 position) {
-			return Vector2.Subtract(position, new Vector2(-6f, Constants.TILE_SIZE));
-		}
-
-
 		/*protected override BoundingBox getBBox() {
 			return CollisionGenerationUtils.getCharacterBBox(this.Position);
 		}*/
@@ -79,20 +62,17 @@ namespace WOA3.Model {
 
 
 		public void damage(float amount) {
-			this.Health.scare(amount);
-			this.healthText.WrittenText = this.Health.Text;
+			this.healthBar.damage(amount);
 		}
 
 		public override void update(float elapsed) {
 			this.rangeRing.updatePosition(base.Position);
-			this.healthText.Position = getTextPosition(base.Position);
-			this.healthText.update(elapsed);
+			this.healthBar.Position = base.Position;
 			base.update(elapsed);
 		}
 
 		public override void render(SpriteBatch spriteBatch) {
-			//this.rangeRing.render(spriteBatch);
-			this.healthText.render(spriteBatch);
+			this.healthBar.render(spriteBatch);
 			base.render(spriteBatch);
 #if DEBUG
 			if (Debug.debugOn) {

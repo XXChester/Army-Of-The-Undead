@@ -86,7 +86,7 @@ namespace WOA3.Model.Display {
 				Ghost ghost = null;
 				for (int i = 1; i <= this.gameStateMachine.LevelContext.Ghosts.Count; i++) {
 					ghost = this.gameStateMachine.LevelContext.Ghosts[i - i];
-					float factor = ghost.Health.Factor; 
+					float factor = ghost.Health; 
 					if (factor > 0) {
 						Vector2 newPosition = Vector2.Add(primary.Position, new Vector2(i * (Constants.TILE_SIZE / 2)));
 						this.allGhosts.Add(new Ghost(content, newPosition, this.ghostObserverHandler, this.mobsInRange, factor));
@@ -211,7 +211,7 @@ namespace WOA3.Model.Display {
 		private void handleDead<T>(List<T> characters) where T : Character{
 			for (int j = characters.Count - 1; j >= 0; j--) {
 				T character = characters[j];
-				if (character != null && character.Health.amIDead()) {
+				if (character != null && character.AmIDead) {
 					characters.RemoveAt(j);
 					character = null;
 				}
@@ -372,7 +372,7 @@ namespace WOA3.Model.Display {
 			if (this.mapLoaded) {
 				win = true;
 				foreach (var mob in mobs) {
-					if (!mob.Health.amIDead()) {
+					if (!mob.AmIDead) {
 						win = false;
 					}
 				}
@@ -392,7 +392,7 @@ namespace WOA3.Model.Display {
 			}
 			foreach (var ghost in this.allGhosts) {
 				ghost.update(elapsed);
-				if (!atleastOneGhostAlive && !ghost.Health.amIDead()) {
+				if (!atleastOneGhostAlive && !ghost.AmIDead) {
 					atleastOneGhostAlive = true;
 				}
 			}

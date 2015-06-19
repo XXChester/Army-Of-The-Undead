@@ -158,7 +158,6 @@
     <Compile Include="Logic\Behaviours\LostTarget.cs" />
     <Compile Include="Logic\Behaviours\Tracking.cs" />
     <Compile Include="Logic\GameState.cs" />
-    <Compile Include="Logic\ScaredFactor.cs" />
     <Compile Include="Logic\Skills\Shriek.cs" />
     <Compile Include="Logic\Skills\Skill.cs" />
     <Compile Include="Logic\Skills\Boo.cs" />
@@ -171,6 +170,7 @@
     <Compile Include="Model\Character.cs" />
     <Compile Include="Model\Display\GameOverDisplay.cs" />
     <Compile Include="Model\EffectsManager.cs" />
+    <Compile Include="Model\HealthBar.cs" />
     <Compile Include="Model\Scenarios\SelectionTutorialScenario.cs" />
     <Compile Include="Model\VisualEffect.cs" />
     <Compile Include="Model\Yeti.cs" />

@@ -84,7 +84,7 @@ namespace WOA3.Logic {
 
 									target.damage(skillResult.Damage);
 									// did we kill the target?
-									if (target.Health.amIDead()) {
+									if (target.AmIDead) {
 										removeRequests(target);
 										// if we had a death effect it needs to go to the front of the list of actions and apply against all targets in the area
 										Skill deathEffect = target.die();

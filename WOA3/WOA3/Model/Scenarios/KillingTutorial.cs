@@ -35,7 +35,7 @@ namespace WOA3.Model.Scenarios {
 		}
 
 		public override void update(float elapsed) {
-			if (this.mob.Health.amIDead() && this.allGhosts.Count == 2) {
+			if (this.mob.AmIDead && this.allGhosts.Count == 2) {
 				this.Completed = true;
 			}
 		}
