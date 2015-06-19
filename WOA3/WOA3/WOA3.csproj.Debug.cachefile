@@ -14,8 +14,6 @@ WOAContent\skillIcon1.xnb
 WOAContent\skillIcon2.xnb
 WOAContent\HUDBackground.xnb
 WOAContent\TextPopupBackground.xnb
-WOAContent\Background.xnb
-WOAContent\SpriteFont1.xnb
 WOAContent\2c1.xnb
 WOAContent\2c2.xnb
 WOAContent\2c3.xnb
@@ -52,13 +50,12 @@ WOAContent\PlayGame.xnb
 WOAContent\Tutorial.xnb
 WOAContent\Reset.xnb
 WOAContent\Menu.xnb
+WOAContent\Monster2.xnb
+WOAContent\Background.xnb
+WOAContent\SpriteFont1.xnb
 WOAContent\Background.wma
 WOAContent\Data\Tutorial.xml
 WOAContent\Data\MapIdentifiers.xml
-WOAContent\Data\Map2.XML
-WOAContent\Data\Map2Identifiers.xml
 WOAContent\Data\IdentifiersTemplate.xml
 WOAContent\Data\Map.XML
-WOAContent\Data\TestMapIdentifiers.xml
-WOAContent\Data\TestMap.xml
 WOAContent\Data\TutorialIdentifiers.xml

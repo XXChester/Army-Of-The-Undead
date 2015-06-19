@@ -14,29 +14,19 @@ namespace WOA3.Logic.StateMachine {
 
 		public GameDisplayState(GameStateMachine stateMachine, GraphicsDevice device,  ContentManager content)
 			: base(stateMachine, device, content, null) {
-				reset();
 		}
 
-		private IRenderable createInstance() {
-			return new GameDisplay(device, content, "Tutorial");
+		protected override IRenderable createInstance() {
+			return new GameDisplay(device, content, "Map");
 		}
 
 		public override void goToPreviousState() {
 			changeState(stateMachine.MainMenu);
+			base.goToPreviousState();
 		}
 
 		public override void setStates() {
 			StateManager.getInstance().CurrentGameState = GameState.Active;
-		}
-
-		public override void reset() {
-			if (this.display != null) {
-				this.display.dispose();
-			}
-			this.display = createInstance();
-#if DEBUG
-			Console.Clear();
-#endif
 		}
 	}
 }

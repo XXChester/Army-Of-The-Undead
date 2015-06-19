@@ -12,15 +12,21 @@ namespace WOA3.Logic.StateMachine {
 	class TutorialCompleteState : BaseGameState {
 
 		public TutorialCompleteState(GameStateMachine stateMachine, GraphicsDevice device, ContentManager content)
-			: base(stateMachine, device, content, new TutorialComplete(content)) {
+			: base(stateMachine, device, content,null) {
+		}
+		
+		protected override IRenderable createInstance() {
+			return new TutorialComplete(content);
 		}
 
 		public override void goToPreviousState() {
 			changeState(stateMachine.MainMenu);
+			base.goToPreviousState();
 		}
 
 		public override void goToNextState() {
 			changeState(stateMachine.GameDisplay);
+			base.goToNextState();
 		}
 
 		public override void setStates() {

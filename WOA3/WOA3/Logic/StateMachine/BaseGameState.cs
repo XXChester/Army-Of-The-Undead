@@ -23,12 +23,15 @@ namespace WOA3.Logic.StateMachine {
 			this.display = display;
 		}
 
+		protected abstract IRenderable createInstance();
+
 		protected void changeState(State newState) {
 			stateMachine.CurrentState = newState;
+			stateMachine.CurrentState.reset();
 		}
 
 		public virtual void goToNextState() {
-			reset();
+			
 		}
 
 		public virtual Model.Display.IRenderable getCurrentScreen() {
@@ -42,13 +45,19 @@ namespace WOA3.Logic.StateMachine {
 		public virtual void setStates() {
 			StateManager.getInstance().CurrentGameState = GameState.Waiting;
 		}
-		
+
 		public virtual void reset() {
-		
+			Dispose();
+			this.display = createInstance();
+#if DEBUG
+			Console.Clear();
+#endif
 		}
 
 		public void Dispose() {
-			this.display.dispose();
+			if (this.display != null) {
+				//this.display.dispose();
+			}
 		}
 	}
 }

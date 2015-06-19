@@ -12,14 +12,22 @@ namespace WOA3.Logic.StateMachine {
 	class CompanyCinematicState : BaseGameState {
 
 		public CompanyCinematicState(GameStateMachine stateMachine, GraphicsDevice device, ContentManager content)
-			: base(stateMachine, device, content, new Cinematic(content, "Logo")) { }
+			: base(stateMachine, device, content, null) {
+			
+		}
+		
+		protected override IRenderable createInstance() {
+			return new Cinematic(content, "Logo");
+		}
 
 		public override void goToPreviousState() {
 			changeState(stateMachine.GameDevCinematic);
+			base.goToPreviousState();
 		}
 
 		public override void goToNextState() {
 			goToPreviousState();
+			base.goToNextState();
 		}
 	}
 }

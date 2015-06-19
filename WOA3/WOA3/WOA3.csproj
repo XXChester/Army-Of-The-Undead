@@ -163,6 +163,7 @@
     <Compile Include="Logic\SoundManager.cs" />
     <Compile Include="Logic\StateManager.cs" />
     <Compile Include="Logic\TransitionState.cs" />
+    <Compile Include="Map\MonsterType.cs" />
     <Compile Include="Map\SpecializedLoadResult.cs" />
     <Compile Include="Model\Character.cs" />
     <Compile Include="Model\Display\BaseMenu.cs" />
