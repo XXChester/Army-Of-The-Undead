@@ -156,13 +156,13 @@ namespace WOA3.Model.Display {
 		}
 
 		private void updateSkills(float elapsed) {
-			foreach (var ghost in selectedGhosts) {
-				ghost.performSkills();
-				ghost.update(elapsed);
-			}
 			foreach (var mob in mobs) {
 				mob.performSkills();
 				mob.update(elapsed);
+			}
+			foreach (var ghost in selectedGhosts) {
+				ghost.performSkills();
+				ghost.update(elapsed);
 			}
 
 			//check for dead

@@ -73,7 +73,7 @@ namespace WOA3.Engine {
 			LoadResult loadResult = loader.load(content, mapName);
 			int height = loadResult.Height;
 			int width = loadResult.Width;
-			int wallLayerLocation = 1;
+			int wallLayerLocation = 0;
 
 			// generate walls
 			Layer wallLayer = loadResult.Layers[wallLayerLocation];
