@@ -81,6 +81,10 @@ namespace WOA3.Model.Display {
 			this.scenario = active;
 		}
 
+		protected override bool winConditionAchieved() {
+			return false;
+		}
+
 		public override void update(float elapsed) {
 			base.update(elapsed);
 			foreach (TexturedEffectButton button in this.buttons) {

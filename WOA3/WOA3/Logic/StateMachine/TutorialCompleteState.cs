@@ -25,6 +25,10 @@ namespace WOA3.Logic.StateMachine {
 		}
 
 		public override void goToNextState() {
+			LevelContext context = new LevelContext() {
+				Ghosts = new List<Model.Ghost>(),
+				MapIndex = 1
+			};
 			changeState(stateMachine.GameDisplay);
 			base.goToNextState();
 		}

@@ -339,56 +339,67 @@ namespace WOA3.Model.Display {
 			public float Distance { get; set; }
 		}
 
-		public virtual void update(float elapsed) {
-			if (this.gameStateMachine.CurrentState.Equals(this.gameStateMachine.GameDisplay)) {
-				bool atleastOneGhostAlive = false;
-				bool atleastOneMobAlive = false;
-				foreach (var mob in mobs) {
-					mob.update(elapsed);
-					if (!atleastOneMobAlive && !mob.Health.amIDead()) {
-						atleastOneMobAlive = true;
-					}
+		protected virtual bool winConditionAchieved() {
+			bool win = false;
+			foreach (var mob in mobs) {
+				if (!mob.Health.amIDead()) {
+					win = true;
+					break;
 				}
-				foreach (var ghost in this.allGhosts) {
-					ghost.update(elapsed);
-					if (!atleastOneGhostAlive && !ghost.Health.amIDead()) {
-						atleastOneGhostAlive = true;
-					}
-				}
-
-				updateFieldOfView(elapsed);
-				updateSkills(elapsed);
-
-				if (!atleastOneGhostAlive) {
-					((GameDisplayState)this.gameStateMachine.CurrentState).goToGameOver();
-				} else if (!atleastOneMobAlive) {
-					LevelContext context = gameStateMachine.LevelContext;
-					context.Ghosts = this.allGhosts;
-					gameStateMachine.LevelContext = context;
-					this.gameStateMachine.goToNextState();
-				}
-
-				if (InputManager.getInstance().wasLeftButtonPressed()) {
-					if (!InputManager.getInstance().isKeyDown(Keys.LeftShift)) {
-						foreach (var ghost in allGhosts) {
-							ghost.Selected = false;
-						}
-						this.selectedGhosts.Clear();
-					}
-					Ghost selectedGhost = null;
-					foreach (var ghost in allGhosts) {
-						if (PickingUtils.pickVector(InputManager.getInstance().MousePosition, ghost.BBox)) {
-							selectedGhost = ghost;
-							ghost.Selected = true;
-							this.selectedGhosts.Add(ghost);
-						}
-					}
-				}
-				this.hud.update(elapsed);
-				CombatManager.getInstance().update(elapsed);
-				EffectsManager.getInstance().update(elapsed);
-				SoundManager.getInstance().update();
 			}
+			foreach (var ghost in this.allGhosts) {
+				if (!ghost.Health.amIDead()) {
+					win = true;
+					break;
+				}
+			}
+			return win;
+		}
+
+		public virtual void update(float elapsed) {
+			bool atleastOneGhostAlive = false;
+			foreach (var mob in mobs) {
+				mob.update(elapsed);
+			}
+			foreach (var ghost in this.allGhosts) {
+				ghost.update(elapsed);
+				if (!atleastOneGhostAlive && !ghost.Health.amIDead()) {
+					atleastOneGhostAlive = true;
+				}
+			}
+
+			updateFieldOfView(elapsed);
+			updateSkills(elapsed);
+
+			if (!atleastOneGhostAlive) {
+				((GameDisplayState)this.gameStateMachine.CurrentState).goToGameOver();
+			} else if (winConditionAchieved()) {
+				LevelContext context = gameStateMachine.LevelContext;
+				context.Ghosts = this.allGhosts;
+				gameStateMachine.LevelContext = context;
+				this.gameStateMachine.goToNextState();
+			}
+
+			if (InputManager.getInstance().wasLeftButtonPressed()) {
+				if (!InputManager.getInstance().isKeyDown(Keys.LeftShift)) {
+					foreach (var ghost in allGhosts) {
+						ghost.Selected = false;
+					}
+					this.selectedGhosts.Clear();
+				}
+				Ghost selectedGhost = null;
+				foreach (var ghost in allGhosts) {
+					if (PickingUtils.pickVector(InputManager.getInstance().MousePosition, ghost.BBox)) {
+						selectedGhost = ghost;
+						ghost.Selected = true;
+						this.selectedGhosts.Add(ghost);
+					}
+				}
+			}
+			this.hud.update(elapsed);
+			CombatManager.getInstance().update(elapsed);
+			EffectsManager.getInstance().update(elapsed);
+			SoundManager.getInstance().update();
 #if DEBUG
 			MapEditor.getInstance().update();
 #endif
