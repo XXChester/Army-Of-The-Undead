@@ -78,13 +78,12 @@ namespace WOA3.Model {
 		}
 
 		private StaticDrawable2D getCharacterSprite(ContentManager content, Vector2 position) {
-			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Ghost");
+			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Monster1");
 
 			StaticDrawable2DParams characterParams = new StaticDrawable2DParams {
 				Position = position,
 				Texture = texture,
 				Origin = new Vector2(Constants.TILE_SIZE/2),
-				LightColour = Color.Red
 			};
 			return new StaticDrawable2D(characterParams);
 		}
@@ -206,6 +205,11 @@ namespace WOA3.Model {
 				base.Position = this.activeBehaviour.Position;
 				updateBoundingSphere();
 			//}
+
+				// update our skills
+				foreach (var skill in skills) {
+					skill.update(elapsed);
+				}
 
 			/*if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
 				this.activeBehaviour.Target = GWNorthEngine.Input.InputManager.getInstance().MousePosition;
