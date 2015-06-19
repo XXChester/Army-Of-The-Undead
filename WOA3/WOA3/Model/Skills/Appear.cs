@@ -7,9 +7,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace WOA3.Logic.Skills {
-	public class HolySwirl : Skill {
+using WOA3.Logic;
+
+namespace WOA3.Model.Skills {
+	public class Appear : Skill {
+
+		private const float DAMAGE = 0f;
 		private const int COOL_DOWN = 1;
-		public HolySwirl(float damage) : base(damage, 1, null) { }
+		public Appear(VisualCallback visualCallback) : base(DAMAGE, COOL_DOWN, visualCallback) {	}
 	}
 }

@@ -7,11 +7,12 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace WOA3.Logic.Skills {
-	public class Appear : Skill {
+using WOA3.Logic;
 
-		private const float DAMAGE = 0f;
+namespace WOA3.Model.Skills {
+	public class Boo : Skill {
+		private const float DAMAGE = 1f;
 		private const int COOL_DOWN = 1;
-		public Appear(VisualCallback visualCallback) : base(DAMAGE, COOL_DOWN, visualCallback) {	}
+		public Boo(VisualCallback visualCallback) : base(DAMAGE, COOL_DOWN, visualCallback) { }
 	}
 }

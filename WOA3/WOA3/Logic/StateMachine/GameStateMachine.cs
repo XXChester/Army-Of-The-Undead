@@ -26,10 +26,10 @@ namespace WOA3.Logic.StateMachine {
 			this.TutorialComplete = new TutorialCompleteState(this, device, content);
 			this.MainMenu = new MainMenuState(this, device, content);
 
-			this.CurrentState = this.CompanyCinematic;
+			//this.CurrentState = this.CompanyCinematic;
 			//this.CurrentState = this.GameDevCinematic;
 			//this.CurrentState = this.MainMenu;
-			//this.CurrentState = this.GameDisplay;
+			this.CurrentState = this.GameDisplay;
 			//this.CurrentState = Tutorial;
 			//this.CurrentState = TutorialComplete;
 			this.CurrentState.reset();

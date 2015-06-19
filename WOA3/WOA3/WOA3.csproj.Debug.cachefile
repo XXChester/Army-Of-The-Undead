@@ -53,6 +53,9 @@ WOAContent\Menu.xnb
 WOAContent\Monster2.xnb
 WOAContent\Background.xnb
 WOAContent\SpriteFont1.xnb
+WOAContent\blood1.xnb
+WOAContent\blood2.xnb
+WOAContent\bloodDrop.xnb
 WOAContent\Background.wma
 WOAContent\Data\Tutorial.xml
 WOAContent\Data\MapIdentifiers.xml

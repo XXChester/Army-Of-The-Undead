@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace WOA3.Logic.Skills {
+namespace WOA3.Model.Skills {
 	public class CorpseExplode : Skill {
 		private const int COOL_DOWN = 1;
 		public CorpseExplode(float damage) : base(damage, 1, null) { }

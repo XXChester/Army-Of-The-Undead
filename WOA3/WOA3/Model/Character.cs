@@ -22,7 +22,7 @@ using WOA3.Engine;
 using WOA3.Logic;
 using WOA3.Logic.AI;
 using WOA3.Logic.Behaviours;
-using WOA3.Logic.Skills;
+using WOA3.Model.Skills;
 
 namespace WOA3.Model {
 	public abstract class Character : Entity {

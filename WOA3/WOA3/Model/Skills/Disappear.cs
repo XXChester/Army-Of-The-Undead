@@ -7,7 +7,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace WOA3.Logic.Skills {
+using WOA3.Logic;
+
+namespace WOA3.Model.Skills {
 	public class Disappear : Skill {
 		
 

@@ -7,10 +7,13 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
-namespace WOA3.Logic.Skills {
-	public class Boo : Skill {
-		private const float DAMAGE = 1f;
+using WOA3.Logic;
+
+namespace WOA3.Model.Skills {
+	public class Shriek : Skill {
+
+		private const float DAMAGE = 2f;
 		private const int COOL_DOWN = 1;
-		public Boo(VisualCallback visualCallback) : base(DAMAGE, COOL_DOWN, visualCallback) { }
+		public Shriek(VisualCallback visualCallback) : base(DAMAGE, COOL_DOWN, visualCallback) { }
 	}
 }

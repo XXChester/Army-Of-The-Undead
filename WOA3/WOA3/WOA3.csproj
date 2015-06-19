@@ -124,8 +124,6 @@
     <Compile Include="Logic\CombatManager.cs" />
     <Compile Include="Logic\CombatRequest.cs" />
     <Compile Include="Logic\GhostObservationHandler.cs" />
-    <Compile Include="Logic\Skills\HolySwirl.cs" />
-    <Compile Include="Logic\Skills\CorpseExplode.cs" />
     <Compile Include="Logic\StateMachine\BaseGameState.cs" />
     <Compile Include="Logic\StateMachine\CompanyCinematicState.cs" />
     <Compile Include="Logic\StateMachine\MainMenuState.cs" />
@@ -136,9 +134,7 @@
     <Compile Include="Logic\StateMachine\GameStateMachine.cs" />
     <Compile Include="Logic\StateMachine\State.cs" />
     <Compile Include="Logic\Unsubscriber.cs" />
-    <Compile Include="Logic\Skills\Appear.cs" />
     <Compile Include="Logic\CallBacks.cs" />
-    <Compile Include="Logic\Skills\Disappear.cs" />
     <Compile Include="Map\Delegates.cs" />
     <Compile Include="Map\MapEditor.cs" />
     <Compile Include="Logic\CollisionGenerationUtils.cs" />
@@ -156,16 +152,21 @@
     <Compile Include="Logic\Behaviours\Tracking.cs" />
     <Compile Include="Logic\GameState.cs" />
     <Compile Include="Logic\ScaredFactor.cs" />
-    <Compile Include="Logic\Skills\Shriek.cs" />
-    <Compile Include="Logic\Skills\Skill.cs" />
-    <Compile Include="Logic\Skills\Boo.cs" />
-    <Compile Include="Logic\Skills\SkillResult.cs" />
     <Compile Include="Logic\SoundManager.cs" />
     <Compile Include="Logic\StateManager.cs" />
     <Compile Include="Logic\TransitionState.cs" />
     <Compile Include="Map\MonsterType.cs" />
     <Compile Include="Map\SpecializedLoadResult.cs" />
+    <Compile Include="Model\BloodEmitter.cs" />
     <Compile Include="Model\Character.cs" />
+    <Compile Include="Model\Skills\Appear.cs" />
+    <Compile Include="Model\Skills\Boo.cs" />
+    <Compile Include="Model\Skills\CorpseExplode.cs" />
+    <Compile Include="Model\Skills\Disappear.cs" />
+    <Compile Include="Model\Skills\HolySwirl.cs" />
+    <Compile Include="Model\Skills\Shriek.cs" />
+    <Compile Include="Model\Skills\Skill.cs" />
+    <Compile Include="Model\Skills\SkillResult.cs" />
     <Compile Include="Model\Yeti.cs" />
     <Compile Include="Model\Devil.cs" />
     <Compile Include="Model\Display\BaseMenu.cs" />
@@ -234,6 +235,7 @@
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

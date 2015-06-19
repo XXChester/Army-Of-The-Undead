@@ -5,7 +5,7 @@ using System.Text;
 
 using Microsoft.Xna.Framework;
 
-namespace WOA3.Logic.Skills {
+namespace WOA3.Model.Skills {
 	public class SkillResult {
 
 		public float Damage { get; set; }
