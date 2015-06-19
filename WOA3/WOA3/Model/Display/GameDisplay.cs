@@ -54,6 +54,8 @@ namespace WOA3.Model.Display {
 			this.mapName = mapName;
 			this.gameStateMachine = stateMachine;
 			init(true);
+			Constants.ALLOW_MOB_ATTACKS = true;
+			Constants.ALLOW_PLAYER_ATTACKS = true;
 		}
 		#endregion Constructor
 
