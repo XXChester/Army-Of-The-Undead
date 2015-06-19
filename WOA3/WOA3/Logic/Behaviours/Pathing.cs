@@ -24,6 +24,7 @@ namespace WOA3.Logic.Behaviours {
 		private Stack<Vector2> targets;
 		private BehaviourFinished callback;
 		private CollisionCheck collisionCheck;
+		private BehaviourFinished restartPathing;
 		private bool requestingPath;
 
 		private readonly float SPEED;
@@ -41,12 +42,13 @@ namespace WOA3.Logic.Behaviours {
 
 		public Vector2 Position { get; set; }
 
-		public Pathing(Vector2 startingPosition, float speed, BehaviourFinished callback, CollisionCheck collisionCheck) {
+		public Pathing(Vector2 startingPosition, float speed, BehaviourFinished callback, CollisionCheck collisionCheck, BehaviourFinished restartPathing) {
 			this.SPEED = speed;
 			this.targets = new Stack<Vector2>();
 			this.Position = startingPosition;
 			this.callback = callback;
 			this.collisionCheck = collisionCheck;
+			this.restartPathing = restartPathing;
 		}
 
 		public void init(Vector2 startingPosition) {
@@ -97,21 +99,31 @@ namespace WOA3.Logic.Behaviours {
 				Vector2 direction = Vector2.Normalize(Target - Position);
 
 				Vector2 newPosition = Position + direction * SPEED * elapsed;
-				/*if (this.collisionCheck != null && this.collisionCheck.Invoke(newPosition)) {
+				if (this.collisionCheck != null && this.collisionCheck.Invoke(newPosition)) {
 					Targets.Clear();
-					this.callback.Invoke();
+					this.restartPathing.Invoke();
 					return;
-				}*/
+				}
 				float distanceBetweenPositions = Vector2.Distance(Target, newPosition);
 				if (distanceBetweenPositions >= distance) {
 					newPosition = Target;
 					Target = targets.Pop();
 				}
+				float x = newPosition.X;
+				if (float.IsNaN(x)) {
+					x = Position.X;
+				}
+				float y = newPosition.Y;
+				if (float.IsNaN(y)) {
+					y = Position.Y;
+				}
 				if (!float.IsNaN(newPosition.X) && !float.IsNaN(newPosition.Y)) {
 					Position = newPosition;
 				} else {
-					Debug.log("NAN: " + Position + "\tCount: " + Targets.Count);
-					Target = Targets.Pop();
+					Debug.log("NAN: " + Position + "\tCount: " + Targets.Count+"\tnewPosition: " + newPosition);
+					//Target = Targets.Pop();
+					//Position = new Vector2(x, y);
+					this.callback.Invoke();
 				}
 			}
 			if (Targets.Count == 0 && !requestingPath) {

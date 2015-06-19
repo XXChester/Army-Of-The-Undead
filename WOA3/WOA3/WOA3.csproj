@@ -118,6 +118,7 @@
     <Compile Include="Engine\Extensions.cs" />
     <Compile Include="Logic\AI\AIManager.cs" />
     <Compile Include="Logic\AI\PathRequest.cs" />
+    <Compile Include="Logic\Behaviours\MobTrackingBejaviour.cs" />
     <Compile Include="Logic\Behaviours\IdleBehaviour.cs" />
     <Compile Include="Logic\Behaviours\Pathing.cs" />
     <Compile Include="Logic\Behaviours\TargetBehaviour.cs" />

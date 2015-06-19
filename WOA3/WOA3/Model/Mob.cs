@@ -60,9 +60,13 @@ namespace WOA3.Model {
 			BehaviourFinished idleCallback = delegate() {
 				swapBehaviours(this.idleBehaviour, State.Idle);
 			};
+			BehaviourFinished restartPathing = delegate() {
+				this.activeBehaviour.Target = this.LastKnownLocation;
+				pathToWaypoint();
+			};
 			this.seekingBehaviour = new Tracking(position, SPEED, idleCallback, collisionCheck);
 			this.lostTargetBehaviour = new LostTarget(this.seekingBehaviour.Position, this.seekingBehaviour.Position, SPEED, idleCallback);
-			this.pathingBehaviour = new Pathing(position, SPEED, idleCallback, collisionCheck);
+			this.pathingBehaviour = new Pathing(position, SPEED, idleCallback, collisionCheck, restartPathing);
 			this.idleBehaviour = new IdleBehaviour(position);
 			this.activeBehaviour = this.seekingBehaviour;
 			this.CurrentState = State.Idle;
@@ -105,13 +109,15 @@ namespace WOA3.Model {
 		}
 
 		private void trackTarget(Entity toTrack) {
-			this.tracking = toTrack;
-			/*this.LastKnownLocation = this.activeBehaviour.Target;
-			this.CurrentState = State.Tracking;
-			this.seekingBehaviour.Position = base.Position;
-			this.seekingBehaviour.Target = this.LastKnownLocation;
-			this.activeBehaviour = this.seekingBehaviour;*/
-			swapBehaviours(this.seekingBehaviour, State.Tracking);
+			//if (!toTrack.Equals(tracking)) {
+				this.tracking = toTrack;
+				/*this.LastKnownLocation = this.activeBehaviour.Target;
+				this.CurrentState = State.Tracking;
+				this.seekingBehaviour.Position = base.Position;
+				this.seekingBehaviour.Target = this.LastKnownLocation;
+				this.activeBehaviour = this.seekingBehaviour;*/
+				swapBehaviours(this.seekingBehaviour, State.Tracking);
+		//	}
 		}
 
 

@@ -264,8 +264,8 @@ namespace WOA3.Model.Display {
 							foreach (Wall wall in map.Walls) {
 								// is the ghost in a wall?
 								if (wall.BBox.Intersects(ghost.BBox)) {
-									ghostInWall = true;
-									goto ghostInWall;
+								//	ghostInWall = true;
+								//	goto ghostInWall;
 								}
 								//if (wall.BBox.Intersects(mob.BBox)) {
 								if (wall.BBox.Intersects(mob.BoundingSphere)) {

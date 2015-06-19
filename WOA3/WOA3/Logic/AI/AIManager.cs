@@ -95,30 +95,28 @@ namespace WOA3.Logic.AI {
 				BasePathFinder.TypeOfSpace previousEndSpot = this.Board[end.Y, end.X];
 				this.Board[start.Y, start.X] = BasePathFinder.TypeOfSpace.Start;
 				// if our end location is unwalkable, we need to derive a closer end
-				if (this.Board[end.Y, end.X] == BasePathFinder.TypeOfSpace.Unwalkable) {
-					Vector2 direction = Vector2.Normalize(start.toVector2() - end.toVector2());
-					// we now know our location relative to the end node
-					//Point newEnd = Vector2.Subtract(direction, end.toVector2()).toPoint();
-					//path = findPath(start, newEnd);
-					path.Add(start);
-					Debug.log("HERE WE ARE");
-					// we ran out of bounds
-					//if (path == null) {
+				//if (this.Board[end.Y, end.X] == BasePathFinder.TypeOfSpace.Unwalkable) {
+				//Vector2 direction = Vector2.Normalize(start.toVector2() - end.toVector2());
+				// we now know our location relative to the end node
+				//Point newEnd = Vector2.Subtract(direction, end.toVector2()).toPoint();
+				//path = findPath(start, newEnd);
+				//PathNode nearestWalkable = BasePath
+				//Debug.log("HERE WE ARE");
+				// we ran out of bounds
+				//if (path == null) {
 
-					//}
-#if DEBUG
-				/*	string message = "End: " + end + "\tnewEnd: " + newEnd;
-					Debug.log(message);
-					ScriptManager.getInstance().log(message);*/
-#endif
-				} else {
-					this.Board[end.Y, end.X] = BasePathFinder.TypeOfSpace.End;
-				//	path = new List<Point>();
-					this.pathFinder.findPath(this.Board);
-					path = this.pathFinder.Path;
-					// reset our pieces back
-					this.Board[start.Y, start.X] = previousStartSpot;
-					this.Board[end.Y, end.X] = previousEndSpot;
+				//}
+				this.Board[end.Y, end.X] = BasePathFinder.TypeOfSpace.End;
+				this.pathFinder.findPath(this.Board);
+
+				path = this.pathFinder.Path;
+				// reset our pieces back
+				this.Board[start.Y, start.X] = previousStartSpot;
+				this.Board[end.Y, end.X] = previousEndSpot;
+				if (this.Board[end.Y, end.X] == BasePathFinder.TypeOfSpace.Unwalkable) {
+					if (this.pathFinder.LowestCost != null) {
+						path = findPath(start, this.pathFinder.LowestCost.Position);
+					}
 				}
 			}
 			return path;

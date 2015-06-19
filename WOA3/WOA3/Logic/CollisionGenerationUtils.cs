@@ -13,6 +13,8 @@ namespace WOA3.Logic {
 
 
 		public static BoundingBox generateBoundingBoxesForTexture(Texture2D texture, Vector2 position) {
+			return getBBox(position);
+			/*
 			BoundingBox bbox = getBBox(position);
 			float halfTile = Constants.TILE_SIZE / 2;
 			float quarterTile = Constants.TILE_SIZE / 4;
@@ -32,7 +34,7 @@ namespace WOA3.Logic {
 			} else {
 				throw new Exception("Cannot load BBox for: " + texture.Name);
 			}
-			return bbox;
+			return bbox;*/
 		}
 
 		public static BoundingBox getBBox(Vector2 position) {
