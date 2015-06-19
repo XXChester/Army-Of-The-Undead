@@ -56,11 +56,13 @@ WOAContent\SpriteFont1.xnb
 WOAContent\Wave.xnb
 WOAContent\Restart.xnb
 WOAContent\WaveEffect.xnb
+WOAContent\Monster1Death.xnb
+WOAContent\Monster2Death.xnb
 WOAContent\Background.wma
 WOAContent\Data\Tutorial.xml
-WOAContent\Data\MapIdentifiers.xml
+WOAContent\Data\Map2Identifiers.xml
 WOAContent\Data\IdentifiersTemplate.xml
-WOAContent\Data\Map.XML
+WOAContent\Data\Map2.XML
 WOAContent\Data\Map1.XML
 WOAContent\Data\Map1Identifiers.xml
 WOAContent\Data\TutorialIdentifiers.xml

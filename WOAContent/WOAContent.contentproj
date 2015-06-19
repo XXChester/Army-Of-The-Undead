@@ -273,6 +273,16 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
+    <Compile Include="Monster1Death.png">
+      <Name>Monster1Death</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Monster2Death.png">
+      <Name>Monster2Death</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
     <None Include="Data\Map1.XML">
       <Name>Map1</Name>
       <Importer>XmlImporter</Importer>

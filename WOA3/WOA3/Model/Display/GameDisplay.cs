@@ -166,10 +166,8 @@ namespace WOA3.Model.Display {
 				};
 				Animated2DSpriteLoadSingleRowBasedOnTexture parms = new Animated2DSpriteLoadSingleRowBasedOnTexture() {
 					AnimationParams = animationParms,
-					//Position = Vector2.Subtract(position, new Vector2(Constants.TILE_SIZE)),
 					Position = position,
 					LightColour = Color.White,
-					Origin = new Vector2(Constants.TILE_SIZE),
 					Texture = LoadingUtils.load<Texture2D>(content, texture)
 				};
 				
