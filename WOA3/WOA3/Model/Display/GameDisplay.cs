@@ -315,17 +315,13 @@ namespace WOA3.Model.Display {
 				Wall collidedWith = null;
 				if (ghost.isVisible()) {
 					foreach (var mob in mobs) {
-						//Vector3 min = Vector2.Min(ghost.Position, mob.Position).toVector3();
-						//Vector3 max = Vector2.Max(ghost.Position, mob.Position).toVector3();
-						Vector3 left = new Vector2(ghost.Position.X, mob.Position.Y).toVector3();
-						Vector3 right = new Vector2(mob.Position.X, ghost.Position.Y).toVector3();
-						//Vector3 min = ghost.Position.toVector3();
-						//Vector3 max =mob.Position.toVector3();
-						BoundingBox bbox = new BoundingBox(left, right);
+						Vector3 min = Vector2.Min(ghost.Position, mob.Position).toVector3();
+						Vector3 max = Vector2.Max(ghost.Position, mob.Position).toVector3();
+						BoundingBox bbox = new BoundingBox(min, max);
 						
 #if DEBUG
 						if (mob.GetType() ==  typeof(Devil)) {
-							this.bboxes.Add(new Vector3[] { left, right });
+							this.bboxes.Add(new Vector3[] { min, max });
 						}
 #endif
 						Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
