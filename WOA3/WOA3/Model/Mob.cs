@@ -164,7 +164,7 @@ namespace WOA3.Model {
 			if (this.onDeath != null) {
 				this.onDeath.Invoke(base.Position);
 			}
-			return new CorpseExplode(content, CorpseExplosionDamage, Position);
+			return new CorpseExplode(CorpseExplosionDamage);
 		}
 
 		public override List<SkillResult> performSkills() {

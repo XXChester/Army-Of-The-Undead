@@ -72,6 +72,7 @@ namespace WOA3.Model.Display {
 			initDelegates();
 			loadMap();
 			CombatManager.getInstance().init();
+			EffectsManager.getInstance().init();
 		}
 
 		private void loadMap() {
@@ -330,6 +331,7 @@ namespace WOA3.Model.Display {
 				}
 				this.hud.update(elapsed);
 				CombatManager.getInstance().update(elapsed);
+				EffectsManager.getInstance().update(elapsed);
 			}
 #if DEBUG
 			MapEditor.getInstance().update();
@@ -337,6 +339,7 @@ namespace WOA3.Model.Display {
 		}
 
 		public virtual void render(SpriteBatch spriteBatch) {
+			EffectsManager.getInstance().render(spriteBatch);
 			foreach (var ghost in this.allGhosts) {
 				ghost.render(spriteBatch);
 			}

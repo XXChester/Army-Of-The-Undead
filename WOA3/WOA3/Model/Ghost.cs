@@ -92,9 +92,55 @@ namespace WOA3.Model {
 				this.observerHandler.notifyGhostChange(this);
 			};
 
+			VisualCallback shriek = delegate() {
+				int alpha = 255;
+				resetFadeEffect(this.fadeEffect, alpha, FadeEffect.FadeState.PartialIn);
+				resetFadeEffect(this.selectedFadeEffect, alpha, FadeEffect.FadeState.PartialIn);
+				this.state = State.Visisble;
+
+				StaticDrawable2DParams parms = new StaticDrawable2DParams() {
+					Position = Vector2.Add(base.Position, new Vector2(0f, Constants.TILE_SIZE /4)),
+					LightColour = Color.Orange,
+					Origin = new Vector2(Constants.TILE_SIZE),
+					Texture = LoadingUtils.load<Texture2D>(content, "Wave")
+				};
+				ScaleOverTimeEffectParams scaleParms = new ScaleOverTimeEffectParams() {
+					ScaleBy = new Vector2(300f, 150f)
+				};
+				ScaleOverTimeEffect scaleEffect = new ScaleOverTimeEffect(scaleParms);
+
+				StaticDrawable2D shockWave = new StaticDrawable2D(parms);
+				shockWave.addEffect(scaleEffect);
+				VisualEffect effect = new VisualEffect(shockWave);
+				EffectsManager.getInstance().Visuals.Add(effect);
+			};
+
+			VisualCallback boo = delegate() {
+				int alpha = 255;
+				resetFadeEffect(this.fadeEffect, alpha, FadeEffect.FadeState.PartialIn);
+				resetFadeEffect(this.selectedFadeEffect, alpha, FadeEffect.FadeState.PartialIn);
+				this.state = State.Visisble;
+
+				StaticDrawable2DParams parms = new StaticDrawable2DParams() {
+					Position = Vector2.Add(base.Position, new Vector2(0f, Constants.TILE_SIZE / 4)),
+					LightColour = Color.Green,
+					Origin = new Vector2(Constants.TILE_SIZE),
+					Texture = LoadingUtils.load<Texture2D>(content, "Wave")
+				};
+				ScaleOverTimeEffectParams scaleParms = new ScaleOverTimeEffectParams() {
+					ScaleBy = new Vector2(300f, 150f)
+				};
+				ScaleOverTimeEffect scaleEffect = new ScaleOverTimeEffect(scaleParms);
+
+				StaticDrawable2D shockWave = new StaticDrawable2D(parms);
+				shockWave.addEffect(scaleEffect);
+				VisualEffect effect = new VisualEffect(shockWave);
+				EffectsManager.getInstance().Visuals.Add(effect);
+			};
+
 			this.aggressiveSkills = new Dictionary<Keys, Skill>();
-			this.aggressiveSkills.Add(Keys.D1, new Boo(appear));
-			this.aggressiveSkills.Add(Keys.D2, new Shriek(appear));
+			this.aggressiveSkills.Add(Keys.D1, new Boo(boo));
+			this.aggressiveSkills.Add(Keys.D2, new Shriek(shriek));
 
 			this.passiveskills = new Dictionary<Keys, Skill>();
 			this.passiveskills.Add(Keys.D3, new Appear(appear));

@@ -166,6 +166,8 @@
     <Compile Include="Map\MonsterType.cs" />
     <Compile Include="Map\SpecializedLoadResult.cs" />
     <Compile Include="Model\Character.cs" />
+    <Compile Include="Model\EffectsManager.cs" />
+    <Compile Include="Model\VisualEffect.cs" />
     <Compile Include="Model\Yeti.cs" />
     <Compile Include="Model\Devil.cs" />
     <Compile Include="Model\Display\BaseMenu.cs" />
