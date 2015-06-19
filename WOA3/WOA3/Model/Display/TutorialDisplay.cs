@@ -8,6 +8,8 @@ using GWNorthEngine.Input;
 using GWNorthEngine.Utils;
 using GWNorthEngine.Model;
 using GWNorthEngine.Model.Params;
+using GWNorthEngine.Model.Effects;
+using GWNorthEngine.Model.Effects.Params;
 
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -26,7 +28,12 @@ namespace WOA3.Model.Display {
 	public class TutorialDisplay : GameDisplay {
 		#region Class variables
 		private TutorialScenario activeScenario;
+		private GameStateMachine gameStateMachine;
 		private Queue<TutorialScenario> activeScenarios;
+		private int scenario;
+		private List<TexturedEffectButton> buttons;
+
+		private readonly string[] BUTTON_NAMES = { "Reset", "Menu" };
 		#endregion Class variables
 
 		#region Class propeties
@@ -34,7 +41,25 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public TutorialDisplay(GraphicsDevice graphics, ContentManager content, GameStateMachine gameStateMachine) :base(graphics, content, "Tutorial") {
+		public TutorialDisplay(GraphicsDevice graphics, ContentManager content, GameStateMachine gameStateMachine) :base(graphics, content, "Tutorial") {			
+			float xBuffer = 256;
+			float yBuffer = 128;
+			float leftSideX = Constants.RESOLUTION_X  - xBuffer;
+			float y = Constants.RESOLUTION_Y - yBuffer;
+
+			this.gameStateMachine = gameStateMachine;
+			this.buttons = new List<TexturedEffectButton>();
+			this.buttons.Add(ModelGenerationUtil.createButton(content, new Vector2(leftSideX,y), BUTTON_NAMES[0]));
+			this.buttons.Add(ModelGenerationUtil.createButton(content, new Vector2(xBuffer, y), BUTTON_NAMES[1]));
+
+			init(0);
+		}
+		#endregion Constructor
+
+		#region Support methods
+		
+		private void init(int active) {
+			base.init(true);
 			Constants.ALLOW_MOB_ATTACKS = false;
 			Constants.ALLOW_PLAYER_ATTACKS = false;
 			Ghost ghost = this.allGhosts[0];
@@ -47,25 +72,44 @@ namespace WOA3.Model.Display {
 			this.activeScenarios.Enqueue(new EnemySpawnTutorial(content, "EnemySpawn", ghost, mob));
 			this.activeScenarios.Enqueue(new EvadeTutorial(content, "Evade", ghost, mob));
 			this.activeScenarios.Enqueue(new KillingTutorial(content, "Killing", ghost, mob, this.allGhosts));
-			this.activeScenarios.Enqueue(new ArmyTutorial(content, "Army", ghost, mob, allGhosts, gameStateMachine));
+			this.activeScenarios.Enqueue(new ArmyTutorial(content, "Army", ghost, mob, allGhosts, this.gameStateMachine));
+			for (int i = 0; i <= active; i++) {
+				// the last scenario requires 2 ghosts
+				if (0 == this.activeScenarios.Count - 1) {
+					break;
+				}
+				this.activeScenario = this.activeScenarios.Dequeue();
+			}
 
-			this.activeScenario = this.activeScenarios.Dequeue();
-			
+			this.scenario = active;
 		}
-		#endregion Constructor
-
-		#region Support methods
 
 		public override void update(float elapsed) {
 			base.update(elapsed);
+			foreach (TexturedEffectButton button in this.buttons) {
+				button.update(elapsed);
+				button.processActorsMovement(InputManager.getInstance().MousePosition);
+			}
+			if (InputManager.getInstance().wasLeftButtonPressed()) {
+				foreach (TexturedEffectButton button in this.buttons) {
+					if (button.isActorOver(InputManager.getInstance().MousePosition)) {
+						// we clicked a button
+						if (button.Texture.Name.Equals(BUTTON_NAMES[0])) {
+							init(this.scenario);
+						} else if (button.Texture.Name.Equals(BUTTON_NAMES[1])) {
+							this.gameStateMachine.goToPreviousState();
+						}
+						break;
+					}
+				}
+			}
 
 			if (this.activeScenario != null) {
 				this.activeScenario.update(elapsed);
 				if (this.activeScenario.Completed) {
 					if (this.activeScenarios.Count > 0) {
 						this.activeScenario = this.activeScenarios.Dequeue();
-					} else {
-						//DO SOMETHING!!
+						this.scenario ++;
 					}
 				}
 			}
@@ -73,6 +117,14 @@ namespace WOA3.Model.Display {
 
 		public override void render(SpriteBatch spriteBatch) {
 			base.render(spriteBatch);
+			foreach (TexturedEffectButton button in this.buttons) {
+				button.render(spriteBatch);
+#if DEBUG
+				if (Debug.debugOn) {
+					DebugUtils.drawRectangle(spriteBatch, button.PickableArea, Debug.DEBUG_BBOX_Color, Debug.debugChip);
+				}
+#endif
+			}
 			if (this.activeScenario != null) {
 				this.activeScenario.render(spriteBatch);
 			}

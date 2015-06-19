@@ -173,7 +173,7 @@ namespace WOA3.Engine {
 				//SpawnGenerator.getInstance().Running = false;
 				//this.Exit();
 			}
-
+			Debug.update();
 #endif
 			if (InputManager.getInstance().wasKeyPressed(Keys.Escape)) {
 				this.stateMachine.goToPreviousState();

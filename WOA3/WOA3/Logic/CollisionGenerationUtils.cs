@@ -58,5 +58,10 @@ namespace WOA3.Logic {
 				new Vector3(Vector2.Add(position, new Vector2(-(Constants.TILE_SIZE /3), Constants.TILE_SIZE / 4)), 0f),
 				new Vector3(Vector2.Add(position, new Vector2(Constants.TILE_SIZE / 3, Constants.TILE_SIZE / 2)), 0f));
 		}
+
+		public static Rectangle getButtonRectangle(Vector2 origin, Vector2 position) {
+			float originY = origin.Y / 2 + 4f;
+			return new Rectangle((int)(position.X - origin.X), (int)(position.Y - originY), 256, 70);
+		}
 	}
 }

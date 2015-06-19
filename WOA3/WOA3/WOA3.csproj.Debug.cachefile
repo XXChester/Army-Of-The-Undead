@@ -50,6 +50,8 @@ WOAContent\TutorialComplete.xnb
 WOAContent\Exit.xnb
 WOAContent\PlayGame.xnb
 WOAContent\Tutorial.xnb
+WOAContent\Reset.xnb
+WOAContent\Menu.xnb
 WOAContent\Background.wma
 WOAContent\Data\Tutorial.xml
 WOAContent\Data\MapIdentifiers.xml

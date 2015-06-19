@@ -56,21 +56,22 @@ namespace WOA3.Model.Display {
 		#endregion Constructor
 
 		#region Support methods
-		private void init(bool fullRegen = false) {
-
-			this.ghostObserverHandler = new GhostObservationHandler();
-			this.hud = new HUD(content);
-			initDelegates();
-			loadMap();
-			CombatManager.getInstance().init();
-
+		protected void init(bool fullRegen = false) {
 			if (fullRegen) {
+				this.allGhosts.Clear();
+				this.mobs.Clear();
+				this.map = null;
 				/*this.backGround = new BackGround(this.content);
 				this.hud = new HUD(this.content);
 				this.foodManager = new FoodManager(content, this.rand);
 				this.portals = new PortalManager(content, this.rand);
 				this.walls = new WallManager(content, this.rand);*/
 			}
+			this.ghostObserverHandler = new GhostObservationHandler();
+			this.hud = new HUD(content);
+			initDelegates();
+			loadMap();
+			CombatManager.getInstance().init();
 		}
 
 		private void loadMap() {
@@ -321,7 +322,6 @@ namespace WOA3.Model.Display {
 				CombatManager.getInstance().update(elapsed);
 			}
 #if DEBUG
-			Debug.update();
 			MapEditor.getInstance().update();
 #endif
 		}

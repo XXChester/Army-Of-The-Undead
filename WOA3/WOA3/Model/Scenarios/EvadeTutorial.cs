@@ -27,6 +27,8 @@ namespace WOA3.Model.Scenarios {
 		public EvadeTutorial(ContentManager content, string scenarioName, Ghost ghost, Mob mob)
 			: base(content, scenarioName, ghost, mob) {
 			mob.Inactive = false;
+			// 70, 250
+			this.goal = new BoundingBox(new Vector3(70, 250, 0), new Vector3(150, 300, 0));
 			this.hasBeenChased = false;
 		}
 

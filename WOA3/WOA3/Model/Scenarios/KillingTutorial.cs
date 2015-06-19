@@ -20,7 +20,7 @@ using WOA3.Logic.AI;
 using WOA3.Engine;
 using WOA3.Map;
 namespace WOA3.Model.Scenarios {
-	public class KillingTutorial : EvadeTutorial {
+	public class KillingTutorial : TutorialScenario {
 		List<Ghost> allGhosts;
 
 		public KillingTutorial(ContentManager content, string scenarioName, Ghost ghost, Mob mob, List<Ghost> allGhosts)

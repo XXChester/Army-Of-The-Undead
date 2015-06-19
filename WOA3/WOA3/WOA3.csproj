@@ -169,6 +169,7 @@
     <Compile Include="Model\Display\MenuDisplay.cs" />
     <Compile Include="Model\Display\TutorialComplete.cs" />
     <Compile Include="Model\Display\TutorialDisplay.cs" />
+    <Compile Include="Model\ModelGenerationUtil.cs" />
     <Compile Include="Model\Scenarios\ArmyTutorial.cs" />
     <Compile Include="Model\Scenarios\KillingTutorial.cs" />
     <Compile Include="Model\Scenarios\EvadeTutorial.cs" />
