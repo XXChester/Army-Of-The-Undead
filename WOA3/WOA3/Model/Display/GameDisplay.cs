@@ -272,18 +272,18 @@ namespace WOA3.Model.Display {
 			// cast a ray from our chaser to the target. If this ray hits the target, test it against all other objects
 			ClosestSeeable closestSeeable = getClosestGhost();
 			foreach (var ghost in allGhosts) {
-				bool ghostInWall = false;
 				Wall collidedWith = null;
 				if (ghost.isVisible()) {
-				ghostInWall: if (ghostInWall) {
-						// if the ghost is in a wall, skip him
-						continue;
-					}
 					foreach (var mob in mobs) {
+						Vector3 min = Vector2.Min(ghost.Position, mob.Position).toVector3();
+						Vector3 max = Vector2.Max(ghost.Position, mob.Position).toVector3();
+						BoundingBox bbox = new BoundingBox(min, max);
+
 						Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
 						Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
 						bool pathing = mob.isPathing();
 						bool hitWall = false;
+						bool pathBlocked = false;
 						if (distanceToTarget != null) {
 							foreach (Wall wall in map.Walls) {
 								// is the ghost in a wall?
@@ -296,20 +296,25 @@ namespace WOA3.Model.Display {
 									hitWall = true;
 									collidedWith = wall;
 								}
+
+								if (wall.BBox.Intersects(bbox)) {
+									pathBlocked = true;
+								}
 							}
 						}
 
 
 
 						//if (!mob.isPathing()) {
-						if (closestSeeable != null) {
+						if (closestSeeable != null && !pathBlocked) {
 								mob.Subscribe(this.ghostObserverHandler, ghost);
 						/*} else if ((mob.isPathing() || mob.isTracking())  && closestSeeable == null) {
 							mob.lostTarget();*/
 						} else if (hitWall) {
-							if (!mob.isPathing()) {
+							/*if (!mob.isPathing()) {
 								mob.pathToWaypoint();
-							}
+							}*/
+							mob.lostTarget();
 						} else if (!mob.isLost()) {
 							mob.Unsubscribe();
 						}

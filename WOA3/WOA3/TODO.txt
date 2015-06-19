@@ -25,12 +25,12 @@
 []AI can walk through walls sometimes
 [*]Once we change to pathing but get around the walls, we should ray cast the target to see if we can go back to tracking the lost target
 []Enemy AI needs to stop when close and start fighting
-[]Seems as once a single enemy can see the ghost, they all can
+[*]Seems as once a single enemy can see the ghost, they all can
 []can damage through walls
 []New mob spawn gets hit with damage
 [*]Mobs only perform their skills once, after that they cannot find ghosts in range
-[]If we don't get a path, end the behaviour
-[]If a ghost goes into a wall visible, the mobs get stuck
+[*]If we don't get a path, end the behaviour
+[*]If a ghost goes into a wall visible, the mobs get stuck
 []AI manager crashes in weird scenarios
 []AI follows the player into a wall if the player clicks in (try around the border)
 [*]Tutorial Scenario reset
