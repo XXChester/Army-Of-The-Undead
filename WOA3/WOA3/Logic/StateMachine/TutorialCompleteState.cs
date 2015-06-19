@@ -16,7 +16,7 @@ namespace WOA3.Logic.StateMachine {
 		}
 		
 		protected override IRenderable createInstance() {
-			return new TutorialComplete(content);
+			return new TutorialComplete(content, stateMachine);
 		}
 
 		public override void goToPreviousState() {
@@ -29,6 +29,7 @@ namespace WOA3.Logic.StateMachine {
 				Ghosts = new List<Model.Ghost>(),
 				MapIndex = 1
 			};
+			this.stateMachine.LevelContext = context;
 			changeState(stateMachine.GameDisplay);
 			base.goToNextState();
 		}

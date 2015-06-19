@@ -27,6 +27,7 @@ namespace WOA3.Model.Display {
 		protected ContentManager content;
 		protected string mapName;
 		protected GameStateMachine gameStateMachine;
+		private bool mapLoaded;
 
 		protected Map map;
 		protected HUD hud;
@@ -57,6 +58,7 @@ namespace WOA3.Model.Display {
 			init(true);
 			Constants.ALLOW_MOB_ATTACKS = false;
 			Constants.ALLOW_PLAYER_ATTACKS = true;
+			this.mapLoaded = true;
 		}
 		#endregion Constructor
 
@@ -72,7 +74,7 @@ namespace WOA3.Model.Display {
 			initDelegates();
 			loadMap();
 			// if we have ghosts left over, we need to preserve them
-			if (this.gameStateMachine.LevelContext.Ghosts != null) {
+			if (this.gameStateMachine.LevelContext != null && this.gameStateMachine.LevelContext.Ghosts != null) {
 				Ghost primary = this.allGhosts[0];
 				Ghost ghost = null;
 				for (int i = 1; i <= this.gameStateMachine.LevelContext.Ghosts.Count; i++) {
@@ -341,16 +343,12 @@ namespace WOA3.Model.Display {
 
 		protected virtual bool winConditionAchieved() {
 			bool win = false;
-			foreach (var mob in mobs) {
-				if (!mob.Health.amIDead()) {
-					win = true;
-					break;
-				}
-			}
-			foreach (var ghost in this.allGhosts) {
-				if (!ghost.Health.amIDead()) {
-					win = true;
-					break;
+			if (this.mapLoaded) {
+				win = true;
+				foreach (var mob in mobs) {
+					if (!mob.Health.amIDead()) {
+						win = false;
+					}
 				}
 			}
 			return win;
@@ -374,8 +372,10 @@ namespace WOA3.Model.Display {
 			if (!atleastOneGhostAlive) {
 				((GameDisplayState)this.gameStateMachine.CurrentState).goToGameOver();
 			} else if (winConditionAchieved()) {
-				LevelContext context = gameStateMachine.LevelContext;
-				context.Ghosts = this.allGhosts;
+				LevelContext context = new LevelContext() {
+					Ghosts = allGhosts,
+					MapIndex = gameStateMachine.LevelContext.MapIndex
+				};
 				gameStateMachine.LevelContext = context;
 				this.gameStateMachine.goToNextState();
 			}

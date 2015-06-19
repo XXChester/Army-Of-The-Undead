@@ -34,9 +34,6 @@ namespace WOA3.Logic.StateMachine {
 		}
 
 		public void goToGameOver() {
-			LevelContext context = stateMachine.LevelContext;
-			context.MapIndex = 1;
-			stateMachine.LevelContext = context;
 			changeState(stateMachine.GameOverState);
 		}
 	}

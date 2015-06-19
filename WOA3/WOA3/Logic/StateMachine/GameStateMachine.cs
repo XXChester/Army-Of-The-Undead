@@ -30,17 +30,15 @@ namespace WOA3.Logic.StateMachine {
 			this.MainMenu = new MainMenuState(this, device, content);
 			this.GameOverState = new GameOverState(this, device, content);
 
-			this.LevelContext = new LevelContext() {
-				MapIndex = 1
-			};
+			this.LevelContext = null;
 
 			//this.CurrentState = this.CompanyCinematic;
 			//this.CurrentState = this.GameDevCinematic;
 			//this.CurrentState = this.MainMenu;
-			this.CurrentState = this.GameDisplay;
+			//this.CurrentState = this.GameDisplay;
 			//this.CurrentState = this.GameOverState;
 			//this.CurrentState = Tutorial;
-			//this.CurrentState = TutorialComplete;
+			this.CurrentState = TutorialComplete;
 			this.CurrentState.reset();
 
 			setStates();

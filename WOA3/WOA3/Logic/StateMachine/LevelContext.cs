@@ -23,7 +23,7 @@ using WOA3.Map;
 using WOA3.Model;
 
 namespace WOA3.Logic.StateMachine {
-	public struct LevelContext {
+	public class LevelContext {
 		public List<Ghost> Ghosts { get; set; }
 		public int MapIndex { get; set; }
 	}
