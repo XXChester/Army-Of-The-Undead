@@ -142,7 +142,7 @@ namespace WOA3.Engine {
 					results = (string[])loadObject<string>(doc, state.ToString(), searchStrings, i);
 					loadResult = new SpecializedLoadResult();
 					loadResult.Start = points[i];
-					loadResult.Type = results[0];
+					loadResult.TypeOfMob = (MonsterType) Enum.Parse(typeof(MonsterType), results[0]);
 					spikeInfos.Add(loadResult);
 				}
 			} catch (Exception) {
@@ -150,7 +150,7 @@ namespace WOA3.Engine {
 			}
 		}
 
-		public static void loadMonsterInformation(XmlDocument doc, ref List<SpecializedLoadResult> monsterInfos) {
+		/*public static void loadMonsterInformation(XmlDocument doc, ref List<SpecializedLoadResult> monsterInfos) {
 			try {
 				XmlNodeList nodes = doc.GetElementsByTagName(MapEditor.MappingState.Monster.ToString());
 				string[] typeSearchString = new string[] { MapEditor.XML_TYPE};
@@ -162,19 +162,15 @@ namespace WOA3.Engine {
 					typeResults = (string[])loadObject<string>(doc, MapEditor.MappingState.Monster.ToString(), typeSearchString, i);
 
 					monsterInfo = new SpecializedLoadResult();
-					monsterInfo.Type = typeResults[0];
+					monsterInfo.TypeOfMob = (MonsterType)Enum.Parse(typeof(MonsterType), typeResults[0]);
 
-					loadGenericPointList(doc, MapEditor.XML_PATH_START, out points);
-					monsterInfo.Start = points[i];
-
-					loadGenericPointList(doc, MapEditor.XML_PATH_END, out points);
-					monsterInfo.End = points[i];
+				
 
 					monsterInfos.Add(monsterInfo);
 				}
 			} catch (Exception) {
 				// do nothing else with the error as the map is obviously in development stages
 			}
-		}
+		}*/
 	}
 }

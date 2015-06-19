@@ -7,28 +7,14 @@
   </PlayerInformation>
   <MonsterInformation>
     <Monster>
-      <X>31</X>
-      <Y>2</Y>
-    </Monster>
-    <Monster>
-      <X>22</X>
-      <Y>18</Y>
-    </Monster>
-    <Monster>
-      <X>2</X>
-      <Y>19</Y>
-    </Monster>
-    <Monster>
-      <X>2</X>
-      <Y>12</Y>
+      <X>24</X>
+      <Y>6</Y>
+      <Type>Devil</Type>
     </Monster>
     <Monster>
       <X>15</X>
-      <Y>9</Y>
-    </Monster>
-    <Monster>
-      <X>22</X>
-      <Y>6</Y>
+      <Y>11</Y>
+      <Type>Yeti</Type>
     </Monster>
   </MonsterInformation>
 </MapIdentifier>

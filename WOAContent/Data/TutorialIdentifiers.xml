@@ -9,6 +9,7 @@
     <Monster>
       <X>22</X>
       <Y>15</Y>
+      <Type>Devil</Type>
     </Monster>
   </MonsterInformation>
 </MapIdentifier>

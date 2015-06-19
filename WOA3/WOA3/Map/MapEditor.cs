@@ -32,22 +32,25 @@ namespace WOA3.Map {
 
 		private struct CreatedType {
 			public MappingState objType;
+			public MonsterType type;
 			public Point position;
 			public Point endPosition;
-			public string subType;
 		}
 		#endregion Debug class variables
 #endif
 
 		#region Class variables
 		private MappingState mappingState;
+		private MonsterType type;
 		//private Point endPosition;
 		private const string COMMAND_NONE = "none";
 		private const string COMMAND_PLAYER_POSITION = "playerposition";
 		/*private const string COMMAND_SPIKE = "spike";
 		private const string COMMAND_FISH = "fish";
 		private const string COMMAND_GOAL = "goal";*/
-		private const string COMMAND_MONSTER = "monster";
+		//private const string COMMAND_MONSTER = "monster";
+		private const string COMMAND_DEVIL = "devil";
+		private const string COMMAND_YETI = "yeti";
 		/*public const string COMMAND_CRATE = "crate";
 		public const string COMMAND_SPIKE_LAUNCHER = "spikelauncher";
 		public const string COMMAND_HEALTH_KIT = "healthkit";*/
@@ -93,7 +96,8 @@ namespace WOA3.Map {
 			Console.WriteLine("LaunchDirection - Up | Down | Left | Right");
 			Console.WriteLine("Monster(Left click starts, Left click + E = end) - " + COMMAND_MONSTER);
 			Console.WriteLine("MonsterType - " + MONSTER_TYPE_ZOOM);*/
-			Console.WriteLine("Monster spawn location - " + COMMAND_MONSTER);
+			Console.WriteLine("Devil spawn location - " + COMMAND_DEVIL);
+			Console.WriteLine("Yeti spawn location - " + COMMAND_YETI);
 			Console.WriteLine("Path Length - Length");
 		}
 
@@ -107,9 +111,17 @@ namespace WOA3.Map {
 				case COMMAND_PLAYER_POSITION:
 					this.mappingState = MappingState.PlayerStart;
 					break;
-				case COMMAND_MONSTER:
+				case COMMAND_DEVIL:
 					this.mappingState = MappingState.Monster;
+					this.type = MonsterType.Devil;
 					break;
+				case COMMAND_YETI:
+					this.mappingState = MappingState.Monster;
+					this.type = MonsterType.Yeti;
+					break;
+				/*case COMMAND_MONSTER:
+					this.mappingState = MappingState.Monster;
+					break;*/
 				default:
 					Console.WriteLine("Failed to recognize your command, try using the editMapHelp()");
 					break;
@@ -144,28 +156,31 @@ namespace WOA3.Map {
 			Point indexPosition;
 			Point endPosition;
 			StringBuilder xml = new StringBuilder();
-			foreach (CreatedType type in this.createdObjects) {
-				indexPosition = type.position;
-				endPosition = type.endPosition;
-				switch (type.objType) {
-					case MappingState.Monster:
-						xml.Append("\n\t\t<" + type.objType + ">");
-						xml.Append("\n\t\t\t<" + XML_X + ">" + indexPosition.X + "</" + XML_X + ">");
-						xml.Append("\n\t\t\t<" + XML_Y + ">" + indexPosition.Y + "</" + XML_Y + ">");
-						xml.Append("\n\t\t</" + type.objType + ">");
-						break;
-					default:
-						if (type.objType != MappingState.None) {
+			if (this.createdObjects != null) {
+				foreach (CreatedType type in this.createdObjects) {
+					indexPosition = type.position;
+					endPosition = type.endPosition;
+					switch (type.objType) {
+						case MappingState.Monster:
 							xml.Append("\n\t\t<" + type.objType + ">");
 							xml.Append("\n\t\t\t<" + XML_X + ">" + indexPosition.X + "</" + XML_X + ">");
 							xml.Append("\n\t\t\t<" + XML_Y + ">" + indexPosition.Y + "</" + XML_Y + ">");
+							xml.Append("\n\t\t\t<" + XML_TYPE + ">" + type.type + "</" + XML_TYPE + ">");
 							xml.Append("\n\t\t</" + type.objType + ">");
-						}
-						break;
+							break;
+						default:
+							if (type.objType != MappingState.None) {
+								xml.Append("\n\t\t<" + type.objType + ">");
+								xml.Append("\n\t\t\t<" + XML_X + ">" + indexPosition.X + "</" + XML_X + ">");
+								xml.Append("\n\t\t\t<" + XML_Y + ">" + indexPosition.Y + "</" + XML_Y + ">");
+								xml.Append("\n\t\t</" + type.objType + ">");
+							}
+							break;
+					}
 				}
-			}
-			if (this.createdObjects.Count >= 1) {
-				ScriptManager.getInstance().log(xml.ToString());
+				if (this.createdObjects.Count >= 1) {
+					ScriptManager.getInstance().log(xml.ToString());
+				}
 			}
 		}
 		#endregion Destructor

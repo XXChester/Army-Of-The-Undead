@@ -10,7 +10,7 @@ namespace WOA3.Map {
 		#region Properties
 		public Point Start { get; set; }
 		public Point End { get; set; }
-		public string Type { get; set; }
+		public MonsterType TypeOfMob { get; set; }
 		#endregion Properties
 	}
 }

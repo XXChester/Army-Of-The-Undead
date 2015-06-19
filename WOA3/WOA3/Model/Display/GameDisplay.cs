@@ -82,7 +82,7 @@ namespace WOA3.Model.Display {
 			XmlReader xmlReader = XmlReader.Create(Constants.MAP_DIRECTORY + this.mapName + "Identifiers" + suffix);
 
 			Point ghostStart = new Point();
-			List<Point> monsterInfos = new List<Point>();
+			List<SpecializedLoadResult> monsterInfos = new List<SpecializedLoadResult>();
 			try {
 				XmlDocument doc = new XmlDocument();
 				doc.Load(xmlReader);
@@ -92,13 +92,19 @@ namespace WOA3.Model.Display {
 
 				MapLoader.loadPlayerInformation(doc, ref ghostStart);
 
-				MapLoader.loadGenericPointList(doc, MapEditor.MappingState.Monster, out monsterInfos);
+				MapLoader.loadSpecializedInformation(doc, MapEditor.MappingState.Monster, ref monsterInfos);
+				//MapLoader.loadMonsterInformation(doc, ref monsterInfos);
+				//MapLoader.loadGenericPointList(doc, MapEditor.MappingState.Monster, out monsterInfos);
 			} finally {
 				xmlReader.Close();
 			}
 
 			foreach (var mobInfo in monsterInfos) {
-				this.mobs.Add(new Mob(content, mobInfo.toVector2(), this.ghostsInRange, this.mobDeathFinish, this.collisionCheck));
+				if (mobInfo.TypeOfMob == MonsterType.Devil) {
+					this.mobs.Add(new Mob(content, mobInfo.Start.toVector2(), this.ghostsInRange, this.mobDeathFinish, this.collisionCheck));
+				} else if (mobInfo.TypeOfMob == MonsterType.Yeti) {
+
+				}
 			}
 			this.allGhosts.Add(new Ghost(content, ghostStart.toVector2(), this.ghostObserverHandler, this.mobsInRange));
 		}
