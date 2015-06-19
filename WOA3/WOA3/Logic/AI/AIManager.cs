@@ -94,18 +94,6 @@ namespace WOA3.Logic.AI {
 				BasePathFinder.TypeOfSpace previousStartSpot = this.Board[start.Y, start.X];
 				BasePathFinder.TypeOfSpace previousEndSpot = this.Board[end.Y, end.X];
 				this.Board[start.Y, start.X] = BasePathFinder.TypeOfSpace.Start;
-				// if our end location is unwalkable, we need to derive a closer end
-				//if (this.Board[end.Y, end.X] == BasePathFinder.TypeOfSpace.Unwalkable) {
-				//Vector2 direction = Vector2.Normalize(start.toVector2() - end.toVector2());
-				// we now know our location relative to the end node
-				//Point newEnd = Vector2.Subtract(direction, end.toVector2()).toPoint();
-				//path = findPath(start, newEnd);
-				//PathNode nearestWalkable = BasePath
-				//Debug.log("HERE WE ARE");
-				// we ran out of bounds
-				//if (path == null) {
-
-				//}
 				this.Board[end.Y, end.X] = BasePathFinder.TypeOfSpace.End;
 				this.pathFinder.findPath(this.Board);
 
