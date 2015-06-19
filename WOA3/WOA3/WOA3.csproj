@@ -128,6 +128,7 @@
     <Compile Include="Logic\Skills\CorpseExplode.cs" />
     <Compile Include="Logic\StateMachine\BaseGameState.cs" />
     <Compile Include="Logic\StateMachine\CompanyCinematicState.cs" />
+    <Compile Include="Logic\StateMachine\GameOverState.cs" />
     <Compile Include="Logic\StateMachine\MainMenuState.cs" />
     <Compile Include="Logic\StateMachine\TutorialCompleteState.cs" />
     <Compile Include="Logic\StateMachine\TutorialState.cs" />
@@ -166,6 +167,7 @@
     <Compile Include="Map\MonsterType.cs" />
     <Compile Include="Map\SpecializedLoadResult.cs" />
     <Compile Include="Model\Character.cs" />
+    <Compile Include="Model\Display\GameOverDisplay.cs" />
     <Compile Include="Model\EffectsManager.cs" />
     <Compile Include="Model\Scenarios\SelectionTutorialScenario.cs" />
     <Compile Include="Model\VisualEffect.cs" />

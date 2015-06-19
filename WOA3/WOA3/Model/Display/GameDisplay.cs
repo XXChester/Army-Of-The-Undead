@@ -17,6 +17,7 @@ using Microsoft.Xna.Framework.Input;
 using WOA3.Logic;
 using WOA3.Logic.Skills;
 using WOA3.Logic.AI;
+using WOA3.Logic.StateMachine;
 using WOA3.Engine;
 using WOA3.Map;
 
@@ -25,7 +26,7 @@ namespace WOA3.Model.Display {
 		#region Class variables
 		protected ContentManager content;
 		protected string mapName;
-
+		protected GameStateMachine gameStateMachine;
 
 		protected Map map;
 		protected HUD hud;
@@ -48,9 +49,10 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public GameDisplay(GraphicsDevice graphics, ContentManager content, String mapName) {
+		public GameDisplay(GraphicsDevice graphics, ContentManager content, String mapName, GameStateMachine stateMachine) {
 			this.content = content;
 			this.mapName = mapName;
+			this.gameStateMachine = stateMachine;
 			init(true);
 		}
 		#endregion Constructor
@@ -302,14 +304,19 @@ namespace WOA3.Model.Display {
 
 		public virtual void update(float elapsed) {
 			if (StateManager.getInstance().CurrentGameState == GameState.Active) {
+				bool atleastOneAlive = false;
 				foreach (var mob in mobs) {
 					mob.update(elapsed);
 				}
 				foreach (var ghost in this.allGhosts) {
 					ghost.update(elapsed);
+					if (!atleastOneAlive && !ghost.Health.amIDead()) {
+						atleastOneAlive = true;
+					}
 				}
-
-				SoundManager.getInstance().update();
+				if (!atleastOneAlive) {
+					((GameDisplayState)this.gameStateMachine.CurrentState).goToGameOver();
+				}
 
 
 				updateFieldOfView(elapsed);
@@ -334,6 +341,7 @@ namespace WOA3.Model.Display {
 				this.hud.update(elapsed);
 				CombatManager.getInstance().update(elapsed);
 				EffectsManager.getInstance().update(elapsed);
+				SoundManager.getInstance().update();
 			}
 #if DEBUG
 			MapEditor.getInstance().update();

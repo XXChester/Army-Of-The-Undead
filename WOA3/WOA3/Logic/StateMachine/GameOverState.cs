@@ -10,23 +10,23 @@ using WOA3.Model.Display;
 
 
 namespace WOA3.Logic.StateMachine {
-	class GameDisplayState : BaseGameState {
+	class GameOverState : BaseGameState {
 
-		public GameDisplayState(GameStateMachine stateMachine, GraphicsDevice device,  ContentManager content)
+		public GameOverState(GameStateMachine stateMachine, GraphicsDevice device, ContentManager content)
 			: base(stateMachine, device, content, null) {
 		}
 
 		protected override IRenderable createInstance() {
-			return new GameDisplay(device, content, "Map", stateMachine);
+			return new GameOverDisplay(device, content, this.stateMachine);
 		}
 
-		public override void goToPreviousState() {
+		public override void goToNextState() {
 			changeState(stateMachine.MainMenu);
-			base.goToPreviousState();
+			base.goToNextState();
 		}
-
-		public void goToGameOver() {
-			changeState(stateMachine.GameOverState);
+		public override void goToPreviousState() {
+			changeState(stateMachine.GameDisplay);
+			base.goToPreviousState();
 		}
 
 		public override void setStates() {
