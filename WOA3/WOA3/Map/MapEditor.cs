@@ -144,7 +144,7 @@ namespace WOA3.Map {
 					type.position = indexPosition;
 					type.objType = this.mappingState;
 					type.endPosition = mousePos.toPoint();
-					this.objectCreator(this.mappingState, mousePos);
+					this.objectCreator(this.mappingState, this.type, mousePos);
 					this.createdObjects.Add(type);
 				}
 			}

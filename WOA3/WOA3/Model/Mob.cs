@@ -24,7 +24,7 @@ using WOA3.Logic.AI;
 using WOA3.Logic.Behaviours;
 
 namespace WOA3.Model {
-	public class Mob : Character, IObserver<Ghost> {
+	public abstract class Mob : Character, IObserver<Ghost> {
 		public enum State { Tracking, LostTarget, Stopped, Pathing, Idle }
 		#region Class variables
 		private TargetBehaviour activeBehaviour;
@@ -35,7 +35,7 @@ namespace WOA3.Model {
 		private Entity tracking;
 		private State previousState;
 		private IDisposable unsubscriber;
-		private List<Skill> skills;
+		protected List<Skill> skills;
 		private OnDeath onDeath;
 		private Point previousPoint;
 
@@ -51,10 +51,10 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Mob(ContentManager content, Vector2 position, CharactersInRange charactersInRange, OnDeath onDeath, CollisionCheck collisionCheck)
+		public Mob(ContentManager content, Vector2 position, CharactersInRange charactersInRange, OnDeath onDeath, CollisionCheck collisionCheck, String monsterName)
 			:base(content, position, SPEED, charactersInRange) {
 			
-			StaticDrawable2D character = getCharacterSprite(content, position);
+			StaticDrawable2D character = getCharacterSprite(content, position, monsterName);
 			base.init(character);
 
 			BehaviourFinished idleCallback = delegate() {
@@ -71,14 +71,14 @@ namespace WOA3.Model {
 			this.previousPoint = base.Position.toPoint();
 			
 			this.skills = new List<Skill>();
-			this.skills.Add(new HolySwirl(2f));
+			initSkills();
 		}
 		private void updateBoundingSphere() {
 				this.BoundingSphere = new BoundingSphere(new Vector3(Position, 0f), Constants.BOUNDING_SPHERE_SIZE);
 		}
 
-		private StaticDrawable2D getCharacterSprite(ContentManager content, Vector2 position) {
-			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Monster1");
+		private StaticDrawable2D getCharacterSprite(ContentManager content, Vector2 position, String monsterName) {
+			Texture2D texture = LoadingUtils.load<Texture2D>(content, monsterName);
 
 			StaticDrawable2DParams characterParams = new StaticDrawable2DParams {
 				Position = position,
@@ -90,6 +90,7 @@ namespace WOA3.Model {
 		#endregion Constructor
 
 		#region Support methods
+		protected abstract void initSkills();
 		private void swapBehaviours(TargetBehaviour newBehaviour, State state) {
 			if (!state.Equals(previousState)) {
 				this.LastKnownLocation = this.activeBehaviour.Target;

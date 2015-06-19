@@ -101,9 +101,9 @@ namespace WOA3.Model.Display {
 
 			foreach (var mobInfo in monsterInfos) {
 				if (mobInfo.TypeOfMob == MonsterType.Devil) {
-					this.mobs.Add(new Mob(content, mobInfo.Start.toVector2(), this.ghostsInRange, this.mobDeathFinish, this.collisionCheck));
+					this.mobs.Add(new Devil(content, mobInfo.Start.toVector2(), this.ghostsInRange, this.mobDeathFinish, this.collisionCheck));
 				} else if (mobInfo.TypeOfMob == MonsterType.Yeti) {
-
+					this.mobs.Add(new Yeti(content, mobInfo.Start.toVector2(), this.ghostsInRange, this.mobDeathFinish, this.collisionCheck));
 				}
 			}
 			this.allGhosts.Add(new Ghost(content, ghostStart.toVector2(), this.ghostObserverHandler, this.mobsInRange));
@@ -142,10 +142,14 @@ namespace WOA3.Model.Display {
 				return safe;
 			};
 #if DEBUG
-			this.editorsCreator = delegate(MapEditor.MappingState type, Vector2 position) {
+			this.editorsCreator = delegate(MapEditor.MappingState type, MonsterType monsterType, Vector2 position) {
 				switch (type) {
 					case MapEditor.MappingState.Monster:
-						this.mobs.Add(new Mob(content, position, this.ghostsInRange, this.mobDeathFinish, this.collisionCheck));
+						if (monsterType == MonsterType.Devil) {
+							this.mobs.Add(new Devil(content, position, this.ghostsInRange, this.mobDeathFinish, this.collisionCheck));
+						} else if(monsterType == MonsterType.Yeti) {
+							this.mobs.Add(new Yeti(content, position, this.ghostsInRange, this.mobDeathFinish, this.collisionCheck));
+						}
 						break;
 				};
 			};
