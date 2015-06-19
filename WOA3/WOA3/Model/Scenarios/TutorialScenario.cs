@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 using WOA3.Logic;
-using WOA3.Model.Skills;
+using WOA3.Logic.Skills;
 using WOA3.Logic.AI;
 using WOA3.Engine;
 using WOA3.Map;

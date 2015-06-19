@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 using WOA3.Model;
-using WOA3.Model.Skills;
+using WOA3.Logic.Skills;
 
 namespace WOA3.Logic {
 	public struct CombatRequest {

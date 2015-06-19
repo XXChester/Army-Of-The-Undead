@@ -11,7 +11,7 @@ namespace WOA3 {
 		public const int RESOLUTION_Y = 768;
 		
 		public static Color TEXT_COLOUR = Color.Blue;
-		public static bool ALLOW_MOB_ATTACKS = true;
+		public static bool ALLOW_MOB_ATTACKS = false;
 		public static bool ALLOW_PLAYER_ATTACKS = true;
 
 		public static SpriteFont FONT;

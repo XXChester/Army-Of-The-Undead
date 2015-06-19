@@ -22,7 +22,7 @@ using WOA3.Engine;
 using WOA3.Logic;
 using WOA3.Logic.AI;
 using WOA3.Logic.Behaviours;
-using WOA3.Model.Skills;
+using WOA3.Logic.Skills;
 
 namespace WOA3.Model {
 	public class Ghost : Character {
