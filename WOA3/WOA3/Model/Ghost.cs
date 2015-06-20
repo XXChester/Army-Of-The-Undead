@@ -148,7 +148,7 @@ namespace WOA3.Model {
 			return new FadeEffect(fadeParms);
 		}
 
-		public bool isVisible() {
+		public override bool isVisible() {
 			return State.Visisble.Equals(this.state);
 		}
 

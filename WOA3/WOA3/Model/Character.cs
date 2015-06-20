@@ -61,6 +61,7 @@ namespace WOA3.Model {
 
 		protected abstract Skill getDeathSkill();
 		public abstract List<SkillResult> performSkills();
+		public abstract bool isVisible();
 
 
 		public void damage(float amount) {

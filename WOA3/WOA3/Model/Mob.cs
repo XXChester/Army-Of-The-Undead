@@ -165,8 +165,13 @@ namespace WOA3.Model {
 		public bool isIdle() {
 			return State.Idle.Equals(this.CurrentState);
 		}
+
 		protected override Skill getDeathSkill() {
 			return new CorpseExplode(this.explosionSfx, CorpseExplosionDamage);
+		}
+
+		public override bool isVisible() {
+			return true;
 		}
 
 		public override List<SkillResult> performSkills() {

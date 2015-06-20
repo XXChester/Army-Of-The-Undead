@@ -143,8 +143,10 @@ namespace WOA3.Model.Display {
 			List<Character> result = new List<Character>();
 			for (int j = all.Count - 1; j >= 0; j--) {
 				T inRange = all[j];
-				if (inRange.BBox.Intersects(range)) {
-					result.Add(inRange);
+				if (inRange.isVisible()) {
+					if (inRange.BBox.Intersects(range)) {
+						result.Add(inRange);
+					}
 				}
 			}
 			return result;

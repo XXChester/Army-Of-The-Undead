@@ -43,7 +43,7 @@
 [*]hit reset at the kill stage on the tutorial and you cannot kill
 
 
-[]can be attacked while invisible
+[*]can be attacked while invisible
 
 []Transitions
 []SFX
