@@ -42,7 +42,7 @@ namespace WOA3.Model {
 
 		#region Constructor
 		public HealthBar(ContentManager content, Vector2 position, float health) {
-			this.MAX_HEALTH = 10f;
+			this.MAX_HEALTH = MathHelper.Max(Constants.DEFAULT_HEALTH, health);
 			this.currentHealth = health;
 			Vector2 pos = getPosition(position);
 			StaticDrawable2DParams parms = new StaticDrawable2DParams();
