@@ -34,7 +34,7 @@ namespace WOA3.Model.Display {
 		private const float leftSideX = xBuffer *2;
 		private const float yBuffer = 128;
 		private const float rightSideX = Constants.RESOLUTION_X - (leftSideX);
-		private const float middle = Constants.RESOLUTION_X / 3 + leftSideX;
+		private const float middle = Constants.RESOLUTION_X / 2 ;
 		private const float y = Constants.RESOLUTION_Y - yBuffer;
 		private readonly float[] POSITIONS = new float[]{ leftSideX, rightSideX, middle };
 		#endregion Class variables

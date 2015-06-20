@@ -288,11 +288,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="Play.png">
-      <Name>Play</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="FireBurst.wav">
       <Name>FireBurst</Name>
       <Importer>WavImporter</Importer>
@@ -305,6 +300,11 @@
     </Compile>
     <Compile Include="GhostDeath.png">
       <Name>GhostDeath</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Torment.png">
+      <Name>Torment</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

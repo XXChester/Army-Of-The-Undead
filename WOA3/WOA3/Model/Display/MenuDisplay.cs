@@ -50,7 +50,7 @@ public 	class MenuDisplay : BaseMenu {
 			List<ButtonRequest> requests = new List<ButtonRequest>();
 			requests.Add(new ButtonRequest("Tutorial", setTutorialState));
 			requests.Add(new ButtonRequest("Exit", SetExitState));
-			requests.Add(new ButtonRequest("Play", SetPlayState));
+			requests.Add(new ButtonRequest("Torment", SetPlayState));
 			base.createButtons(requests.ToArray());
 		}
 		#endregion Constructor

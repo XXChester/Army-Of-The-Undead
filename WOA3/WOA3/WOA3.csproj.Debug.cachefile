@@ -58,7 +58,6 @@ WOAContent\WaveEffect.xnb
 WOAContent\Monster1Death.xnb
 WOAContent\Monster2Death.xnb
 WOAContent\Orb.xnb
-WOAContent\Play.xnb
 WOAContent\CorpseExplosion.xnb
 WOAContent\Boo.xnb
 WOAContent\FireBurst.xnb
@@ -66,6 +65,7 @@ WOAContent\QuickShot.xnb
 WOAContent\ButtonClick.xnb
 WOAContent\Curse.xnb
 WOAContent\GhostDeath.xnb
+WOAContent\Torment.xnb
 WOAContent\Background.wma
 WOAContent\Data\Tutorial.xml
 WOAContent\Data\Map2Identifiers.xml

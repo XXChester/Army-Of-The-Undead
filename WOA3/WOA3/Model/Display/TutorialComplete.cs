@@ -34,7 +34,7 @@ namespace WOA3.Model.Display {
 			List<ButtonRequest> requests = new List<ButtonRequest>();
 
 			requests.Add(new ButtonRequest("Menu", setPrevipousState));
-			requests.Add(new ButtonRequest("Play", setNextState));
+			requests.Add(new ButtonRequest("Torment", setNextState));
 			base.createButtons(requests.ToArray());
 
 			/*Texture2D texture = LoadingUtils.load<Texture2D>(content, "TutorialComplete");
