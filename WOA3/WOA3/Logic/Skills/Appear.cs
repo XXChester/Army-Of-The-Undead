@@ -13,6 +13,6 @@ namespace WOA3.Logic.Skills {
 
 		private const float DAMAGE = 0f;
 		private const int COOL_DOWN = 1000;
-		public Appear(SkillFinished skillCallback) : base(DAMAGE, COOL_DOWN, null, skillCallback) { }
+		public Appear( SoundEffect sfx, SkillFinished skillCallback) : base(DAMAGE, COOL_DOWN, sfx, skillCallback) { }
 	}
 }

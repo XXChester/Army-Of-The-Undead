@@ -80,6 +80,7 @@ namespace WOA3.Model {
 		private void initSkills() {
 			SoundEffect booSfx = LoadingUtils.load<SoundEffect>(content, "QuickShot");
 			SoundEffect shriekSfx = LoadingUtils.load<SoundEffect>(content, "Boo");
+			SoundEffect whooshSfx = LoadingUtils.load<SoundEffect>(content, "Whoosh");
 
 			SkillFinished appear = delegate() {
 				int alpha = 255;
@@ -125,8 +126,8 @@ namespace WOA3.Model {
 			this.aggressiveSkills.Add(Keys.D2, new Shriek(shriekSfx, shriek));
 
 			this.passiveskills = new Dictionary<Keys, Skill>();
-			this.passiveskills.Add(Keys.D3, new Appear(appear));
-			this.passiveskills.Add(Keys.D4, new Disappear(disappear));
+			this.passiveskills.Add(Keys.D3, new Appear(whooshSfx, appear));
+			this.passiveskills.Add(Keys.D4, new Disappear(whooshSfx, disappear));
 		}
 
 		private void resetFadeEffect(FadeEffect effect, int alphaAmount, FadeEffect.FadeState state) {

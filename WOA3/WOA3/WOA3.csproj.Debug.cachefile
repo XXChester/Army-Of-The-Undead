@@ -59,7 +59,6 @@ WOAContent\Boo.xnb
 WOAContent\ButtonClick.xnb
 WOAContent\CorpseExplosion.xnb
 WOAContent\Curse.xnb
-WOAContent\Whispers.xnb
 WOAContent\Tut_Army.xnb
 WOAContent\Tut_Evade.xnb
 WOAContent\Tut_Finish.xnb
@@ -70,8 +69,12 @@ WOAContent\Tut_UnitSelect.xnb
 WOAContent\BackgroundScreen.xnb
 WOAContent\EndGame.xnb
 WOAContent\Title.xnb
+WOAContent\Music.xnb
+WOAContent\GameOver.xnb
+WOAContent\GeneralBackground.xnb
+WOAContent\Whoosh.xnb
 WOAContent\Background.wma
-WOAContent\Whispers.wma
+WOAContent\Music.wma
 WOAContent\Data\IdentifiersTemplate.xml
 WOAContent\Data\Map2.XML
 WOAContent\Data\Map2Identifiers.xml
