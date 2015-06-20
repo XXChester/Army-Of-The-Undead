@@ -7,14 +7,16 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 using WOA3.Logic;
+using WOA3.Logic.StateMachine;
 
 namespace WOA3.Model.Display {
 	public class Cinematic : IRenderable {
 		#region Class variables
 		private StaticDrawable2D cinematic;
 		private float elapsedWaitTime;
-		private const float WAIT_TIME = 1500f;
+		private const float WAIT_TIME = 3000f;
 		#endregion Class variables
 
 		#region Class propeties
@@ -35,13 +37,13 @@ namespace WOA3.Model.Display {
 
 		#region Support methods
 		public void update(float elapsed) {
-			/*if (StateManager.getInstance().CurrentTransitionState == TransitionState.None) {
+			//if (StateManager.getInstance().CurrentTransitionState == TransitionState.None) {
 				this.elapsedWaitTime += elapsed;
 				if (this.elapsedWaitTime >= WAIT_TIME) {
-					StateManager.getInstance().CurrentGameState = GameState.MainMenu;
+					GameStateMachine.getInstance().CurrentState.goToNextState();
 				}
-			}
-			if (StateManager.getInstance().CurrentTransitionState == TransitionState.None || StateManager.getInstance().CurrentTransitionState == TransitionState.TransitionIn) {
+			//}
+			/*if (StateManager.getInstance().CurrentTransitionState == TransitionState.None || StateManager.getInstance().CurrentTransitionState == TransitionState.TransitionIn) {
 				if (InputManager.getInstance().wasKeyPressed(Keys.Escape)) {
 					StateManager.getInstance().CurrentGameState = GameState.MainMenu;
 				}
