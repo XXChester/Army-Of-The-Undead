@@ -34,7 +34,7 @@ namespace WOA3.Logic {
 			MusicEngineParams musicParms = new MusicEngineParams {
 				Muted = false,
 				PlayList = new List<Song> {
-					LoadingUtils.load<Song>(content, "Whispers")
+					LoadingUtils.load<Song>(content, "Music")
 				}
 			};
 			this.MusicEngine = new MusicEngine(musicParms);

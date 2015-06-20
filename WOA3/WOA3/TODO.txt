@@ -52,7 +52,7 @@
 	[]All skills
 	[]Deaths
 	[*]Buttons
-[]Music
+[*]Music
 [*]Levels
 	[*]Drawn
 	[*]Mapped
