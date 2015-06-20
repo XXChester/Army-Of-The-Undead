@@ -26,7 +26,7 @@
 [*]Once we change to pathing but get around the walls, we should ray cast the target to see if we can go back to tracking the lost target
 []Enemy AI needs to stop when close and start fighting
 [*]Seems as once a single enemy can see the ghost, they all can
-[]can damage through walls
+[*]can damage through walls
 []New mob spawn gets hit with damage
 [*]Mobs only perform their skills once, after that they cannot find ghosts in range
 [*]If we don't get a path, end the behaviour
@@ -41,6 +41,7 @@
 [*]AI Bounding box checks between player and ghost work....but in open spaces they do not as the boxes are axis aligned and not rotatable. Need pixel collision.
 [*]context change includes ghost being destroyed
 [*]hit reset at the kill stage on the tutorial and you cannot kill
+[]Can still tunnel through walls in in certain scenarios such as in the test level, if you come down to the demon, and enter on the right and go through the top wall, he will tunnel
 
 
 [*]can be attacked while invisible

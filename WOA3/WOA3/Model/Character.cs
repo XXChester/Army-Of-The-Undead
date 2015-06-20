@@ -88,6 +88,7 @@ namespace WOA3.Model {
 #if DEBUG
 			if (Debug.debugOn) {
 				DebugUtils.drawBoundingBox(spriteBatch, CollisionGenerationUtils.getBBoxHalf(base.Position), Color.Yellow, Debug.debugChip);
+				this.rangeRing.render(spriteBatch);
 			}
 #endif
 		}

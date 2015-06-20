@@ -24,7 +24,7 @@ using WOA3.Logic.AI;
 using WOA3.Logic.Behaviours;
 
 namespace WOA3.Model {
-	public abstract class Mob : Character, IObserver<Ghost> {
+	public abstract class Mob : Character, IObserver<Character> {
 		public enum State { Tracking, Pathing, Idle }
 		#region Class variables
 		private TargetBehaviour activeBehaviour;
@@ -59,7 +59,7 @@ namespace WOA3.Model {
 
 		#region Constructor
 		public Mob(ContentManager content, Vector2 position, CharactersInRange charactersInRange, OnDeath onDeath, CollisionCheck collisionCheck, String monsterName)
-			:base(content, position, SPEED, charactersInRange, onDeath, 10f) {
+			:base(content, position, SPEED, charactersInRange, onDeath, Constants.DEFAULT_HEALTH) {
 			
 			StaticDrawable2D character = getCharacterSprite(content, position, monsterName);
 			base.init(character);
@@ -202,7 +202,7 @@ namespace WOA3.Model {
 				List<SkillResult> results = new List<SkillResult>();
 				if (!Inactive) {
 					if (Constants.ALLOW_MOB_ATTACKS) {
-						List<Character> charactersInRange = this.CharactersInRange.Invoke(this.Range);
+						List<Character> charactersInRange = this.CharactersInRange.Invoke(this);
 						if (charactersInRange.Count > 0) {
 							foreach (var skill in skills) {
 								if (skill.CoolDownOver) {
@@ -278,7 +278,7 @@ namespace WOA3.Model {
 			}
 		}
 
-		public void Subscribe(GhostObservationHandler provider, Ghost ghost) {
+		public void Subscribe(GhostObservationHandler provider, Character ghost) {
 			this.unsubscriber = provider.Subscribe(this, ghost);
 			this.trackTarget(ghost);
 		}
@@ -311,7 +311,7 @@ namespace WOA3.Model {
 			throw new NotImplementedException();
 		}
 
-		public void OnNext(Ghost ghost) {
+		public void OnNext(Character ghost) {
 			// only act on this if it is our ghost that triggered it
 			if (this.tracking != null && this.tracking.Equals(ghost)) {
 				if (ghost.isVisible()) {

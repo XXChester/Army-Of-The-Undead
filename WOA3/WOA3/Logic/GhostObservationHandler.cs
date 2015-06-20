@@ -6,10 +6,10 @@ using System.Text;
 using WOA3.Model;
 
 namespace WOA3.Logic {
-	public class GhostObservationHandler : IObservable<Ghost> {
+	public class GhostObservationHandler : IObservable<Character> {
 
-		public List<Ghost> Ghosts { get; set; }
-		public List<IObserver<Ghost>> Observers { get; set; }
+		public List<Character> Ghosts { get; set; }
+		public List<IObserver<Character>> Observers { get; set; }
 
 
 		public void notifyGhostChange(Ghost ghost) {
@@ -20,15 +20,15 @@ namespace WOA3.Logic {
 			}
 		}
 
-		public IDisposable Subscribe(IObserver<Ghost> observer, Ghost ghost) {
+		public IDisposable Subscribe(IObserver<Character> observer, Character ghost) {
 			IDisposable result = Subscribe(observer);
 			observer.OnNext(ghost);
 			return result;
 		}
 
-		public IDisposable Subscribe(IObserver<Ghost> observer) {
+		public IDisposable Subscribe(IObserver<Character> observer) {
 			if (this.Observers == null) {
-				this.Observers = new List<IObserver<Ghost>>();
+				this.Observers = new List<IObserver<Character>>();
 			}
 			if (!this.Observers.Contains(observer)) {
 				this.Observers.Add(observer);

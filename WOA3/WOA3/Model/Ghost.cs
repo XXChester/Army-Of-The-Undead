@@ -46,7 +46,7 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange, OnDeath onDeath, float health =10f)
+		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange, OnDeath onDeath, float health = Constants.DEFAULT_HEALTH)
 			: base(content, position, SPEED, charactersInRange, onDeath, health) {
 			
 			this.observerHandler = observerHandler;
@@ -163,7 +163,7 @@ namespace WOA3.Model {
 		public override List<SkillResult> performSkills() {
 			List<SkillResult> results = new List<SkillResult>();
 			if (Selected) {
-				List<Character> charactersInRange = this.CharactersInRange.Invoke(this.Range);
+				List<Character> charactersInRange = this.CharactersInRange.Invoke(this);
 				if (Constants.ALLOW_PLAYER_ATTACKS) {
 					foreach (var skill in aggressiveSkills) {
 						if (InputManager.getInstance().wasKeyPressed(skill.Key)) {
@@ -191,7 +191,7 @@ namespace WOA3.Model {
 		protected override Skill getDeathSkill() {
 			return null;
 		}
-		
+
 		public override void update(float elapsed) {
 			base.update(elapsed);
 			this.seeking.update(elapsed);

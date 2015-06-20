@@ -96,7 +96,7 @@ namespace WOA3.Logic {
 										// if we had a death effect it needs to go to the front of the list of actions and apply against all targets in the area
 										Skill deathEffect = target.die();
 										if (deathEffect != null) {
-											List<Character> charactersInRange = target.CharactersInRange.Invoke(target.Range);
+											List<Character> charactersInRange = target.CharactersInRange.Invoke(target);
 											this.combatRequests.Insert(0, new CombatRequest() {
 												Skill = deathEffect,
 												Source = target,

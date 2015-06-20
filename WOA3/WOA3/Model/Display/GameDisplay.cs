@@ -66,7 +66,7 @@ namespace WOA3.Model.Display {
 			this.content = content;
 			this.mapName = mapName;
 			init(true);
-			Constants.ALLOW_MOB_ATTACKS = false;
+			Constants.ALLOW_MOB_ATTACKS = true;
 			Constants.ALLOW_PLAYER_ATTACKS = true;
 			this.mapLoaded = true;
 		}
@@ -156,13 +156,16 @@ namespace WOA3.Model.Display {
 			return mob;
 		}
 
-		private List<Character> getCharactersInRange<T>(BoundingSphere range, List<T> all) where T : Character {
+		private List<Character> getCharactersInRange<T>(Character caster, List<T> all) where T : Character {
 			List<Character> result = new List<Character>();
 			for (int j = all.Count - 1; j >= 0; j--) {
 				T inRange = all[j];
 				if (inRange.isVisible()) {
-					if (inRange.BBox.Intersects(range)) {
-						result.Add(inRange);
+					if (inRange.BBox.Intersects(caster.Range)) {
+						ClosestSeeable canSee = canCharacterSeeCharacter(caster, inRange);
+						if (canSee != null) {
+							result.Add(inRange);
+						}
 					}
 				}
 			}
@@ -218,11 +221,11 @@ namespace WOA3.Model.Display {
 				this.allGhosts.Remove(ghost);
 				this.theDead.Add(new Animated2DSprite(parms));
 			};
-			this.ghostsInRange = delegate(BoundingSphere range) {
-				return getCharactersInRange<Ghost>(range, this.allGhosts);
+			this.ghostsInRange = delegate(Character character) {
+				return getCharactersInRange<Ghost>(character, this.allGhosts);
 			};
-			this.mobsInRange = delegate(BoundingSphere range) {
-				return getCharactersInRange<Mob>(range, this.mobs);
+			this.mobsInRange = delegate(Character character) {
+				return getCharactersInRange<Mob>(character, this.mobs);
 			};
 			this.collisionCheck = delegate(Vector2 newPosition) {
 				bool safe = true;
@@ -275,55 +278,63 @@ namespace WOA3.Model.Display {
 			handleDead(this.mobs);
 		}
 
+		private ClosestSeeable canCharacterSeeCharacter(Character source, Character target) {
+			ClosestSeeable candidate = null;
+			if (target.isVisible()) {
+				Vector2 direction = Vector2.Subtract(target.Position, source.Position);
+				Nullable<float> distanceToTarget = CollisionUtils.castRay(target.BBox, source.Position, direction);
+				bool canSee = true;
+				if (distanceToTarget != null) {
+					foreach (Wall wall in map.Walls) {
+						Nullable<float> distance = CollisionUtils.castRay(wall.BBox, source.Position, direction);
+						// as soon as we cannot see the target, stop looking
+						if (distance != null && distance < distanceToTarget) {
+							canSee = false;
+							break;
+						}
+					}
+					if (canSee) {
+						candidate = new ClosestSeeable() { 
+							Target = target, Distance = (float)distanceToTarget, Source = source };
+					}
+				}
+			}
+			return candidate;
+		}
 
 		private ClosestSeeable getMobsFieldOfView(Mob mob) {
 			ClosestSeeable closestSeeable = null;
 			foreach (var ghost in allGhosts) {
-				if (ghost.isVisible()) {
-					Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
-					Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
-					bool canSee = true;
-					if (distanceToTarget != null) {
-						foreach (Wall wall in map.Walls) {
-							Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
-							// as soon as we cannot see the target, stop looking
-							if (distance != null && distance < distanceToTarget) {
-								canSee = false;
-								break;
-							}
-						}
-						if (canSee) {
-							ClosestSeeable candidate = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget, Mob = mob };
+				ClosestSeeable candidate = canCharacterSeeCharacter(mob, ghost);
 
+				if (candidate != null) {
 #if DEBUG
-							// 1 Add it to the FOV list
-							Line2DParams parms = new Line2DParams() {
-								Position = candidate.Ghost.Position,
-								EndPosition = candidate.Mob.Position,
-								LightColour = Color.Purple,
-								Texture = Debug.debugChip
-							};
-							linesOfSight.Add(new Line2D(parms));
+					// 1 Add it to the FOV list
+					Line2DParams parms = new Line2DParams() {
+						Position = candidate.Target.Position,
+						EndPosition = candidate.Source.Position,
+						LightColour = Color.Purple,
+						Texture = Debug.debugChip
+					};
+					linesOfSight.Add(new Line2D(parms));
 #endif
-							// are we the first candidate?
-							if (closestSeeable != null) {
+					// are we the first candidate?
+					if (closestSeeable != null) {
 
-								//2 Figure out if it is closer than previous candidates
-								if (candidate.Distance < closestSeeable.Distance) {
-									closestSeeable = candidate;
-								}
-							} else {
-								closestSeeable = candidate;
-							}
+						//2 Figure out if it is closer than previous candidates
+						if (candidate.Distance < closestSeeable.Distance) {
+							closestSeeable = candidate;
 						}
+					} else {
+						closestSeeable = candidate;
 					}
 				}
 			}
 #if DEBUG
 			if (closestSeeable != null) {
 				Line2DParams parms = new Line2DParams() {
-					Position = closestSeeable.Ghost.Position,
-					EndPosition = closestSeeable.Mob.Position,
+					Position = closestSeeable.Target.Position,
+					EndPosition = closestSeeable.Source.Position,
 					LightColour = Color.Yellow,
 					Texture = Debug.debugChip
 				};
@@ -372,10 +383,10 @@ namespace WOA3.Model.Display {
 					}
 
 					if (!hitWall) {
-						mob.Subscribe(this.ghostObserverHandler, closestSeeable.Ghost);
+						mob.Subscribe(this.ghostObserverHandler, closestSeeable.Target);
 					} else {
 						// if we are hitting a wall and can still see the mob, route a path to it
-						mob.Unsubscribe(closestSeeable.Ghost.Position);
+						mob.Unsubscribe(closestSeeable.Target.Position);
 					}
 
 
@@ -400,9 +411,18 @@ namespace WOA3.Model.Display {
 		}
 
 		private class ClosestSeeable {
-			public Ghost Ghost { get; set; }
+			public Character Target { get; set; }
 			public float Distance { get; set; }
-			public Mob Mob { get; set; }
+			public Character Source { get; set; }
+
+			/*public static implicit operator ClosestSeeable<T, V>(ClosestSeeable<Character, Character> candidate) {
+				ClosestSeeable<T, V> result = new ClosestSeeable<T, V>() {
+					Source = (Mob)candidate.Source,
+					Target = (Ghost)candidate.Target,
+					Distance = candidate.Distance
+				};
+				return result;
+			}*/
 		}
 
 		private void clearSelectedGhosts() {
