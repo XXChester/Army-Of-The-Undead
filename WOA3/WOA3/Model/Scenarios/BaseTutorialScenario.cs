@@ -36,12 +36,12 @@ namespace WOA3.Model.Scenarios {
 			this.ghost = ghost;
 			this.mob = mob;
 
-			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Tutorial" + scenarioName);
-			Vector2 position = new Vector2(Constants.RESOLUTION_X / 2, Constants.RESOLUTION_Y - texture.Height);
+			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Tut_" + scenarioName);
+			Vector2 position = new Vector2(Constants.RESOLUTION_X / 2, 0f);
 			StaticDrawable2DParams parms = new StaticDrawable2DParams {
 				Position = position,
 				Texture = texture,
-				Origin = new Vector2((position.X - texture.Width) / 2f, 0f)
+				Origin = new Vector2(texture.Width / 2f, 0f)
 			};
 			this.tutorialHelp = new StaticDrawable2D(parms);
 		}

@@ -26,7 +26,7 @@ namespace WOA3.Model.Scenarios {
 
 		public MovementTutorial(ContentManager content, string scenarioName, Ghost ghost, Mob mob)
 		:base(content, scenarioName, ghost, mob) {
-				this.goal = new BoundingBox(new Vector3(320, 60, 0), new Vector3(400, 110, 0));
+				this.goal = new BoundingBox(new Vector3(240, 300, 0), new Vector3(320, 350, 0));
 				this.chip = LoadingUtils.load<Texture2D>(content, "chip");
 		}
 

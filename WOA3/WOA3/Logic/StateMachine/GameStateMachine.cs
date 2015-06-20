@@ -25,8 +25,8 @@ namespace WOA3.Logic.StateMachine {
 		public BaseGameState GameFinishedState { get; set; }
 
 		public LevelContext LevelContext { get; set; }
-
 		internal State CurrentState { get; set; }
+		public TransitionState TransitionState { get; set; }
 
 		public GameStateMachine() {
 		
@@ -44,13 +44,13 @@ namespace WOA3.Logic.StateMachine {
 
 			this.LevelContext = null;
 
-			this.CurrentState = this.CompanyCinematic;
+		//	this.CurrentState = this.CompanyCinematic;
 			//this.CurrentState = this.GameDevCinematic;
 			//this.CurrentState = this.MainMenu;
 		//	this.CurrentState = this.GameDisplay;
 			//this.CurrentState = this.GameOverState;
 			//this.CurrentState = Tutorial;
-			//this.CurrentState = TutorialComplete;
+			this.CurrentState = TutorialComplete;
 			//this.CurrentState = this.GameFinishedState;
 
 			this.CurrentState.reset();

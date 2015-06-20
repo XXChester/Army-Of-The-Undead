@@ -67,6 +67,13 @@ WOAContent\ButtonClick.xnb
 WOAContent\CorpseExplosion.xnb
 WOAContent\Curse.xnb
 WOAContent\Whispers.xnb
+WOAContent\Tut_Army.xnb
+WOAContent\Tut_Evade.xnb
+WOAContent\Tut_Finish.xnb
+WOAContent\Tut_Invisible.xnb
+WOAContent\Tut_Killing.xnb
+WOAContent\Tut_Movement.xnb
+WOAContent\Tut_UnitSelect.xnb
 WOAContent\Background.wma
 WOAContent\Whispers.wma
 WOAContent\Data\IdentifiersTemplate.xml

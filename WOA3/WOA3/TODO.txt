@@ -57,11 +57,16 @@
 	[*]Drawn
 	[*]Mapped
 	[*]Balanced
-[]Finish screen
-[]Death animations
+[*]Death animations
 []Art
 	[]Menu background
-	[]Tutorial screen
-	[]Buttons
-[]Finished game screen
+	[*]Tutorial screen
+	[*]Buttons
+[*]Finished game screen
+
+
+Final testing!!
+=================
 []Full screen
+[]Tutorial
+[]Escape does not exit

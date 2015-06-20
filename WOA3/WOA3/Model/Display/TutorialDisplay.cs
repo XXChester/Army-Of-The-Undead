@@ -77,7 +77,7 @@ namespace WOA3.Model.Display {
 			this.activeScenarios = new Queue<BaseTutorialScenario>();
 			this.activeScenarios.Enqueue(new SelectionTutorial(content, "Unitselect", ghost, mob));
 			this.activeScenarios.Enqueue(new MovementTutorial(content, "Movement", ghost, mob));
-			this.activeScenarios.Enqueue(new EnemySpawnTutorial(content, "EnemySpawn", ghost, mob));
+			this.activeScenarios.Enqueue(new EnemySpawnTutorial(content, "Invisible", ghost, mob));
 			this.activeScenarios.Enqueue(new EvadeTutorial(content, "Evade", ghost, mob));
 			this.activeScenarios.Enqueue(new KillingTutorial(content, "Killing", ghost, mob, this.allGhosts));
 			this.activeScenarios.Enqueue(new ArmyTutorial(content, "Army", ghost, mob, allGhosts, GameStateMachine.getInstance()));

@@ -13,7 +13,7 @@ using WOA3.Logic.StateMachine;
 namespace WOA3.Model.Display {
 	public class TutorialComplete : BaseMenu {
 		#region Class variables
-
+		private StaticDrawable2D image;
 		#endregion Class variables
 
 		#region Class propeties
@@ -21,7 +21,7 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public TutorialComplete(ContentManager content) : base(content, "TutorialComplete", new Vector2(500f)) {
+		public TutorialComplete(ContentManager content) : base(content, "Monster1", new Vector2(0f)) {
 
 			VisualCallback setPrevipousState = delegate() {
 				GameStateMachine.getInstance().goToPreviousState();
@@ -37,18 +37,21 @@ namespace WOA3.Model.Display {
 			requests.Add(new ButtonRequest("Torment", setNextState));
 			base.createButtons(requests.ToArray());
 
-			/*Texture2D texture = LoadingUtils.load<Texture2D>(content, "TutorialComplete");
+			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Tut_Finish");
 			StaticDrawable2DParams parms = new StaticDrawable2DParams {
 				Texture = texture,
 				Origin = new Vector2(texture.Width / 2, texture.Height / 2),
 				Position = new Vector2(Constants.RESOLUTION_X / 2, Constants.RESOLUTION_Y / 2)
 			};
-			this.cinematic = new StaticDrawable2D(parms);*/
+			this.image = new StaticDrawable2D(parms);
 		}
 		#endregion Constructor
 
 		#region Support methods
-		
+		public override void render(SpriteBatch spriteBatch) {
+			base.render(spriteBatch);
+			this.image.render(spriteBatch);
+		}
 		#endregion Support methods
 	}
 }
