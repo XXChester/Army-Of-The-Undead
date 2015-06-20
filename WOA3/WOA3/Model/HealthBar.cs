@@ -41,9 +41,9 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public HealthBar(ContentManager content, Vector2 position, float maxHealth) {
-			this.MAX_HEALTH = maxHealth;
-			this.currentHealth = maxHealth;
+		public HealthBar(ContentManager content, Vector2 position, float health) {
+			this.MAX_HEALTH = 10f;
+			this.currentHealth = health;
 			Vector2 pos = getPosition(position);
 			StaticDrawable2DParams parms = new StaticDrawable2DParams();
 			parms.Texture = LoadingUtils.load<Texture2D>(content, "Chip");
@@ -61,13 +61,12 @@ namespace WOA3.Model {
 		private Vector2 getPosition(Vector2 position) {
 			return Vector2.Subtract(position, new Vector2(Constants.TILE_SIZE/2, Constants.TILE_SIZE));
 		}
-		public void reset() {
-			this.remainingHealth.Scale = SCALE;
-			this.currentHealth = MAX_HEALTH;
-		}
 
 		public void damage(float damage) {
 			this.currentHealth = MathHelper.Clamp(this.currentHealth - damage, 0f, MAX_HEALTH);
+		}
+
+		public void update(float elapsed) {
 			float percentHurt = this.currentHealth / MAX_HEALTH;
 			float newScaleX = SCALE.X * percentHurt;
 			this.remainingHealth.Scale = new Vector2(newScaleX, this.remainingHealth.Scale.Y);

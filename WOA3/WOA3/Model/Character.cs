@@ -78,6 +78,7 @@ namespace WOA3.Model {
 		public override void update(float elapsed) {
 			this.rangeRing.updatePosition(base.Position);
 			this.healthBar.Position = base.Position;
+			this.healthBar.update(elapsed);
 			base.update(elapsed);
 		}
 

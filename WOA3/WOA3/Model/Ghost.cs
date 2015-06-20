@@ -37,7 +37,7 @@ namespace WOA3.Model {
 		private Dictionary<Keys, Skill> aggressiveSkills;
 		private Dictionary<Keys, Skill> passiveskills;
 
-		private const float SPEED = .5f;//.2f;
+		private const float SPEED = .2f;
 		#endregion Class variables
 
 		#region Class propeties
@@ -45,11 +45,7 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange, OnDeath onDeath)
-			: this(content, position, observerHandler, charactersInRange, onDeath, 5f) {
-		}
-
-		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange, OnDeath onDeath, float health)
+		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange, OnDeath onDeath, float health =10f)
 			: base(content, position, SPEED, charactersInRange, onDeath, health) {
 			
 			this.observerHandler = observerHandler;

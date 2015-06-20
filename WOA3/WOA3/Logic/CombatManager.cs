@@ -76,7 +76,6 @@ namespace WOA3.Logic {
 
 		public void update(float elapsed) {
 			while (this.combatRequests.Count > 0) {
-			//if (this.combatRequests.Count > 0) {
 				CombatRequest request = getFirst();
 				if (request.Skill != null) {
 					SkillResult skillResult = request.Skill.perform(request.Source.Range);
