@@ -26,7 +26,7 @@ using WOA3.Logic.Behaviours;
 namespace WOA3.Model {
 	public class Devil : Mob {
 		#region Class variables
-	
+
 		#endregion Class variables
 
 		#region Class propeties
@@ -41,7 +41,8 @@ namespace WOA3.Model {
 
 		#region Support methods
 		protected override void initSkills() {
-			SkillFinished holySwirl = delegate() {
+			SoundEffect sfx = LoadingUtils.load<SoundEffect>(content, "FireBurst");
+			SkillFinished fireBurst = delegate() {
 				float effectLife;
 				Base2DSpriteDrawable shockWave = ModelGenerationUtil.generateWaveEffect(content, base.Position, Color.Red, out effectLife);
 				VisualEffect effect = new VisualEffect(shockWave, effectLife);
@@ -49,7 +50,7 @@ namespace WOA3.Model {
 			};
 
 
-			this.skills.Add(new HolySwirl(2f, holySwirl));
+			this.skills.Add(new FirstBurst(sfx, 2f, fireBurst));
 		}
 		#endregion Support methods
 	}

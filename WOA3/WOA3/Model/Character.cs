@@ -28,8 +28,9 @@ namespace WOA3.Model {
 	public abstract class Character : Entity {
 		#region Class variables
 		protected RadiusRing rangeRing;
-		private CharactersInRange charactersInRange;
 		private HealthBar healthBar;
+		private CharactersInRange charactersInRange;
+		private OnDeath onDeath;
 
 		private readonly float SPEED;
 		#endregion Class variables
@@ -43,12 +44,13 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Character(ContentManager content, Vector2 position, float speed, CharactersInRange charactersInRange, float health)
+		public Character(ContentManager content, Vector2 position, float speed, CharactersInRange charactersInRange, OnDeath onDeath, float health)
 			: base(content) {
 			this.SPEED = speed;
 			this.rangeRing = new RadiusRing(content, position);
 			this.charactersInRange = charactersInRange;
 			this.healthBar = new HealthBar(content, position);
+			this.onDeath = onDeath;
 		}
 		#endregion Constructor
 
@@ -57,12 +59,19 @@ namespace WOA3.Model {
 			return CollisionGenerationUtils.getCharacterBBox(this.Position);
 		}*/
 
+		protected abstract Skill getDeathSkill();
 		public abstract List<SkillResult> performSkills();
-		public abstract Skill die();
 
 
 		public void damage(float amount) {
 			this.healthBar.damage(amount);
+		}
+
+		public virtual Skill die() {
+			if (this.onDeath != null) {
+				this.onDeath.Invoke(this);
+			}
+			return getDeathSkill();
 		}
 
 		public override void update(float elapsed) {

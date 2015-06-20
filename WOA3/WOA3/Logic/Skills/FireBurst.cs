@@ -9,11 +9,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Audio;
 
 namespace WOA3.Logic.Skills {
-	public class Disappear : Skill {
-		
-
-		private const float DAMAGE = 0f;
+	public class FirstBurst : Skill {
 		private const int COOL_DOWN = 1;
-		public Disappear(SkillFinished skillCallback) : base(DAMAGE, COOL_DOWN, null, skillCallback) { }
+		public FirstBurst(SoundEffect sfx, float damage, SkillFinished skillFinished) : base(damage, COOL_DOWN, sfx, skillFinished) { }
 	}
 }

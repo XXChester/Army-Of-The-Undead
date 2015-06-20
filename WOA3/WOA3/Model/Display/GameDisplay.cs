@@ -40,11 +40,12 @@ namespace WOA3.Model.Display {
 		protected List<Ghost> allGhosts = new List<Ghost>();
 		protected List<Ghost> selectedGhosts = new List<Ghost>();
 		protected List<Mob> mobs = new List<Mob>();
-		protected List<Base2DSpriteDrawable> deadMobs = new List<Base2DSpriteDrawable>();
+		protected List<Base2DSpriteDrawable> theDead = new List<Base2DSpriteDrawable>();
 		protected GhostObservationHandler ghostObserverHandler;
 		protected CharactersInRange mobsInRange;
 		protected CharactersInRange ghostsInRange;
 		protected OnDeath mobDeathFinish;
+		protected OnDeath ghostDeathFinish;
 		protected CollisionCheck collisionCheck;
 
 #if DEBUG
@@ -63,7 +64,7 @@ namespace WOA3.Model.Display {
 			this.mapName = mapName;
 			this.gameStateMachine = stateMachine;
 			init(true);
-			Constants.ALLOW_MOB_ATTACKS = false;
+			Constants.ALLOW_MOB_ATTACKS = true;
 			Constants.ALLOW_PLAYER_ATTACKS = true;
 			this.mapLoaded = true;
 		}
@@ -89,7 +90,7 @@ namespace WOA3.Model.Display {
 					float factor = ghost.Health; 
 					if (factor > 0) {
 						Vector2 newPosition = Vector2.Add(primary.Position, new Vector2(i * (Constants.TILE_SIZE / 2)));
-						this.allGhosts.Add(new Ghost(content, newPosition, this.ghostObserverHandler, this.mobsInRange, factor));
+						this.allGhosts.Add(new Ghost(content, newPosition, this.ghostObserverHandler, this.mobsInRange, this.ghostDeathFinish, factor));
 					}
 				}
 			}
@@ -125,7 +126,7 @@ namespace WOA3.Model.Display {
 			foreach (var mobInfo in monsterInfos) {
 				this.mobs.Add(createMob(mobInfo.Start.toVector2(), mobInfo.TypeOfMob));
 			}
-			this.allGhosts.Add(new Ghost(content, ghostStart.toVector2(), this.ghostObserverHandler, this.mobsInRange));
+			this.allGhosts.Add(new Ghost(content, ghostStart.toVector2(), this.ghostObserverHandler, this.mobsInRange, this.ghostDeathFinish));
 		}
 
 		private Mob createMob(Vector2 position, MonsterType typeOfMob) {
@@ -173,8 +174,27 @@ namespace WOA3.Model.Display {
 				
 
 				Animated2DSprite deathSprite = new Animated2DSprite(parms); ;
-				this.allGhosts.Add(new Ghost(content, position, this.ghostObserverHandler, this.mobsInRange));
-				this.deadMobs.Add(deathSprite);
+				this.allGhosts.Add(new Ghost(content, position, this.ghostObserverHandler, this.mobsInRange, this.ghostDeathFinish));
+				this.theDead.Add(deathSprite);
+			};
+			this.ghostDeathFinish = delegate(Character character) {
+				String texture = "GhostDeath";
+				Vector2 position = character.Position;
+				int frames = 10;
+				float speed = 100f;
+				BaseAnimationManagerParams animationParms = new BaseAnimationManagerParams() {
+					AnimationState = AnimationState.PlayForwardOnce,
+					TotalFrameCount = frames,
+					FrameRate = speed,
+				};
+				Animated2DSpriteLoadSingleRowBasedOnTexture parms = new Animated2DSpriteLoadSingleRowBasedOnTexture() {
+					AnimationParams = animationParms,
+					Position = position,
+					LightColour = Color.White,
+					Texture = LoadingUtils.load<Texture2D>(content, texture)
+				};
+
+				this.theDead.Add(new Animated2DSprite(parms));
 			};
 			this.ghostsInRange = delegate(BoundingSphere range) {
 				return getCharactersInRange<Ghost>(range, this.allGhosts);
@@ -214,6 +234,7 @@ namespace WOA3.Model.Display {
 				if (character != null && character.AmIDead) {
 					characters.RemoveAt(j);
 					character = null;
+
 				}
 			}
 		}
@@ -385,7 +406,7 @@ namespace WOA3.Model.Display {
 			foreach (var mob in mobs) {
 				mob.update(elapsed);
 			}
-			foreach (var dead in this.deadMobs) {
+			foreach (var dead in this.theDead) {
 				if (dead != null) {
 					dead.update(elapsed);
 				}
@@ -447,7 +468,7 @@ namespace WOA3.Model.Display {
 			foreach (var mob in mobs) {
 				mob.render(spriteBatch);
 			}
-			foreach (var dead in this.deadMobs) {
+			foreach (var dead in this.theDead) {
 				if (dead != null) {
 					dead.render(spriteBatch);
 				}

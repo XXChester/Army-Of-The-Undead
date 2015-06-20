@@ -36,8 +36,8 @@ namespace WOA3.Model {
 		private State previousState;
 		private IDisposable unsubscriber;
 		protected List<Skill> skills;
-		private OnDeath onDeath;
 		private Point previousPoint;
+		private SoundEffect explosionSfx;
 
 		private const float SPEED = .1f;
 		#endregion Class variables
@@ -52,7 +52,7 @@ namespace WOA3.Model {
 
 		#region Constructor
 		public Mob(ContentManager content, Vector2 position, CharactersInRange charactersInRange, OnDeath onDeath, CollisionCheck collisionCheck, String monsterName)
-			:base(content, position, SPEED, charactersInRange, 5f) {
+			:base(content, position, SPEED, charactersInRange, onDeath, 5f) {
 			
 			StaticDrawable2D character = getCharacterSprite(content, position, monsterName);
 			base.init(character);
@@ -70,11 +70,11 @@ namespace WOA3.Model {
 			this.idleBehaviour = new IdleBehaviour(position);
 			this.activeBehaviour = this.seekingBehaviour;
 			this.CurrentState = State.Idle;
-			this.onDeath = onDeath;
 			updateBoundingSphere();
 			this.previousPoint = base.Position.toPoint();
 			
 			this.skills = new List<Skill>();
+			this.explosionSfx = LoadingUtils.load<SoundEffect>(content, "CorpseExplosion");
 			initSkills();
 		}
 		private void updateBoundingSphere() {
@@ -165,12 +165,8 @@ namespace WOA3.Model {
 		public bool isIdle() {
 			return State.Idle.Equals(this.CurrentState);
 		}
-
-		public override Skill die() {
-			if (this.onDeath != null) {
-				this.onDeath.Invoke(this);
-			}
-			return new CorpseExplode(CorpseExplosionDamage);
+		protected override Skill getDeathSkill() {
+			return new CorpseExplode(this.explosionSfx, CorpseExplosionDamage);
 		}
 
 		public override List<SkillResult> performSkills() {

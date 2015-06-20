@@ -45,12 +45,12 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange)
-			: this(content, position, observerHandler, charactersInRange, 5f) {
+		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange, OnDeath onDeath)
+			: this(content, position, observerHandler, charactersInRange, onDeath, 5f) {
 		}
 
-		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange, float health)
-			: base(content, position, SPEED, charactersInRange, health) {
+		public Ghost(ContentManager content, Vector2 position, GhostObservationHandler observerHandler, CharactersInRange charactersInRange, OnDeath onDeath, float health)
+			: base(content, position, SPEED, charactersInRange, onDeath, health) {
 			
 			this.observerHandler = observerHandler;
 			Texture2D texture = LoadingUtils.load<Texture2D>(content, "Ghost");
@@ -82,6 +82,9 @@ namespace WOA3.Model {
 
 		#region Support methods
 		private void initSkills() {
+			SoundEffect booSfx = LoadingUtils.load<SoundEffect>(content, "QuickShot");
+			SoundEffect shriekSfx = LoadingUtils.load<SoundEffect>(content, "Boo");
+
 			SkillFinished appear = delegate() {
 				int alpha = 255;
 				resetFadeEffect(this.fadeEffect, alpha, FadeEffect.FadeState.PartialIn);
@@ -122,8 +125,8 @@ namespace WOA3.Model {
 			};
 
 			this.aggressiveSkills = new Dictionary<Keys, Skill>();
-			this.aggressiveSkills.Add(Keys.D1, new Boo(boo));
-			this.aggressiveSkills.Add(Keys.D2, new Shriek(shriek));
+			this.aggressiveSkills.Add(Keys.D1, new Boo(booSfx, boo));
+			this.aggressiveSkills.Add(Keys.D2, new Shriek(shriekSfx, shriek));
 
 			this.passiveskills = new Dictionary<Keys, Skill>();
 			this.passiveskills.Add(Keys.D3, new Appear(appear));
@@ -177,7 +180,7 @@ namespace WOA3.Model {
 			return results;
 		}
 
-		public override Skill die() {
+		protected override Skill getDeathSkill() {
 			return null;
 		}
 		

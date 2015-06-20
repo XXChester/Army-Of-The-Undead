@@ -52,7 +52,6 @@ namespace WOA3.Engine {
 		/// all of your content.
 		/// </summary>
 		protected override void LoadContent() {
-			SoundManager.getInstance().init(Content);
 			Constants.FONT = LoadingUtils.load<SpriteFont>(Content, "SpriteFont1");
 			this.stateMachine = new GameStateMachine(GraphicsDevice, Content);
 
@@ -164,14 +163,13 @@ namespace WOA3.Engine {
 				InputManager.getInstance().MouseX + " Y:" + InputManager.getInstance().MouseY;
 
 			if (InputManager.getInstance().wasKeyPressed(Keys.R)) {
-				SoundManager.getInstance().removeAllEmitters();
 				this.stateMachine.reset();
 			}
 			if (InputManager.getInstance().wasKeyPressed(Keys.Escape) ||
 			InputManager.getInstance().wasButtonPressed(PlayerIndex.One, Buttons.B)) {
 				MapEditor.getInstance().logEntries();
 				//SpawnGenerator.getInstance().Running = false;
-				//this.Exit();
+				this.Exit();
 			}
 			Debug.update();
 #endif

@@ -15,7 +15,7 @@
 []Lighting
 []Enemy directed FOV
 []High score
-[]Health bars
+[*]Health bars
 []Standalone executable
 []Player stances
 []HUD
@@ -41,3 +41,20 @@
 []AI Bounding box checks between player and ghost work....but in open spaces they do not as the boxes are axis aligned and not rotatable. Need pixel collision.
 []context change includes ghost being destroyed
 [*]hit reset at the kill stage on the tutorial and you cannot kill
+
+
+[]can be attacked while invisible
+
+[]Transitions
+[]SFX
+	[]All skills
+	[]Deaths
+	[]Buttons
+[]Music
+[]Levels
+[]Finish screen
+[]Death animations
+[]Art
+	[]Menu background
+	[]Tutorial screen
+	[]Buttons

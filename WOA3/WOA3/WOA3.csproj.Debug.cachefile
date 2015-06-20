@@ -59,6 +59,15 @@ WOAContent\Monster1Death.xnb
 WOAContent\Monster2Death.xnb
 WOAContent\Orb.xnb
 WOAContent\Play.xnb
+WOAContent\CorpseExplosion.xnb
+WOAContent\Boo.xnb
+WOAContent\Die1.xnb
+WOAContent\Die2.xnb
+WOAContent\FireBurst.xnb
+WOAContent\QuickShot.xnb
+WOAContent\ButtonClick.xnb
+WOAContent\Curse.xnb
+WOAContent\GhostDeath.xnb
 WOAContent\Background.wma
 WOAContent\Data\Tutorial.xml
 WOAContent\Data\Map2Identifiers.xml

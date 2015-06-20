@@ -41,13 +41,14 @@ namespace WOA3.Model {
 
 		#region Support methods
 		protected override void initSkills() {
+			SoundEffect sfx = LoadingUtils.load<SoundEffect>(content, "Curse");
 			SkillFinished holySwirl = delegate() {
 				float effectLife;
 				Base2DSpriteDrawable shockWave = ModelGenerationUtil.generateWaveEffect(content, base.Position, Color.LightBlue, out effectLife);
 				VisualEffect effect = new VisualEffect(shockWave, effectLife);
 				EffectsManager.getInstance().Visuals.Add(effect);
 			};
-			this.skills.Add(new HolySwirl(2f, holySwirl));
+			this.skills.Add(new HolySwirl(sfx, 2f, holySwirl));
 		}
 		#endregion Support methods
 	}

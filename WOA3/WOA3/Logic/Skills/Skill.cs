@@ -7,22 +7,27 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Audio;
 
 namespace WOA3.Logic.Skills {
 	public abstract class Skill {
 		private SkillFinished skillCallback;
 		private float lastUsedAt;
+		private SoundEffect sfx;
 
 		private readonly float DAMAGE;
 		private readonly int COOL_DOWN;
 
 		public bool CoolDownOver { get { return lastUsedAt == 0; } }
 
-		public Skill(float damage, int coolDown, SkillFinished skillCallback) {
+		public Skill(float damage, int coolDown, SoundEffect sfx, SkillFinished skillCallback) {
 			DAMAGE = damage;
-			COOL_DOWN = coolDown * 1000;
+			//DAMAGE = 0f;
+			COOL_DOWN = 2500;
+			//COOL_DOWN = coolDown * 1000;
 			this.lastUsedAt = 0f;
 			this.skillCallback = skillCallback;
+			this.sfx = sfx;
 		}
 
 		public virtual SkillResult perform(BoundingSphere boundingSphere) {
@@ -35,6 +40,9 @@ namespace WOA3.Logic.Skills {
 				result = new SkillResult() { Damage = DAMAGE * directionFactor, BoundingSphere = boundingSphere  };
 				if (this.skillCallback != null) {
 					this.skillCallback.Invoke();
+				}
+				if (this.sfx != null) {
+					SoundManager.getInstance().sfxEngine.playSoundEffect(this.sfx);
 				}
 			}
 			return result;
