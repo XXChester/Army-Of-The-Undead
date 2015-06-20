@@ -56,7 +56,7 @@
 []Levels
 	[*]Drawn
 	[*]Mapped
-	[]Balanced
+	[*]Balanced
 []Finish screen
 []Death animations
 []Art

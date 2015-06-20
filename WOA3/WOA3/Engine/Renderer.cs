@@ -88,6 +88,10 @@ namespace WOA3.Engine {
 		/// all content.
 		/// </summary>
 		protected override void UnloadContent() {
+#if DEBUG
+			
+			MapEditor.getInstance().logEntries();
+#endif
 			GameStateMachine.getInstance().Dispose();
 			AIManager.getInstance().Dispose();
 			base.UnloadContent();
