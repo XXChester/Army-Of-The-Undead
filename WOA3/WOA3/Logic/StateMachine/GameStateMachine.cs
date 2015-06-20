@@ -23,6 +23,7 @@ namespace WOA3.Logic.StateMachine {
 		public BaseGameState TutorialComplete { get; set; }
 		public BaseGameState GameOverState { get; set; }
 		public BaseGameState GameFinishedState { get; set; }
+		public BaseGameState ExitState { get; set; }
 
 		public LevelContext LevelContext { get; set; }
 		internal State CurrentState { get; set; }
@@ -41,17 +42,17 @@ namespace WOA3.Logic.StateMachine {
 			this.MainMenu = new MainMenuState(device, content);
 			this.GameOverState = new GameOverState(device, content);
 			this.GameFinishedState = new GameFinishedState(device, content);
+			this.ExitState = new ExitGameState(device, content);
 
 			this.LevelContext = null;
-
-		//	this.CurrentState = this.CompanyCinematic;
+			this.CurrentState = this.CompanyCinematic;
 			//this.CurrentState = this.GameDevCinematic;
-			//this.CurrentState = this.MainMenu;
+		//	this.CurrentState = this.MainMenu;
 		//	this.CurrentState = this.GameDisplay;
-			//this.CurrentState = this.GameOverState;
+		//	this.CurrentState = this.GameOverState;
 			//this.CurrentState = Tutorial;
-			this.CurrentState = TutorialComplete;
-			//this.CurrentState = this.GameFinishedState;
+		//	this.CurrentState = TutorialComplete;
+		//	this.CurrentState = this.GameFinishedState;
 
 			this.CurrentState.reset();
 

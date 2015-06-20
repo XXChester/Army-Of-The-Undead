@@ -26,7 +26,7 @@ namespace WOA3.Logic.StateMachine {
 		}
 
 		public override void goToPreviousState() {
-			StateManager.getInstance().CurrentGameState = GameState.Exit;
+			changeState(GameStateMachine.getInstance().ExitState);
 		}
 		public override void goToNextState() {
 			changeState(GameStateMachine.getInstance().GameDisplay);

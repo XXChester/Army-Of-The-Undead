@@ -49,7 +49,7 @@
 
 []Transitions
 []SFX
-	[]All skills
+	[*]All skills
 	[]Deaths
 	[*]Buttons
 [*]Music

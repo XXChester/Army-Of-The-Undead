@@ -199,7 +199,6 @@
     <Compile Include="Model\Scenarios\EnemySpawnTutorial.cs" />
     <Compile Include="Model\Scenarios\MovementTutorial.cs" />
     <Compile Include="Model\Scenarios\BaseTutorialScenario.cs" />
-    <Compile Include="Model\TextPopup.cs" />
     <Compile Include="Model\HUDIcon.cs" />
     <Compile Include="Model\HUD.cs" />
     <Compile Include="Model\Wall.cs" />

@@ -39,7 +39,7 @@ namespace WOA3.Engine {
 			baseParms.ScreenHeight = Constants.RESOLUTION_Y;
 			baseParms.ContentRootDirectory = "WOAContent";
 			baseParms.MouseVisible = true;
-			//baseParms.FullScreen = true;
+			baseParms.FullScreen = true;
 #if DEBUG
 			baseParms.RunningMode = RunningMode.Debug;
 #else
@@ -145,7 +145,7 @@ namespace WOA3.Engine {
 
 		private void handleTransitionState(float elapsed) {
 			// if we are transitioning
-			if (StateManager.getInstance().CurrentTransitionState == TransitionState.TransitionIn || StateManager.getInstance().CurrentTransitionState == TransitionState.TransitionOut) {
+			/*if (StateManager.getInstance().CurrentTransitionState == TransitionState.TransitionIn || StateManager.getInstance().CurrentTransitionState == TransitionState.TransitionOut) {
 				this.elapsedTransitionTime += elapsed;
 				// if our transition time is up we need to change transition states
 				if (this.elapsedTransitionTime >= TRANSITION_TIME) {
@@ -155,7 +155,7 @@ namespace WOA3.Engine {
 						StateManager.getInstance().CurrentTransitionState = TransitionState.InitTransitionIn;
 					}
 				}
-			}
+			}*/
 		}
 
 		/// <summary>
@@ -188,17 +188,18 @@ namespace WOA3.Engine {
 			// start the transitions
 			handleNewTransition();
 
-			if (StateManager.getInstance().CurrentGameState == GameState.Exit) {
+			if (GameStateMachine.getInstance().CurrentState.GetType() == typeof(ExitGameState)) {
 				this.Exit();
+			} else {
+
+				float elapsed = gameTime.ElapsedGameTime.Milliseconds;
+				handleTransitionState(elapsed);
+				SoundManager.getInstance().update();
+
+				this.activeDisplay.update(elapsed);
+				this.transitionItem.update(elapsed);
+				base.Update(gameTime);
 			}
-
-			float elapsed = gameTime.ElapsedGameTime.Milliseconds;
-			handleTransitionState(elapsed);
-			SoundManager.getInstance().update();
-
-			this.activeDisplay.update(elapsed);
-			this.transitionItem.update(elapsed);
-			base.Update(gameTime);
 		}
 
 		/// <summary>

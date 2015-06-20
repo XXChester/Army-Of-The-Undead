@@ -35,7 +35,7 @@ namespace WOA3.Model.Display {
 
 		#region Support methods
 		public void update(float elapsed) {
-			if (StateManager.getInstance().CurrentTransitionState == TransitionState.None) {
+			/*if (StateManager.getInstance().CurrentTransitionState == TransitionState.None) {
 				this.elapsedWaitTime += elapsed;
 				if (this.elapsedWaitTime >= WAIT_TIME) {
 					StateManager.getInstance().CurrentGameState = GameState.MainMenu;
@@ -45,7 +45,7 @@ namespace WOA3.Model.Display {
 				if (InputManager.getInstance().wasKeyPressed(Keys.Escape)) {
 					StateManager.getInstance().CurrentGameState = GameState.MainMenu;
 				}
-			}
+			}*/
 		}
 
 		public void render(SpriteBatch spriteBatch) {

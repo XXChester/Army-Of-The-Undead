@@ -42,7 +42,7 @@ namespace WOA3.Logic.StateMachine {
 		}
 
 		public void setStates() {
-			StateManager.getInstance().CurrentGameState = GameState.Waiting;
+			
 		}
 
 		public virtual void reset() {
