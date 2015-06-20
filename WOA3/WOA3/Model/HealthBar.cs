@@ -41,9 +41,9 @@ namespace WOA3.Model {
 		#endregion Class properties
 
 		#region Constructor
-		public HealthBar(ContentManager content, Vector2 position, float MAX_HEALTH = 5) {
-			this.MAX_HEALTH = MAX_HEALTH;
-			this.currentHealth = MAX_HEALTH;
+		public HealthBar(ContentManager content, Vector2 position, float maxHealth) {
+			this.MAX_HEALTH = maxHealth;
+			this.currentHealth = maxHealth;
 			Vector2 pos = getPosition(position);
 			StaticDrawable2DParams parms = new StaticDrawable2DParams();
 			parms.Texture = LoadingUtils.load<Texture2D>(content, "Chip");

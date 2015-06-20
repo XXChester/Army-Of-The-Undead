@@ -49,7 +49,7 @@ namespace WOA3.Model {
 			this.SPEED = speed;
 			this.rangeRing = new RadiusRing(content, position);
 			this.charactersInRange = charactersInRange;
-			this.healthBar = new HealthBar(content, position);
+			this.healthBar = new HealthBar(content, position, health);
 			this.onDeath = onDeath;
 		}
 		#endregion Constructor
