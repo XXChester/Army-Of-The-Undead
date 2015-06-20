@@ -43,13 +43,6 @@ WOAContent\ud3.xnb
 WOAContent\ud4.xnb
 WOAContent\ud5.xnb
 WOAContent\Monster1.xnb
-WOAContent\TutorialUnitSelect.xnb
-WOAContent\TutorialMovement.xnb
-WOAContent\TutorialEnemySpawn.xnb
-WOAContent\TutorialEvade.xnb
-WOAContent\TutorialKilling.xnb
-WOAContent\TutorialArmy.xnb
-WOAContent\TutorialComplete.xnb
 WOAContent\Exit.xnb
 WOAContent\Tutorial.xnb
 WOAContent\Reset.xnb
@@ -74,6 +67,9 @@ WOAContent\Tut_Invisible.xnb
 WOAContent\Tut_Killing.xnb
 WOAContent\Tut_Movement.xnb
 WOAContent\Tut_UnitSelect.xnb
+WOAContent\BackgroundScreen.xnb
+WOAContent\EndGame.xnb
+WOAContent\Title.xnb
 WOAContent\Background.wma
 WOAContent\Whispers.wma
 WOAContent\Data\IdentifiersTemplate.xml

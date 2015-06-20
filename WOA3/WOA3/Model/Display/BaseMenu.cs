@@ -28,6 +28,7 @@ namespace WOA3.Model.Display {
 		#region Class variables
 		private ContentManager content;
 		private StaticDrawable2D background;
+		private Base2DSpriteDrawable title;
 		protected List<Button> buttons;
 
 		private const float xBuffer = 96f;
@@ -44,7 +45,8 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public BaseMenu(ContentManager content, string backgroundName, Vector2 position) {
+		public BaseMenu(ContentManager content, string backgroundName, String title = null) {
+			Vector2 position = new Vector2(Constants.RESOLUTION_X / 2, Constants.RESOLUTION_Y / 8 * 4);
 			this.content = content;
 			Texture2D texture = LoadingUtils.load<Texture2D>(content, backgroundName);
 			StaticDrawable2DParams parms = new StaticDrawable2DParams {
@@ -53,6 +55,14 @@ namespace WOA3.Model.Display {
 				Position = position
 			};
 			this.background = new StaticDrawable2D(parms);
+
+
+			if (this.title != null) {
+				StaticDrawable2DParams titleParms = new StaticDrawable2DParams() {
+					Texture = LoadingUtils.load<Texture2D>(content, title)
+				};
+				this.title = new StaticDrawable2D(titleParms);
+			}
 		}
 		#endregion Constructor
 
@@ -84,6 +94,9 @@ namespace WOA3.Model.Display {
 		public virtual void render(SpriteBatch spriteBatch) {
 			if (this.background != null) {
 				this.background.render(spriteBatch);
+			}
+			if (this.title != null) {
+				this.title.render(spriteBatch);
 			}
 			if (this.buttons != null) {
 				foreach (var button in this.buttons) {

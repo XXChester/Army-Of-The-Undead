@@ -53,13 +53,13 @@
 	[]Deaths
 	[*]Buttons
 []Music
-[]Levels
+[*]Levels
 	[*]Drawn
 	[*]Mapped
 	[*]Balanced
 [*]Death animations
-[]Art
-	[]Menu background
+[*]Art
+	[*]Menu background
 	[*]Tutorial screen
 	[*]Buttons
 [*]Finished game screen

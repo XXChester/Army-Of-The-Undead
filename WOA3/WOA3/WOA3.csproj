@@ -140,6 +140,7 @@
     <Compile Include="Logic\Skills\CorpseExplode.cs" />
     <Compile Include="Logic\StateMachine\BaseGameState.cs" />
     <Compile Include="Logic\StateMachine\CompanyCinematicState.cs" />
+    <Compile Include="Logic\StateMachine\ExitGameState.cs" />
     <Compile Include="Logic\StateMachine\GameFinishedState.cs" />
     <Compile Include="Logic\StateMachine\GameOverState.cs" />
     <Compile Include="Logic\StateMachine\MainMenuState.cs" />
@@ -169,13 +170,11 @@
     <Compile Include="Logic\Behaviours\Behaviour.cs" />
     <Compile Include="Logic\Behaviours\LostTarget.cs" />
     <Compile Include="Logic\Behaviours\Tracking.cs" />
-    <Compile Include="Logic\GameState.cs" />
     <Compile Include="Logic\Skills\Shriek.cs" />
     <Compile Include="Logic\Skills\Skill.cs" />
     <Compile Include="Logic\Skills\Boo.cs" />
     <Compile Include="Logic\Skills\SkillResult.cs" />
     <Compile Include="Logic\SoundManager.cs" />
-    <Compile Include="Logic\StateManager.cs" />
     <Compile Include="Logic\TransitionState.cs" />
     <Compile Include="Map\MonsterType.cs" />
     <Compile Include="Map\SpecializedLoadResult.cs" />

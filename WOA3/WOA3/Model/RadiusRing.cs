@@ -56,7 +56,7 @@ namespace WOA3.Model {
 		}
 
 		public void render(SpriteBatch spriteBatch) {
-			if (this.ring != null && StateManager.getInstance().CurrentGameState == GameState.Active) {
+			if (this.ring != null) {
 				this.ring.render(spriteBatch);
 			}
 		}

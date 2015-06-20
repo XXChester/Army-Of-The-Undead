@@ -35,7 +35,7 @@ namespace WOA3.Model.Display {
 
 		#region Constructor
 		public GameFinishedDisplay(GraphicsDevice graphics, ContentManager content)
-			: base(content, "Monster1", new Vector2()) {			
+			: base(content, "EndGame") {			
 
 			
 			VisualCallback setNextState = delegate() {

@@ -27,7 +27,7 @@ using WOA3.Logic.StateMachine;
 namespace WOA3.Model.Display {
 public 	class MenuDisplay : BaseMenu {
 		#region Class variables
-		
+
 		#endregion Class variables
 
 		#region Class propeties
@@ -36,7 +36,7 @@ public 	class MenuDisplay : BaseMenu {
 
 		#region Constructor
 		public MenuDisplay(ContentManager content)
-			: base(content, "Monster1", new Vector2(Constants.RESOLUTION_X / 2, Constants.RESOLUTION_Y / 8 * 3)) {
+		: base(content, "BackgroundScreen", "Title") {
 			VisualCallback setTutorialState = delegate() {
 				((MainMenuState)GameStateMachine.getInstance().CurrentState).pushToTutorial();
 			};
@@ -56,6 +56,7 @@ public 	class MenuDisplay : BaseMenu {
 		#endregion Constructor
 
 		#region Support methods
+
 		#endregion Support methods
 	}
 }
