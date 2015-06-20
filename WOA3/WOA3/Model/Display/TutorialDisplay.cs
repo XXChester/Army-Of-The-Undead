@@ -30,9 +30,8 @@ namespace WOA3.Model.Display {
 		private BaseTutorialScenario activeScenario;
 		private Queue<BaseTutorialScenario> activeScenarios;
 		private int scenario;
-		private List<TexturedEffectButton> buttons;
+		private List<Button> buttons;
 
-		private readonly string[] BUTTON_NAMES = { "Reset", "Menu" };
 		#endregion Class variables
 
 		#region Class propeties
@@ -48,9 +47,21 @@ namespace WOA3.Model.Display {
 			float y = Constants.RESOLUTION_Y - yBuffer;
 
 			this.gameStateMachine = gameStateMachine;
-			this.buttons = new List<TexturedEffectButton>();
-			this.buttons.Add(ModelGenerationUtil.createButton(content, new Vector2(leftSideX,y), BUTTON_NAMES[0]));
-			this.buttons.Add(ModelGenerationUtil.createButton(content, new Vector2(xBuffer, y), BUTTON_NAMES[1]));
+
+			VisualCallback setPrevipousState = delegate() {
+				this.gameStateMachine.goToPreviousState();
+			};
+			VisualCallback resetState = delegate() {
+				init(this.scenario);
+			};
+
+			string[] buttonNames = { "Menu", "Reset" };
+			TexturedEffectButton menu = ModelGenerationUtil.createButton(content, new Vector2(xBuffer, y), buttonNames[0]);
+			TexturedEffectButton restart = ModelGenerationUtil.createButton(content, new Vector2(leftSideX, y), buttonNames[1]);
+
+			this.buttons = new List<Button>();
+			this.buttons.Add(new Button(content, menu, setPrevipousState));
+			this.buttons.Add(new Button(content, restart, resetState));
 
 			init(0);
 		}
@@ -89,22 +100,8 @@ namespace WOA3.Model.Display {
 
 		public override void update(float elapsed) {
 			base.update(elapsed);
-			foreach (TexturedEffectButton button in this.buttons) {
+			foreach (var button in this.buttons) {
 				button.update(elapsed);
-				button.processActorsMovement(InputManager.getInstance().MousePosition);
-			}
-			if (InputManager.getInstance().wasLeftButtonPressed()) {
-				foreach (TexturedEffectButton button in this.buttons) {
-					if (button.isActorOver(InputManager.getInstance().MousePosition)) {
-						// we clicked a button
-						if (button.Texture.Name.Equals(BUTTON_NAMES[0])) {
-							init(this.scenario);
-						} else if (button.Texture.Name.Equals(BUTTON_NAMES[1])) {
-							this.gameStateMachine.goToPreviousState();
-						}
-						break;
-					}
-				}
 			}
 
 			if (this.activeScenario != null) {
@@ -121,11 +118,11 @@ namespace WOA3.Model.Display {
 
 		public override void render(SpriteBatch spriteBatch) {
 			base.render(spriteBatch);
-			foreach (TexturedEffectButton button in this.buttons) {
+			foreach (var button in this.buttons) {
 				button.render(spriteBatch);
 #if DEBUG
 				if (Debug.debugOn) {
-					DebugUtils.drawRectangle(spriteBatch, button.PickableArea, Debug.DEBUG_BBOX_Color, Debug.debugChip);
+					DebugUtils.drawRectangle(spriteBatch, button.TexturedButton.PickableArea, Debug.DEBUG_BBOX_Color, Debug.debugChip);
 				}
 #endif
 			}

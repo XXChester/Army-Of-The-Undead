@@ -168,6 +168,7 @@
     <Compile Include="Map\MonsterType.cs" />
     <Compile Include="Map\SpecializedLoadResult.cs" />
     <Compile Include="Model\Character.cs" />
+    <Compile Include="Model\Button.cs" />
     <Compile Include="Model\Display\GameOverDisplay.cs" />
     <Compile Include="Model\EffectsManager.cs" />
     <Compile Include="Model\HealthBar.cs" />

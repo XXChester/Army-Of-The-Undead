@@ -27,12 +27,7 @@ using WOA3.Logic.StateMachine;
 namespace WOA3.Model.Display {
 public 	class MenuDisplay : BaseMenu {
 		#region Class variables
-		private GameStateMachine stateMachine;
-
-		private List<TexturedEffectButton> buttons;
-		private readonly string[] BUTTON_NAMES = { "Tutorial", "Play", "Exit" };
-		private readonly Color DEFAULT = Color.Red;
-		private readonly Vector2 DEFAULT_SCALE = new Vector2(1f, .75f);
+		
 		#endregion Class variables
 
 		#region Class propeties
@@ -42,55 +37,25 @@ public 	class MenuDisplay : BaseMenu {
 		#region Constructor
 		public MenuDisplay(ContentManager content, GameStateMachine stateMachine)
 			: base(content, "Monster1", new Vector2(Constants.RESOLUTION_X / 2, Constants.RESOLUTION_Y / 8 * 3)) {
-				this.stateMachine = stateMachine;
-			
+			VisualCallback setTutorialState = delegate() {
+				((MainMenuState)stateMachine.CurrentState).pushToTutorial();
+			};
+			VisualCallback SetPlayState = delegate() {
+				stateMachine.goToNextState();
+			};
+			VisualCallback SetExitState = delegate() {
+				stateMachine.goToPreviousState();
+			};
 
-				float leftSideX = Constants.RESOLUTION_X / 2 - 63;
-				Vector2 position = new Vector2(leftSideX, 475f);
-
-				this.buttons = new List<TexturedEffectButton>();
-				for (int i = 0; i < this.BUTTON_NAMES.Length; i++) {
-					this.buttons.Add(ModelGenerationUtil.createButton(content, new Vector2(position.X, (position.Y + 75f * i)), BUTTON_NAMES[i]));
-				}
+			List<ButtonRequest> requests = new List<ButtonRequest>();
+			requests.Add(new ButtonRequest("Tutorial", setTutorialState));
+			requests.Add(new ButtonRequest("Exit", SetExitState));
+			requests.Add(new ButtonRequest("Play", SetPlayState));
+			base.createButtons(requests.ToArray());
 		}
 		#endregion Constructor
 
 		#region Support methods
-		public override void update(float elapsed) {
-			base.update(elapsed);
-			foreach (TexturedEffectButton button in this.buttons) {
-				button.update(elapsed);
-				button.processActorsMovement(InputManager.getInstance().MousePosition);
-			}
-			if (InputManager.getInstance().wasLeftButtonPressed()) {
-				MainMenuState state = (MainMenuState)this.stateMachine.CurrentState;
-				foreach (TexturedEffectButton button in this.buttons) {
-					if (button.isActorOver(InputManager.getInstance().MousePosition)) {
-						// we clicked a button
-						if (button.Texture.Name.Equals(BUTTON_NAMES[0])) {
-							state.pushToTutorial();
-						} else if (button.Texture.Name.Equals(BUTTON_NAMES[1])) {
-							this.stateMachine.goToNextState();
-						} else if (button.Texture.Name.Equals(BUTTON_NAMES[2])) {
-							this.stateMachine.goToPreviousState();
-						}
-						break;
-					}
-				}
-			}
-		}
-
-		public override void render(SpriteBatch spriteBatch) {
-			base.render(spriteBatch);
-			foreach (TexturedEffectButton button in this.buttons) {
-				button.render(spriteBatch);
-#if DEBUG
-				if (Debug.debugOn) {
-					DebugUtils.drawRectangle(spriteBatch, button.PickableArea, Debug.DEBUG_BBOX_Color, Debug.debugChip);
-				}
-#endif
-			}
-		}
 		#endregion Support methods
 	}
 }
