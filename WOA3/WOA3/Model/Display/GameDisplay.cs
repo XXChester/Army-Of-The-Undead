@@ -51,7 +51,8 @@ namespace WOA3.Model.Display {
 
 #if DEBUG
 		private EditorCreator editorsCreator;
-		private List<Vector3[]> bboxes= new List<Vector3[]>();
+		private List<Line2D> linesOfSight = new List<Line2D>();
+		private List<Line2D> closestsGhosts = new List<Line2D>();
 #endif
 		#endregion Class variables
 
@@ -64,7 +65,7 @@ namespace WOA3.Model.Display {
 			this.content = content;
 			this.mapName = mapName;
 			init(true);
-			Constants.ALLOW_MOB_ATTACKS = true;
+			Constants.ALLOW_MOB_ATTACKS = false;
 			Constants.ALLOW_PLAYER_ATTACKS = true;
 			this.mapLoaded = true;
 		}
@@ -95,6 +96,10 @@ namespace WOA3.Model.Display {
 					}
 				}
 			}
+#if DEBUG
+			/*Ghost g = new Ghost(content, new Vector2(672, 360), this.ghostObserverHandler, this.mobsInRange, this.ghostDeathFinish, 10f);
+			this.allGhosts.Add(g);*/
+#endif
 			StaticDrawable2DParams botParms = new StaticDrawable2DParams() {
 				Position = new Vector2(0f, 672),
 				Texture = LoadingUtils.load<Texture2D>(content, "BottomBorder"),
@@ -264,137 +269,123 @@ namespace WOA3.Model.Display {
 			handleDead(this.mobs);
 		}
 
-		/*
-		 Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
-		 Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
-						
-		 if (!hitWall) {
-				// can we see the target
-				Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
-				// as soon as we cannot see the target, stop looking
-				if (distance != null && distance < distanceToTarget) {
-					canSee = false;
-					toBreak = true;
-				} else {
-					canSee = true;
-				}
-			}
-		 * */
 
-		private bool isWallBetween(Wall wall, Mob mob, Ghost ghost) {
-			bool wallBetween = false;
-			Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
-			Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
-			Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
-			if (distance != null && distance < distanceToTarget) {
-				wallBetween = true;
-			}
-
-			/*Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
-			//Nullable<float> distanceBetween = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
-			Nullable<float> distanceToWall = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
-			if (distanceToWall == null) {
-				wallBetween = false;
-			} else if (doesRayGoThroughWall != null && distanceBetween != null && distanceBetween.Value < doesRayGoThroughWall.Value) {
-				wallBetween = false;
-			}*/
-			return wallBetween;
-		}
-
-		private ClosestSeeable getClosestGhost() {
+		private ClosestSeeable getMobsFieldOfView(Mob mob) {
 			ClosestSeeable closestSeeable = null;
-			Vector3 min, max;
 			foreach (var ghost in allGhosts) {
-				foreach (var mob in mobs) {
-					min = Vector2.Min(ghost.Position, mob.Position).toVector3();
-					max = Vector2.Max(ghost.Position, mob.Position).toVector3();
-					BoundingBox bbox = new BoundingBox(min, max);
+				if (ghost.isVisible()) {
 					Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
 					Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
 					bool canSee = true;
 					if (distanceToTarget != null) {
 						foreach (Wall wall in map.Walls) {
-							if (wall.BBox.Intersects(bbox)) {
+							Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
+							// as soon as we cannot see the target, stop looking
+							if (distance != null && distance < distanceToTarget) {
 								canSee = false;
 								break;
-							} else {
-								Nullable<float> distance = CollisionUtils.castRay(wall.BBox, mob.Position, direction);
-								// as soon as we cannot see the target, stop looking
-								if (distance != null && distance < distanceToTarget) {
-									canSee = false;
-									break;
-								}
 							}
 						}
 						if (canSee) {
-							if (closestSeeable == null || ((ClosestSeeable)closestSeeable).Distance > distanceToTarget) {
-								closestSeeable = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget };
+							ClosestSeeable candidate = new ClosestSeeable() { Ghost = ghost, Distance = (float)distanceToTarget, Mob = mob };
+
+#if DEBUG
+							// 1 Add it to the FOV list
+							Line2DParams parms = new Line2DParams() {
+								Position = candidate.Ghost.Position,
+								EndPosition = candidate.Mob.Position,
+								LightColour = Color.Purple,
+								Texture = Debug.debugChip
+							};
+							linesOfSight.Add(new Line2D(parms));
+#endif
+							// are we the first candidate?
+							if (closestSeeable != null) {
+
+								//2 Figure out if it is closer than previous candidates
+								if (candidate.Distance < closestSeeable.Distance) {
+									closestSeeable = candidate;
+								}
+							} else {
+								closestSeeable = candidate;
 							}
 						}
 					}
 				}
 			}
+#if DEBUG
+			if (closestSeeable != null) {
+				Line2DParams parms = new Line2DParams() {
+					Position = closestSeeable.Ghost.Position,
+					EndPosition = closestSeeable.Mob.Position,
+					LightColour = Color.Yellow,
+					Texture = Debug.debugChip
+				};
+				closestsGhosts.Add(new Line2D(parms));
+			}
+#endif
 			return closestSeeable;
 		}
 
+
 		private void updateFieldOfView(float elapsed) {
-			bboxes = new List<Vector3[]>();
-			// cast a ray from our chaser to the target. If this ray hits the target, test it against all other objects
-			ClosestSeeable closestSeeable = getClosestGhost();
-			foreach (var ghost in allGhosts) {
-				Wall collidedWith = null;
-				if (ghost.isVisible()) {
-					foreach (var mob in mobs) {
-						Vector3 min = Vector2.Min(ghost.Position, mob.Position).toVector3();
-						Vector3 max = Vector2.Max(ghost.Position, mob.Position).toVector3();
-						BoundingBox bbox = new BoundingBox(min, max);
-						
-#if DEBUG
-						this.bboxes.Add(new Vector3[] { min, max });
-#endif
-						Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
-						Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
-						bool pathing = mob.isPathing();
-						bool hitWall = false;
-						bool pathBlocked = false;
-						if (distanceToTarget != null) {
-							foreach (Wall wall in map.Walls) {
-								// is the ghost in a wall?
-								//if (wall.BBox.Intersects(mob.BBox)) {
-								if (wall.BBox.Intersects(mob.BoundingSphere)) {
-									hitWall = true;
-									collidedWith = wall;
-								}
-
-								if (wall.BBox.Intersects(bbox)) {
-									pathBlocked = true;
-								}
-							}
-						}
-
-
-
-						//if (!mob.isPathing()) {
-						if (closestSeeable != null && !pathBlocked) {
-								mob.Subscribe(this.ghostObserverHandler, ghost);
-						/*} else if ((mob.isPathing() || mob.isTracking())  && closestSeeable == null) {
-							mob.lostTarget();*/
-						} else if (hitWall) {
-							/*if (!mob.isPathing()) {
-								mob.pathToWaypoint();
-							}*/
-							mob.lostTarget();
-						} else if (!mob.isLost()) {
-							mob.Unsubscribe();
+			//foreach (var ghost in allGhosts) {
+			Wall collidedWith = null;
+			//if (ghost.isVisible()) {
+			foreach (var mob in mobs) {
+				ClosestSeeable closestSeeable = getMobsFieldOfView(mob);
+				// can we even see anything?
+				if (closestSeeable != null) {
+					bool hitWall = false;
+					foreach (Wall wall in map.Walls) {
+						// is the ghost in a wall?
+						//if (wall.BBox.Intersects(mob.BBox)) {
+						if (wall.BBox.Intersects(mob.BoundingSphere)) {
+							hitWall = true;
+							collidedWith = wall;
 						}
 					}
+
+
+					// did we hit a wall?
+					if (hitWall) {
+						// are we already pathing around it?
+						//if (!mob.isPathing()) {
+						/*if (!mob.isLost()) {
+							// chart a path to the last known location
+							mob.Unsubscribe();
+						}*/
+					//	if (!mob.isPathing()) {
+							// chart a path to the last known location
+							mob.Unsubscribe(closestSeeable.Ghost.Position);
+					//	}
+					} else {
+						// we aren't hitting a wall, track the target
+						mob.Subscribe(this.ghostObserverHandler, closestSeeable.Ghost);
+					}
+
+
+					/*if (!mob.isPathing()) {
+						mob.pathToWaypoint();
+					}*/
+				} else {
+					// if we cannot see a close mob, than go to the last know location
+					/*if (!mob.isLost()) {
+						mob.lostTarget();
+					}*/
+					//if (!mob.isPathing() && !mob.isIdle()) {
+					//	mob.Unsubscribe();
+					//}
 				}
+				//}
+				//}
 			}
 		}
 
 		private class ClosestSeeable {
 			public Ghost Ghost { get; set; }
 			public float Distance { get; set; }
+			public Mob Mob { get; set; }
 		}
 
 		protected virtual bool winConditionAchieved() {
@@ -421,6 +412,9 @@ namespace WOA3.Model.Display {
 		}
 
 		public virtual void update(float elapsed) {
+			linesOfSight.Clear();
+			closestsGhosts.Clear();
+
 			foreach (var mob in mobs) {
 				mob.update(elapsed);
 			}
@@ -475,6 +469,9 @@ namespace WOA3.Model.Display {
 				this.recentlySpawned = new List<Ghost>();
 			}
 #if DEBUG
+			/*Point mouse = InputManager.getInstance().MousePosition.toPoint();
+			GWNorthEngine.AI.AStar.BasePathFinder.TypeOfSpace space = AIManager.getInstance().Board[mouse.Y, mouse.X];
+			Debug.log(space.ToString());*/
 			MapEditor.getInstance().update();
 #endif
 		}
@@ -498,8 +495,12 @@ namespace WOA3.Model.Display {
 			}
 #if DEBUG
 			if (Debug.debugOn) {
-				foreach (var box in this.bboxes) {
-					DebugUtils.drawVector3s(spriteBatch, box[1], box[0], Color.Pink, Debug.debugChip);
+				foreach (var line in linesOfSight) {
+					line.render(spriteBatch);
+				}
+
+				foreach (var line in closestsGhosts) {
+					line.render(spriteBatch);
 				}
 			}
 #endif
