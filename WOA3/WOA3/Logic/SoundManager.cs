@@ -16,16 +16,28 @@ namespace WOA3.Logic {
 
 		#region Class properties
 		public SFXEngine sfxEngine { get; set; }
+		public MusicEngine MusicEngine { get; set; }
 		#endregion Class properties
 
 		#region Constructor
 		public SoundManager() {
+
+		}
+
+		public void init(ContentManager content) {
 			SFXEngineParams parms = new SFXEngineParams();
 			//parms.Muted = true;
 #if !DEBUG
 			parms.Muted = false;
 #endif
 			this.sfxEngine = new SFXEngine(parms);
+			MusicEngineParams musicParms = new MusicEngineParams {
+				Muted = false,
+				PlayList = new List<Song> {
+					LoadingUtils.load<Song>(content, "Whispers")
+				}
+			};
+			this.MusicEngine = new MusicEngine(musicParms);
 		}
 		#endregion Constructor
 
@@ -36,6 +48,7 @@ namespace WOA3.Logic {
 
 		public void update() {
 			this.sfxEngine.update();
+			this.MusicEngine.update();
 		}
 		#endregion Support methods
 	}

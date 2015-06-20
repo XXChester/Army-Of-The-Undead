@@ -27,6 +27,7 @@ namespace WOA3.Engine {
 		private StaticDrawable2D transitionItem;
 		private FadeEffect fadeEffect;
 		private FadeEffectParams fadeParams;
+
 		private float elapsedTransitionTime;
 		private const string GAME_NAME = "WOA3";
 		private const float TRANSITION_TIME = 0f;// 750f;
@@ -38,6 +39,7 @@ namespace WOA3.Engine {
 			baseParms.ScreenHeight = Constants.RESOLUTION_Y;
 			baseParms.ContentRootDirectory = "WOAContent";
 			baseParms.MouseVisible = true;
+			//baseParms.FullScreen = true;
 #if DEBUG
 			baseParms.RunningMode = RunningMode.Debug;
 #else
@@ -53,6 +55,7 @@ namespace WOA3.Engine {
 		protected override void LoadContent() {
 			Constants.FONT = LoadingUtils.load<SpriteFont>(Content, "SpriteFont1");
 			GameStateMachine.getInstance().init(GraphicsDevice, Content);
+			SoundManager.getInstance().init(Content);
 
 			this.fadeParams = new FadeEffectParams {
 				OriginalColour = Color.Black,
