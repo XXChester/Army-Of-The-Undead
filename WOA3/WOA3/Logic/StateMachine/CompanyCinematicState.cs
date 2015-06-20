@@ -11,8 +11,8 @@ using WOA3.Model.Display;
 namespace WOA3.Logic.StateMachine {
 	class CompanyCinematicState : BaseGameState {
 
-		public CompanyCinematicState(GameStateMachine stateMachine, GraphicsDevice device, ContentManager content)
-			: base(stateMachine, device, content, null) {
+		public CompanyCinematicState( GraphicsDevice device, ContentManager content)
+			: base( device, content, null) {
 			
 		}
 		
@@ -21,7 +21,7 @@ namespace WOA3.Logic.StateMachine {
 		}
 
 		public override void goToPreviousState() {
-			changeState(stateMachine.GameDevCinematic);
+			changeState(GameStateMachine.getInstance().GameDevCinematic);
 			base.goToPreviousState();
 		}
 

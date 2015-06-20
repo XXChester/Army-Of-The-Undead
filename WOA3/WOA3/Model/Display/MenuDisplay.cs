@@ -35,16 +35,16 @@ public 	class MenuDisplay : BaseMenu {
 		#endregion Class properties
 
 		#region Constructor
-		public MenuDisplay(ContentManager content, GameStateMachine stateMachine)
+		public MenuDisplay(ContentManager content)
 			: base(content, "Monster1", new Vector2(Constants.RESOLUTION_X / 2, Constants.RESOLUTION_Y / 8 * 3)) {
 			VisualCallback setTutorialState = delegate() {
-				((MainMenuState)stateMachine.CurrentState).pushToTutorial();
+				((MainMenuState)GameStateMachine.getInstance().CurrentState).pushToTutorial();
 			};
 			VisualCallback SetPlayState = delegate() {
-				stateMachine.goToNextState();
+				GameStateMachine.getInstance().goToNextState();
 			};
 			VisualCallback SetExitState = delegate() {
-				stateMachine.goToPreviousState();
+				GameStateMachine.getInstance().goToPreviousState();
 			};
 
 			List<ButtonRequest> requests = new List<ButtonRequest>();

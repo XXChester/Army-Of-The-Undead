@@ -32,7 +32,6 @@ namespace WOA3.Model.Display {
 		#region Class variables
 		protected ContentManager content;
 		protected string mapName;
-		protected GameStateMachine gameStateMachine;
 		private bool mapLoaded;
 
 		protected Map map;
@@ -60,10 +59,9 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public GameDisplay(GraphicsDevice graphics, ContentManager content, String mapName, GameStateMachine stateMachine) {
+		public GameDisplay(GraphicsDevice graphics, ContentManager content, String mapName) {
 			this.content = content;
 			this.mapName = mapName;
-			this.gameStateMachine = stateMachine;
 			init(true);
 			Constants.ALLOW_MOB_ATTACKS = true;
 			Constants.ALLOW_PLAYER_ATTACKS = true;
@@ -84,11 +82,11 @@ namespace WOA3.Model.Display {
 			initDelegates();
 			loadMap();
 			// if we have ghosts left over, we need to preserve them
-			if (this.gameStateMachine.LevelContext != null && this.gameStateMachine.LevelContext.Ghosts != null) {
+			if (GameStateMachine.getInstance().LevelContext != null && GameStateMachine.getInstance().LevelContext.Ghosts != null) {
 				Ghost primary = this.allGhosts[0];
 				Ghost ghost = null;
-				for (int i = 1; i <= this.gameStateMachine.LevelContext.Ghosts.Count; i++) {
-					ghost = this.gameStateMachine.LevelContext.Ghosts[i - i];
+				for (int i = 1; i <= GameStateMachine.getInstance().LevelContext.Ghosts.Count; i++) {
+					ghost = GameStateMachine.getInstance().LevelContext.Ghosts[i - i];
 					float factor = ghost.Health; 
 					if (factor > 0) {
 						Vector2 newPosition = Vector2.Add(primary.Position, new Vector2(i * (Constants.TILE_SIZE / 2)));
@@ -346,9 +344,7 @@ namespace WOA3.Model.Display {
 						BoundingBox bbox = new BoundingBox(min, max);
 						
 #if DEBUG
-						if (mob.GetType() ==  typeof(Devil)) {
-							this.bboxes.Add(new Vector3[] { min, max });
-						}
+						this.bboxes.Add(new Vector3[] { min, max });
 #endif
 						Vector2 direction = Vector2.Subtract(ghost.Position, mob.Position);
 						Nullable<float> distanceToTarget = CollisionUtils.castRay(ghost.BBox, mob.Position, direction);
@@ -439,14 +435,14 @@ namespace WOA3.Model.Display {
 			SoundManager.getInstance().update();
 
 			if (looseConditionDetected()) {
-				((GameDisplayState)this.gameStateMachine.CurrentState).goToGameOver();
+				((GameDisplayState)GameStateMachine.getInstance().CurrentState).goToGameOver();
 			} else if (winConditionAchieved()) {
 				LevelContext context = new LevelContext() {
 					Ghosts = allGhosts,
-					MapIndex = gameStateMachine.LevelContext.MapIndex
+					MapIndex = GameStateMachine.getInstance().LevelContext.MapIndex
 				};
-				gameStateMachine.LevelContext = context;
-				this.gameStateMachine.goToNextState();
+				GameStateMachine.getInstance().LevelContext = context;
+				GameStateMachine.getInstance().goToNextState();
 			}
 
 			if (InputManager.getInstance().wasLeftButtonPressed()) {

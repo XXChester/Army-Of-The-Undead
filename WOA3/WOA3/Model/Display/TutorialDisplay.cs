@@ -39,17 +39,16 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public TutorialDisplay(GraphicsDevice graphics, ContentManager content, GameStateMachine gameStateMachine) :base(graphics, content, "Tutorial", gameStateMachine) {
-			gameStateMachine.LevelContext = null;
+		public TutorialDisplay(GraphicsDevice graphics, ContentManager content) :base(graphics, content, "Tutorial") {
+			GameStateMachine.getInstance().LevelContext = null;
 			float xBuffer = 256;
 			float yBuffer = 128;
 			float leftSideX = Constants.RESOLUTION_X  - xBuffer;
 			float y = Constants.RESOLUTION_Y - yBuffer;
 
-			this.gameStateMachine = gameStateMachine;
 
 			VisualCallback setPrevipousState = delegate() {
-				this.gameStateMachine.goToPreviousState();
+				GameStateMachine.getInstance().goToPreviousState();
 			};
 			VisualCallback resetState = delegate() {
 				init(this.scenario);
@@ -81,7 +80,7 @@ namespace WOA3.Model.Display {
 			this.activeScenarios.Enqueue(new EnemySpawnTutorial(content, "EnemySpawn", ghost, mob));
 			this.activeScenarios.Enqueue(new EvadeTutorial(content, "Evade", ghost, mob));
 			this.activeScenarios.Enqueue(new KillingTutorial(content, "Killing", ghost, mob, this.allGhosts));
-			this.activeScenarios.Enqueue(new ArmyTutorial(content, "Army", ghost, mob, allGhosts, this.gameStateMachine));
+			this.activeScenarios.Enqueue(new ArmyTutorial(content, "Army", ghost, mob, allGhosts, GameStateMachine.getInstance()));
 			for (int i = 0; i <= active; i++) {
 				// the last scenario requires 2 ghosts
 				if (0 == this.activeScenarios.Count - 1) {

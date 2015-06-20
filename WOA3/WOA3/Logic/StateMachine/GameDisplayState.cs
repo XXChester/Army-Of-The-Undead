@@ -12,36 +12,36 @@ using WOA3.Model.Display;
 namespace WOA3.Logic.StateMachine {
 	class GameDisplayState : BaseGameState {
 
-		public GameDisplayState(GameStateMachine stateMachine, GraphicsDevice device,  ContentManager content)
-			: base(stateMachine, device, content, null) {
+		public GameDisplayState( GraphicsDevice device,  ContentManager content)
+			: base(device, content, null) {
 		}
 
 		protected override IRenderable createInstance() {
-			if (stateMachine.LevelContext == null) {
+			if (GameStateMachine.getInstance().LevelContext == null) {
 				LevelContext context = new LevelContext() {
 					Ghosts = new List<Model.Ghost>(),
-					MapIndex = 1
+					MapIndex = 3
 				};
-				this.stateMachine.LevelContext = context;
+				GameStateMachine.getInstance().LevelContext = context;
 			}
-			return new GameDisplay(device, content, "Map" + stateMachine.LevelContext.MapIndex, stateMachine);
+			return new GameDisplay(device, content, "Map" + GameStateMachine.getInstance().LevelContext.MapIndex);
 		}
 
 		public override void goToPreviousState() {
-			changeState(stateMachine.MainMenu);
+			changeState(GameStateMachine.getInstance().MainMenu);
 			base.goToPreviousState();
 		}
 
 		public override void goToNextState() {
-			LevelContext context = stateMachine.LevelContext;
+			LevelContext context = GameStateMachine.getInstance().LevelContext;
 			context.MapIndex += 1;
-			stateMachine.LevelContext = context;
-			changeState(stateMachine.GameDisplay);
+			GameStateMachine.getInstance().LevelContext = context;
+			changeState(GameStateMachine.getInstance().GameDisplay);
 			base.goToNextState();
 		}
 
 		public void goToGameOver() {
-			changeState(stateMachine.GameOverState);
+			changeState(GameStateMachine.getInstance().GameOverState);
 		}
 
 		public override void reset() {

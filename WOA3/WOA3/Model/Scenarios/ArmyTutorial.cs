@@ -23,19 +23,17 @@ using WOA3.Map;
 namespace WOA3.Model.Scenarios {
 	public class ArmyTutorial : MovementTutorial {
 		List<Ghost> allGhosts;
-		GameStateMachine gameStateMachine;
 
 		public ArmyTutorial(ContentManager content, string scenarioName, Ghost ghost, Mob mob, List<Ghost> allGhosts, GameStateMachine gameStateMachine)
 		:base(content, scenarioName, ghost, mob) {
 				this.goal = new BoundingBox(new Vector3(1023, 120, 0), new Vector3(1103, 170, 0));
 				this.allGhosts = allGhosts;
-				this.gameStateMachine = gameStateMachine;
 		}
 
 		public override void update(float elapsed) {
 			if (this.ghost.BBox.Intersects(goal) && this.allGhosts[1].BBox.Intersects(goal)) {
 				this.Completed = true;
-				this.gameStateMachine.goToNextState();
+				GameStateMachine.getInstance().goToNextState();
 			}
 		}
 	}

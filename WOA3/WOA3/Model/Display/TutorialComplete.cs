@@ -21,14 +21,14 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public TutorialComplete(ContentManager content, GameStateMachine gameStateMachine) : base(content, "TutorialComplete", new Vector2(500f)) {
+		public TutorialComplete(ContentManager content) : base(content, "TutorialComplete", new Vector2(500f)) {
 
 			VisualCallback setPrevipousState = delegate() {
-				gameStateMachine.goToPreviousState();
+				GameStateMachine.getInstance().goToPreviousState();
 			};
 			VisualCallback setNextState = delegate() {
-				gameStateMachine.LevelContext = null;
-				gameStateMachine.goToNextState();
+				GameStateMachine.getInstance().LevelContext = null;
+				GameStateMachine.getInstance().goToNextState();
 			};
 
 			List<ButtonRequest> requests = new List<ButtonRequest>();

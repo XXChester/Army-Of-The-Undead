@@ -9,6 +9,12 @@ using Microsoft.Xna.Framework.Graphics;
 namespace WOA3.Logic.StateMachine {
 	public class GameStateMachine : State, IDisposable {
 
+		private static GameStateMachine instance = new GameStateMachine();
+
+		public static GameStateMachine getInstance() {
+			return instance;
+		}
+
 		public BaseGameState CompanyCinematic { get; set; }
 		public BaseGameState GameDevCinematic { get; set; }
 		public BaseGameState MainMenu { get; set; }
@@ -21,20 +27,24 @@ namespace WOA3.Logic.StateMachine {
 
 		internal State CurrentState { get; set; }
 
-		public GameStateMachine(GraphicsDevice device, ContentManager content) {
-			this.CompanyCinematic = new CompanyCinematicState(this, device, content);
-			this.GameDevCinematic = new GameDevSplashState(this, device, content);
-			this.GameDisplay = new GameDisplayState(this, device, content);
-			this.Tutorial = new TutorialState(this, device, content);
-			this.TutorialComplete = new TutorialCompleteState(this, device, content);
-			this.MainMenu = new MainMenuState(this, device, content);
-			this.GameOverState = new GameOverState(this, device, content);
+		public GameStateMachine() {
+		
+		}
+
+		public void init(GraphicsDevice device, ContentManager content) {
+			this.CompanyCinematic = new CompanyCinematicState(device, content);
+			this.GameDevCinematic = new GameDevSplashState(device, content);
+			this.GameDisplay = new GameDisplayState(device, content);
+			this.Tutorial = new TutorialState(device, content);
+			this.TutorialComplete = new TutorialCompleteState(device, content);
+			this.MainMenu = new MainMenuState(device, content);
+			this.GameOverState = new GameOverState(device, content);
 
 			this.LevelContext = null;
 
-			//this.CurrentState = this.CompanyCinematic;
+			this.CurrentState = this.CompanyCinematic;
 			//this.CurrentState = this.GameDevCinematic;
-			this.CurrentState = this.MainMenu;
+			//this.CurrentState = this.MainMenu;
 			//this.CurrentState = this.GameDisplay;
 			//this.CurrentState = this.GameOverState;
 			//this.CurrentState = Tutorial;

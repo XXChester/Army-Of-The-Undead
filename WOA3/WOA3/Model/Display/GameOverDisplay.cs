@@ -34,15 +34,15 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public GameOverDisplay(GraphicsDevice graphics, ContentManager content, GameStateMachine stateMachine)
+		public GameOverDisplay(GraphicsDevice graphics, ContentManager content)
 			: base(content, "Monster1", new Vector2()) {			
 
 			
 			VisualCallback setPrevipousState = delegate() {
-				stateMachine.goToPreviousState();
+				GameStateMachine.getInstance().goToPreviousState();
 			};
 			VisualCallback setNextState = delegate() {
-				stateMachine.goToNextState();
+				GameStateMachine.getInstance().goToNextState();
 			};
 
 			List<ButtonRequest> requests = new List<ButtonRequest>();

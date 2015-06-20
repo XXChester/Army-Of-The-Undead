@@ -11,17 +11,17 @@ using WOA3.Model.Display;
 namespace WOA3.Logic.StateMachine {
 	class MainMenuState : BaseGameState {
 
-		public MainMenuState(GameStateMachine stateMachine, GraphicsDevice device, ContentManager content)
-			: base(stateMachine, device, content, null) {
+		public MainMenuState(GraphicsDevice device, ContentManager content)
+			: base(device, content, null) {
 			
 		}
 
 		protected override IRenderable createInstance() {
-			return new MenuDisplay(content, stateMachine);
+			return new MenuDisplay(content);
 		}
 
 		public void pushToTutorial() {
-			changeState(stateMachine.Tutorial);
+			changeState(GameStateMachine.getInstance().Tutorial);
 			base.goToPreviousState();
 		}
 
@@ -29,7 +29,7 @@ namespace WOA3.Logic.StateMachine {
 			StateManager.getInstance().CurrentGameState = GameState.Exit;
 		}
 		public override void goToNextState() {
-			changeState(stateMachine.GameDisplay);
+			changeState(GameStateMachine.getInstance().GameDisplay);
 			base.goToNextState();
 		}
 	}

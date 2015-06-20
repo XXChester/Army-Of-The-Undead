@@ -24,7 +24,6 @@ namespace WOA3.Engine {
 	/// </summary>
 	public class Renderer : BaseRenderer {
 		private IRenderable activeDisplay;
-		private GameStateMachine stateMachine;
 		private StaticDrawable2D transitionItem;
 		private FadeEffect fadeEffect;
 		private FadeEffectParams fadeParams;
@@ -53,7 +52,7 @@ namespace WOA3.Engine {
 		/// </summary>
 		protected override void LoadContent() {
 			Constants.FONT = LoadingUtils.load<SpriteFont>(Content, "SpriteFont1");
-			this.stateMachine = new GameStateMachine(GraphicsDevice, Content);
+			GameStateMachine.getInstance().init(GraphicsDevice, Content);
 
 			this.fadeParams = new FadeEffectParams {
 				OriginalColour = Color.Black,
@@ -86,13 +85,13 @@ namespace WOA3.Engine {
 		/// all content.
 		/// </summary>
 		protected override void UnloadContent() {
-			this.stateMachine.Dispose();
+			GameStateMachine.getInstance().Dispose();
 			AIManager.getInstance().Dispose();
 			base.UnloadContent();
 		}
 
 		private void handleNewTransition() {
-			this.activeDisplay = this.stateMachine.getCurrentScreen();
+			this.activeDisplay = GameStateMachine.getInstance().getCurrentScreen();
 			/*if (StateManager.getInstance().CurrentTransitionState == TransitionState.InitTransitionIn) {
 				this.fadeEffect.State = FadeEffect.FadeState.Out;
 				this.fadeEffect.reset();
@@ -163,20 +162,19 @@ namespace WOA3.Engine {
 				InputManager.getInstance().MouseX + " Y:" + InputManager.getInstance().MouseY;
 
 			if (InputManager.getInstance().wasKeyPressed(Keys.R)) {
-				this.stateMachine.reset();
+				GameStateMachine.getInstance().reset();
 			}
 			if (InputManager.getInstance().wasKeyPressed(Keys.Escape) ||
 			InputManager.getInstance().wasButtonPressed(PlayerIndex.One, Buttons.B)) {
 				MapEditor.getInstance().logEntries();
-				//SpawnGenerator.getInstance().Running = false;
-				this.Exit();
+				//this.Exit();
 			}
 			Debug.update();
 #endif
 			if (InputManager.getInstance().wasKeyPressed(Keys.Escape)) {
-				this.stateMachine.goToPreviousState();
+				GameStateMachine.getInstance().goToPreviousState();
 			} else if (InputManager.getInstance().wasKeyPressed(Keys.Enter)) {
-				this.stateMachine.goToNextState();
+				GameStateMachine.getInstance().goToNextState();
 			}
 
 

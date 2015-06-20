@@ -12,14 +12,12 @@ namespace WOA3.Logic.StateMachine {
 	public abstract class BaseGameState : State, IDisposable {
 
 		protected GraphicsDevice device;
-		protected GameStateMachine stateMachine;
 		protected ContentManager content;
 		protected IRenderable display;
 
-		public BaseGameState(GameStateMachine stateMachine, GraphicsDevice device, ContentManager content, IRenderable display) {
+		public BaseGameState(GraphicsDevice device, ContentManager content, IRenderable display) {
 			this.device = device;
 			this.content = content;
-			this.stateMachine = stateMachine;
 			this.display = display;
 		}
 
@@ -27,8 +25,8 @@ namespace WOA3.Logic.StateMachine {
 
 		protected void changeState(State newState) {
 			setStates();
-			stateMachine.CurrentState = newState;
-			stateMachine.CurrentState.reset();
+			GameStateMachine.getInstance().CurrentState = newState;
+			GameStateMachine.getInstance().CurrentState.reset();
 		}
 
 		public virtual void goToNextState() {
