@@ -34,6 +34,7 @@ namespace WOA3.Model.Display {
 		protected string mapName;
 		private bool mapLoaded;
 
+		protected StaticDrawable2D bottomBorder;
 		protected Map map;
 		protected HUD hud;
 		protected List<Ghost> allGhosts = new List<Ghost>();
@@ -94,6 +95,11 @@ namespace WOA3.Model.Display {
 					}
 				}
 			}
+			StaticDrawable2DParams botParms = new StaticDrawable2DParams() {
+				Position = new Vector2(0f, 672),
+				Texture = LoadingUtils.load<Texture2D>(content, "BottomBorder"),
+			};
+			this.bottomBorder = new StaticDrawable2D(botParms);
 			CombatManager.getInstance().init();
 			EffectsManager.getInstance().init();
 		}
@@ -484,6 +490,7 @@ namespace WOA3.Model.Display {
 			foreach (var mob in mobs) {
 				mob.render(spriteBatch);
 			}
+			this.bottomBorder.render(spriteBatch);
 			foreach (var dead in this.theDead) {
 				if (dead != null) {
 					dead.render(spriteBatch);
