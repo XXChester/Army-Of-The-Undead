@@ -1,59 +1,39 @@
 ﻿<MapIdentifier>
   <PlayerInformation>
     <PlayerStart>
-      <X>3</X>
-      <Y>3</Y>
+      <X>2</X>
+      <Y>2</Y>
     </PlayerStart>
   </PlayerInformation>
   <MonsterInformation>
     <Monster>
-      <X>26</X>
-      <Y>3</Y>
+      <X>9</X>
+      <Y>14</Y>
       <Type>Devil</Type>
     </Monster>
     <Monster>
-      <X>15</X>
-      <Y>11</Y>
-      <Type>Yeti</Type>
-    </Monster>
-    <Monster>
-      <X>2</X>
-      <Y>9</Y>
-      <Type>Yeti</Type>
-    </Monster>
-    <Monster>
-      <X>38</X>
+      <X>37</X>
       <Y>18</Y>
-      <Type>Yeti</Type>
+      <Type>Devil</Type>
     </Monster>
     <Monster>
-      <X>13</X>
+      <X>26</X>
+      <Y>9</Y>
+      <Type>Devil</Type>
+    </Monster>
+    <Monster>
+      <X>14</X>
       <Y>2</Y>
-      <Type>Devil</Type>
-    </Monster>
-    <Monster>
-      <X>34</X>
-      <Y>4</Y>
-      <Type>Devil</Type>
-    </Monster>
-    <Monster>
-      <X>12</X>
-      <Y>19</Y>
-      <Type>Devil</Type>
-    </Monster>
-    <Monster>
-      <X>28</X>
-      <Y>12</Y>
       <Type>Yeti</Type>
     </Monster>
     <Monster>
-      <X>32</X>
-      <Y>16</Y>
-      <Type>Devil</Type>
+      <X>37</X>
+      <Y>5</Y>
+      <Type>Yeti</Type>
     </Monster>
     <Monster>
-      <X>29</X>
-      <Y>6</Y>
+      <X>26</X>
+      <Y>19</Y>
       <Type>Yeti</Type>
     </Monster>
   </MonsterInformation>
