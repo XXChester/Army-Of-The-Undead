@@ -112,6 +112,7 @@ namespace WOA3.Model {
 				// reset the last known location ONLY if we were tracking
 				if (isTracking()) {
 					this.LastKnownLocation = this.activeBehaviour.Target;
+					//this.tracking = null;
 				}
 				newBehaviour.Target = this.LastKnownLocation;
 				newBehaviour.Position = this.activeBehaviour.Position;
@@ -125,9 +126,9 @@ namespace WOA3.Model {
 
 		private void trackTarget(Entity toTrack) {
 			//if (!toTrack.Equals(tracking)) {
-			//	this.tracking = toTrack;
-			//	swapBehaviours(this.seekingBehaviour, State.Tracking);
-			pathToWaypoint(toTrack.Position);
+				this.tracking = toTrack;
+				swapBehaviours(this.seekingBehaviour, State.Tracking);
+			//pathToWaypoint(toTrack.Position);
 		//	}
 		}
 
@@ -153,6 +154,12 @@ namespace WOA3.Model {
 				this.activeBehaviour = this.pathingBehaviour;*/
 			}
 		}
+
+		public void collision() {
+				this.pathingBehaviour.init(base.Position, this.LastKnownLocation);
+				swapBehaviours(this.pathingBehaviour, State.Pathing);
+		}
+
 
 	/*	public void stop() {
 #if DEBUG
@@ -276,6 +283,10 @@ namespace WOA3.Model {
 			this.trackTarget(ghost);
 		}
 
+		public virtual void Unsubscribe() {
+			Unsubscribe(this.LastKnownLocation);
+		}
+
 		public virtual void Unsubscribe(Vector2 lastKnowPosition) {
 			if (this.unsubscriber != null) {
 				this.unsubscriber.Dispose();
@@ -285,10 +296,10 @@ namespace WOA3.Model {
 				this.LastKnownLocation = this.tracking.Position;
 			}*/
 			// if the last known location isn't the same as our currnet LKL, re-calculate
-			if (!lastKnowPosition.Equals(LastKnownLocation)) {
+			//if (!lastKnowPosition.Equals(LastKnownLocation)) {
 				this.pathToWaypoint(lastKnowPosition);
-			}
-			//this.tracking = null;
+			//}
+			this.tracking = null;
 		}
 
 		public void OnCompleted() {

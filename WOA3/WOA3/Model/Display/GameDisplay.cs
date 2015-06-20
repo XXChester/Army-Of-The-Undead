@@ -334,18 +334,19 @@ namespace WOA3.Model.Display {
 			//if (ghost.isVisible()) {
 			foreach (var mob in mobs) {
 				ClosestSeeable closestSeeable = getMobsFieldOfView(mob);
+				// are we against a wall
+				bool hitWall = false;
+				foreach (Wall wall in map.Walls) {
+					// is the ghost in a wall?
+					if (wall.BBox.Intersects(mob.BBox)) {
+					//if (wall.BBox.Intersects(mob.BoundingSphere)) {
+						hitWall = true;
+						collidedWith = wall;
+					}
+				}
+
 				// can we even see anything?
 				if (closestSeeable != null) {
-					bool hitWall = false;
-					foreach (Wall wall in map.Walls) {
-						// is the ghost in a wall?
-						//if (wall.BBox.Intersects(mob.BBox)) {
-						if (wall.BBox.Intersects(mob.BoundingSphere)) {
-							hitWall = true;
-							collidedWith = wall;
-						}
-					}
-
 
 					// did we hit a wall?
 					if (hitWall) {
@@ -357,11 +358,17 @@ namespace WOA3.Model.Display {
 						}*/
 					//	if (!mob.isPathing()) {
 							// chart a path to the last known location
-							mob.Unsubscribe(closestSeeable.Ghost.Position);
+						//	mob.Unsubscribe(closestSeeable.Ghost.Position);
 					//	}
 					} else {
 						// we aren't hitting a wall, track the target
+						//mob.Subscribe(this.ghostObserverHandler, closestSeeable.Ghost);
+					}
+
+					if (!hitWall) {
 						mob.Subscribe(this.ghostObserverHandler, closestSeeable.Ghost);
+					} else {
+						mob.Unsubscribe(closestSeeable.Ghost.Position);
 					}
 
 
@@ -374,8 +381,11 @@ namespace WOA3.Model.Display {
 						mob.lostTarget();
 					}*/
 					//if (!mob.isPathing() && !mob.isIdle()) {
-					//	mob.Unsubscribe();
+						mob.Unsubscribe();
 					//}
+				}
+				if (hitWall && mob.isTracking()) {
+					mob.collision();
 				}
 				//}
 				//}
