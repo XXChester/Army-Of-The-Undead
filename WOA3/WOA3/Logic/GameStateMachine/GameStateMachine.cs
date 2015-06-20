@@ -16,7 +16,6 @@ namespace WOA3.Logic.GameStateMachine {
 		}
 
 		public BaseGameState CompanyCinematic { get; set; }
-		public BaseGameState GameDevCinematic { get; set; }
 		public BaseGameState MainMenu { get; set; }
 		public BaseGameState GameDisplay { get; set; }
 		public BaseGameState Tutorial { get; set; }
@@ -35,7 +34,6 @@ namespace WOA3.Logic.GameStateMachine {
 
 		public void init(GraphicsDevice device, ContentManager content) {
 			this.CompanyCinematic = new CompanyCinematicState(device, content);
-			this.GameDevCinematic = new GameDevSplashState(device, content);
 			this.GameDisplay = new GameDisplayState(device, content);
 			this.Tutorial = new TutorialState(device, content);
 			this.TutorialComplete = new TutorialCompleteState(device, content);
@@ -45,12 +43,11 @@ namespace WOA3.Logic.GameStateMachine {
 			this.ExitState = new ExitGameState(device, content);
 
 			this.LevelContext = null;
-		//	this.CurrentState = this.CompanyCinematic;
-			//this.CurrentState = this.GameDevCinematic;
+			//this.CurrentState = this.CompanyCinematic;
 		//	this.CurrentState = this.MainMenu;
 			this.CurrentState = this.GameDisplay;
 		//	this.CurrentState = this.GameOverState;
-			//this.CurrentState = Tutorial;
+		//	this.CurrentState = Tutorial;
 		//	this.CurrentState = TutorialComplete;
 		//	this.CurrentState = this.GameFinishedState;
 
@@ -81,7 +78,6 @@ namespace WOA3.Logic.GameStateMachine {
 
 		public void Dispose() {
 			this.CompanyCinematic.Dispose();
-			this.GameDevCinematic.Dispose();
 			this.MainMenu.Dispose();
 			this.GameDisplay.Dispose();
 			this.GameOverState.Dispose();

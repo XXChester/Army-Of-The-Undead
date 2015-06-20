@@ -21,7 +21,7 @@ namespace WOA3.Logic.GameStateMachine {
 		}
 
 		public override void goToPreviousState() {
-			changeState(GameStateMachine.getInstance().GameDevCinematic);
+			changeState(GameStateMachine.getInstance().MainMenu);
 			base.goToPreviousState();
 		}
 
