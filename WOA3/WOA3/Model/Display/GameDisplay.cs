@@ -47,6 +47,7 @@ namespace WOA3.Model.Display {
 		protected OnDeath mobDeathFinish;
 		protected OnDeath ghostDeathFinish;
 		protected CollisionCheck collisionCheck;
+		private List<Ghost> recentlySpawned;
 
 #if DEBUG
 		private EditorCreator editorsCreator;
@@ -76,6 +77,7 @@ namespace WOA3.Model.Display {
 				this.allGhosts.Clear();
 				this.mobs.Clear();
 				this.map = null;
+				this.recentlySpawned = new List<Ghost>();
 			}
 			this.ghostObserverHandler = new GhostObservationHandler();
 			this.hud = new HUD(content);
@@ -175,8 +177,8 @@ namespace WOA3.Model.Display {
 				};
 				
 
-				Animated2DSprite deathSprite = new Animated2DSprite(parms); ;
-				this.allGhosts.Add(new Ghost(content, position, this.ghostObserverHandler, this.mobsInRange, this.ghostDeathFinish));
+				Animated2DSprite deathSprite = new Animated2DSprite(parms);
+				this.recentlySpawned.Add(new Ghost(content, position, this.ghostObserverHandler, this.mobsInRange, this.ghostDeathFinish));
 				this.theDead.Add(deathSprite);
 			};
 			this.ghostDeathFinish = delegate(Character character) {
@@ -195,7 +197,10 @@ namespace WOA3.Model.Display {
 					LightColour = Color.White,
 					Texture = LoadingUtils.load<Texture2D>(content, texture)
 				};
-
+				Ghost ghost = (Ghost)character;
+				ghost.Selected = false;
+				this.selectedGhosts.Remove(ghost);
+				this.allGhosts.Remove(ghost);
 				this.theDead.Add(new Animated2DSprite(parms));
 			};
 			this.ghostsInRange = delegate(BoundingSphere range) {
@@ -403,8 +408,17 @@ namespace WOA3.Model.Display {
 			return win;
 		}
 
+		protected bool looseConditionDetected() {
+			bool loose = this.mapLoaded;
+			foreach (var ghost in this.allGhosts) {
+				if (!ghost.AmIDead) {
+					loose = false;
+				}
+			}
+			return loose;
+		}
+
 		public virtual void update(float elapsed) {
-			bool atleastOneGhostAlive = false;
 			foreach (var mob in mobs) {
 				mob.update(elapsed);
 			}
@@ -415,15 +429,16 @@ namespace WOA3.Model.Display {
 			}
 			foreach (var ghost in this.allGhosts) {
 				ghost.update(elapsed);
-				if (!atleastOneGhostAlive && !ghost.AmIDead) {
-					atleastOneGhostAlive = true;
-				}
 			}
 
 			updateFieldOfView(elapsed);
 			updateSkills(elapsed);
 
-			if (!atleastOneGhostAlive) {
+			CombatManager.getInstance().update(elapsed);
+			EffectsManager.getInstance().update(elapsed);
+			SoundManager.getInstance().update();
+
+			if (looseConditionDetected()) {
 				((GameDisplayState)this.gameStateMachine.CurrentState).goToGameOver();
 			} else if (winConditionAchieved()) {
 				LevelContext context = new LevelContext() {
@@ -451,9 +466,12 @@ namespace WOA3.Model.Display {
 				}
 			}
 			this.hud.update(elapsed);
-			CombatManager.getInstance().update(elapsed);
-			EffectsManager.getInstance().update(elapsed);
-			SoundManager.getInstance().update();
+
+			// ghosts spawned as part of this cycle are not applicable to the current frame so add them here
+			if (this.recentlySpawned != null && this.recentlySpawned.Count > 0) {
+				this.allGhosts.AddRange(this.recentlySpawned);
+				this.recentlySpawned = new List<Ghost>();
+			}
 #if DEBUG
 			MapEditor.getInstance().update();
 #endif

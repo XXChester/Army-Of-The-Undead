@@ -71,7 +71,8 @@ namespace WOA3.Logic {
 		}
 
 		public void update(float elapsed) {
-			if (this.combatRequests.Count > 0) {
+			while (this.combatRequests.Count > 0) {
+			//if (this.combatRequests.Count > 0) {
 				CombatRequest request = getFirst();
 				if (request.Skill != null) {
 					SkillResult skillResult = request.Skill.perform(request.Source.Range);
@@ -88,12 +89,14 @@ namespace WOA3.Logic {
 										removeRequests(target);
 										// if we had a death effect it needs to go to the front of the list of actions and apply against all targets in the area
 										Skill deathEffect = target.die();
-										List<Character> charactersInRange = target.CharactersInRange.Invoke(target.Range);
-										this.combatRequests.Insert(0, new CombatRequest() {
-											Skill = deathEffect,
-											Source = target,
-											Targets = charactersInRange
-										});
+										if (deathEffect != null) {
+											List<Character> charactersInRange = target.CharactersInRange.Invoke(target.Range);
+											this.combatRequests.Insert(0, new CombatRequest() {
+												Skill = deathEffect,
+												Source = target,
+												Targets = charactersInRange
+											});
+										}
 									}
 								}
 							}

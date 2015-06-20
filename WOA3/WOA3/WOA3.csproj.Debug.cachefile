@@ -67,10 +67,14 @@ WOAContent\Curse.xnb
 WOAContent\GhostDeath.xnb
 WOAContent\Torment.xnb
 WOAContent\Background.wma
-WOAContent\Data\Tutorial.xml
-WOAContent\Data\Map2Identifiers.xml
 WOAContent\Data\IdentifiersTemplate.xml
 WOAContent\Data\Map2.XML
-WOAContent\Data\Map1.XML
+WOAContent\Data\Map2Identifiers.xml
 WOAContent\Data\Map1Identifiers.xml
+WOAContent\Data\Map3Identifiers.xml
+WOAContent\Data\Map4Identifiers.xml
+WOAContent\Data\Tutorial.xml
 WOAContent\Data\TutorialIdentifiers.xml
+WOAContent\Data\Map1.XML
+WOAContent\Data\Map3.XML
+WOAContent\Data\Map4.XML

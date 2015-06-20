@@ -44,6 +44,7 @@
 
 
 [*]can be attacked while invisible
+[]If you go invisible and then attack to loose right away
 
 []Transitions
 []SFX
@@ -58,3 +59,4 @@
 	[]Menu background
 	[]Tutorial screen
 	[]Buttons
+[]Finish game screen
