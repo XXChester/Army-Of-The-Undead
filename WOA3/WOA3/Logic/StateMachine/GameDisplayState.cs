@@ -16,14 +16,6 @@ namespace WOA3.Logic.StateMachine {
 			: base(device, content, null) {
 		}
 
-		private void resetContext() {
-			LevelContext context = new LevelContext() {
-				Ghosts = new List<Model.Ghost>(),
-				MapIndex = 1
-			};
-			GameStateMachine.getInstance().LevelContext = context;
-		}
-
 		protected override IRenderable createInstance() {
 			if (GameStateMachine.getInstance().LevelContext == null) {
 				resetContext();
@@ -46,7 +38,8 @@ namespace WOA3.Logic.StateMachine {
 				changeState(GameStateMachine.getInstance().GameDisplay);
 				GameStateMachine.getInstance().LevelContext = context;
 			}
-			base.goToNextState();
+			// don't call the base or the context will be reset
+			//base.goToNextState();
 		}
 
 		public void goToGameOver() {

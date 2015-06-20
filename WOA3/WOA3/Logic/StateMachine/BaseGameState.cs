@@ -29,8 +29,16 @@ namespace WOA3.Logic.StateMachine {
 			GameStateMachine.getInstance().CurrentState.reset();
 		}
 
+		protected void resetContext() {
+			LevelContext context = new LevelContext() {
+				Ghosts = new List<Model.Ghost>(),
+				MapIndex = 1
+			};
+			GameStateMachine.getInstance().LevelContext = context;
+		}
+
 		public virtual void goToNextState() {
-			
+			resetContext();
 		}
 
 		public virtual Model.Display.IRenderable getCurrentScreen() {
@@ -38,7 +46,7 @@ namespace WOA3.Logic.StateMachine {
 		}
 
 		public virtual void goToPreviousState() {
-			
+			resetContext();
 		}
 
 		public void setStates() {
