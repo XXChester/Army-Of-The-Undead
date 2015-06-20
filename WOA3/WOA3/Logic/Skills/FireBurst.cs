@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Audio;
 
 namespace WOA3.Logic.Skills {
 	public class FirstBurst : Skill {
-		private const int COOL_DOWN = 1;
+		private const int COOL_DOWN = 1600;
 		public FirstBurst(SoundEffect sfx, float damage, SkillFinished skillFinished) : base(damage, COOL_DOWN, sfx, skillFinished) { }
 	}
 }

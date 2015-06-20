@@ -52,7 +52,7 @@ namespace WOA3.Model {
 
 		#region Constructor
 		public Mob(ContentManager content, Vector2 position, CharactersInRange charactersInRange, OnDeath onDeath, CollisionCheck collisionCheck, String monsterName)
-			:base(content, position, SPEED, charactersInRange, onDeath, 5f) {
+			:base(content, position, SPEED, charactersInRange, onDeath, 10f) {
 			
 			StaticDrawable2D character = getCharacterSprite(content, position, monsterName);
 			base.init(character);

@@ -22,6 +22,7 @@ using WOA3.Logic;
 using WOA3.Logic.Skills;
 using WOA3.Logic.AI;
 using WOA3.Logic.Behaviours;
+using WOA3.Logic.StateMachine;
 
 namespace WOA3.Model {
 	public class Yeti : Mob {
@@ -48,7 +49,14 @@ namespace WOA3.Model {
 				VisualEffect effect = new VisualEffect(shockWave, effectLife);
 				EffectsManager.getInstance().Visuals.Add(effect);
 			};
-			this.skills.Add(new HolySwirl(sfx, 2f, holySwirl));
+			// this skill scales based on the level, start at 2000, get to 1600
+			int cooldown = 1800;
+			int index = GameStateMachine.getInstance().LevelContext.MapIndex - 1;
+			if (index != 0) {
+				//cooldown = cooldown = 1600;
+			}
+			
+			this.skills.Add(new HolySwirl(sfx, 2f, holySwirl, cooldown));
 		}
 		#endregion Support methods
 	}

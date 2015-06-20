@@ -22,9 +22,7 @@ namespace WOA3.Logic.Skills {
 
 		public Skill(float damage, int coolDown, SoundEffect sfx, SkillFinished skillCallback) {
 			DAMAGE = damage;
-			//DAMAGE = 0f;
-			COOL_DOWN = 2500;
-			//COOL_DOWN = coolDown * 1000;
+			COOL_DOWN = coolDown;
 			this.lastUsedAt = 0f;
 			this.skillCallback = skillCallback;
 			this.sfx = sfx;

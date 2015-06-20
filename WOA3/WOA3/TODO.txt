@@ -44,19 +44,24 @@
 
 
 [*]can be attacked while invisible
-[]If you go invisible and then attack to loose right away
+[*]If you go invisible and then attack to loose right away
+[]Your attacks should happen before the mobs. You can observe this by going invisible and appearing at a mob, it should damage him.
 
 []Transitions
 []SFX
 	[]All skills
 	[]Deaths
-	[]Buttons
+	[*]Buttons
 []Music
 []Levels
+	[*]Drawn
+	[*]Mapped
+	[]Balanced
 []Finish screen
 []Death animations
 []Art
 	[]Menu background
 	[]Tutorial screen
 	[]Buttons
-[]Finish game screen
+[]Finished game screen
+[]Full screen
