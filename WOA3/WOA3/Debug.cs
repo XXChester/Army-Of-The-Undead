@@ -15,6 +15,7 @@ namespace WOA3 {
 #if DEBUG
 		public static bool debugOn;
 		public static bool showAIMap;
+		public static bool mobsCanMove = true;
 		public static Texture2D debugChip;
 		public static Texture2D debugRing;
 
@@ -32,6 +33,8 @@ namespace WOA3 {
 				debugOn = !debugOn;
 			} else if (InputManager.getInstance().wasKeyPressed(Keys.NumPad1)) {
 				showAIMap = !showAIMap;
+			} else if (InputManager.getInstance().wasKeyPressed(Keys.NumPad4)) {
+				mobsCanMove = !mobsCanMove;
 			}
 		}
 
