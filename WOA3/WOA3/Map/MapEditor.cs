@@ -103,7 +103,6 @@ namespace WOA3.Map {
 
 		public void editMap(string value) {
 			value = value.ToLower();
-			MappingState oldState = this.mappingState;
 			switch (value) {
 				case COMMAND_NONE:
 					this.mappingState = MappingState.None;
@@ -126,9 +125,6 @@ namespace WOA3.Map {
 					Console.WriteLine("Failed to recognize your command, try using the editMapHelp()");
 					break;
 			}
-			if (this.mappingState != oldState) {
-				ScriptManager.getInstance().log("Changed to edit: " + this.mappingState.ToString());
-			}
 			Console.WriteLine("Mapping: " + this.mappingState.ToString());
 		}
 
@@ -143,6 +139,7 @@ namespace WOA3.Map {
 					CreatedType type = new CreatedType();
 					type.position = indexPosition;
 					type.objType = this.mappingState;
+					type.type = this.type;
 					type.endPosition = mousePos.toPoint();
 					this.objectCreator(this.mappingState, this.type, mousePos);
 					this.createdObjects.Add(type);
