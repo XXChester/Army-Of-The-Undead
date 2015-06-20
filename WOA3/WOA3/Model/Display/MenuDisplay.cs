@@ -36,7 +36,7 @@ public 	class MenuDisplay : BaseMenu {
 
 		#region Constructor
 		public MenuDisplay(ContentManager content)
-		: base(content, "BackgroundScreen", "Title") {
+		: base(content, "GeneralBackground") {
 			VisualCallback setTutorialState = delegate() {
 				((MainMenuState)GameStateMachine.getInstance().CurrentState).pushToTutorial();
 			};

@@ -45,7 +45,7 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public BaseMenu(ContentManager content, string backgroundName, String title = null) {
+		public BaseMenu(ContentManager content, string backgroundName) {
 			Vector2 position = new Vector2(Constants.RESOLUTION_X / 2, Constants.RESOLUTION_Y / 8 * 4);
 			this.content = content;
 			Texture2D texture = LoadingUtils.load<Texture2D>(content, backgroundName);
@@ -55,14 +55,6 @@ namespace WOA3.Model.Display {
 				Position = position
 			};
 			this.background = new StaticDrawable2D(parms);
-
-
-			if (this.title != null) {
-				StaticDrawable2DParams titleParms = new StaticDrawable2DParams() {
-					Texture = LoadingUtils.load<Texture2D>(content, title)
-				};
-				this.title = new StaticDrawable2D(titleParms);
-			}
 		}
 		#endregion Constructor
 

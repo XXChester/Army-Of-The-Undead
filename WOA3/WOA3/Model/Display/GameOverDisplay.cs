@@ -35,7 +35,7 @@ namespace WOA3.Model.Display {
 
 		#region Constructor
 		public GameOverDisplay(GraphicsDevice graphics, ContentManager content)
-			: base(content, "EndGame") {			
+			: base(content, "GameOver") {			
 
 			
 			VisualCallback setPrevipousState = delegate() {

@@ -21,7 +21,8 @@ namespace WOA3.Model.Display {
 		#endregion Class properties
 
 		#region Constructor
-		public TutorialComplete(ContentManager content) : base(content, "BackgroundScreen") {
+		public TutorialComplete(ContentManager content)
+			: base(content, "GeneralBackground") {
 
 			VisualCallback setPrevipousState = delegate() {
 				GameStateMachine.getInstance().goToPreviousState();
