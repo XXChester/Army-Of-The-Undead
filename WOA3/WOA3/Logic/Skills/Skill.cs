@@ -19,6 +19,13 @@ namespace WOA3.Logic.Skills {
 		private readonly int COOL_DOWN;
 
 		public bool CoolDownOver { get { return lastUsedAt == 0; } }
+		public int TotalCoolDown { get { return COOL_DOWN; } }
+		public float CooldownComplete {
+			get {
+				float percentage = 1 - (lastUsedAt / COOL_DOWN);
+				return percentage;
+			}
+		}
 
 		public Skill(float damage, int coolDown, SoundEffect sfx, SkillFinished skillCallback) {
 			DAMAGE = damage;

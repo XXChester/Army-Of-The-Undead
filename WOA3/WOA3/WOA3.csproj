@@ -179,7 +179,6 @@
     <Compile Include="Logic\GameStateMachine\TutorialCompleteState.cs" />
     <Compile Include="Logic\GameStateMachine\TutorialState.cs" />
     <Compile Include="Logic\GameStateMachine\GameDisplayState.cs" />
-    <Compile Include="Logic\GameStateMachine\GameDevSplashState.cs" />
     <Compile Include="Logic\GameStateMachine\GameStateMachine.cs" />
     <Compile Include="Logic\GameStateMachine\State.cs" />
     <Compile Include="Logic\Unsubscriber.cs" />
@@ -215,6 +214,7 @@
     <Compile Include="Model\Display\GameOverDisplay.cs" />
     <Compile Include="Model\EffectsManager.cs" />
     <Compile Include="Model\HealthBar.cs" />
+    <Compile Include="Model\HUDSelected.cs" />
     <Compile Include="Model\Scenarios\SelectionTutorialScenario.cs" />
     <Compile Include="Model\VisualEffect.cs" />
     <Compile Include="Model\Yeti.cs" />

@@ -48,6 +48,7 @@ namespace WOA3.Model.Display {
 		protected OnDeath ghostDeathFinish;
 		protected CollisionCheck collisionCheck;
 		private List<Ghost> recentlySpawned;
+		private bool clearSelection;
 
 #if DEBUG
 		private EditorCreator editorsCreator;
@@ -80,7 +81,12 @@ namespace WOA3.Model.Display {
 				this.recentlySpawned = new List<Ghost>();
 			}
 			this.ghostObserverHandler = new GhostObservationHandler();
-			this.hud = new HUD(content);
+			this.hud = new HUD(content, delegate(int id) {
+				Ghost selected = this.selectedGhosts[id];
+				clearSelectedGhosts();
+				selectGhost(selected);
+				this.clearSelection = false;
+			});
 			initDelegates();
 			loadMap();
 			// if we have ghosts left over, we need to preserve them
@@ -399,6 +405,22 @@ namespace WOA3.Model.Display {
 			public Mob Mob { get; set; }
 		}
 
+		private void clearSelectedGhosts() {
+			if (clearSelection) {
+				foreach (var ghost in allGhosts) {
+					ghost.Selected = false;
+				}
+				this.selectedGhosts.Clear();
+			} else {
+				clearSelection = true;
+			}
+		}
+
+		private void selectGhost(Ghost ghost) {
+			ghost.Selected = true;
+			this.selectedGhosts.Add(ghost);
+		}
+
 		protected virtual bool winConditionAchieved() {
 			bool win = false;
 			if (this.mapLoaded) {
@@ -440,6 +462,8 @@ namespace WOA3.Model.Display {
 
 			updateFieldOfView(elapsed);
 			updateSkills(elapsed);
+			this.hud.updateSkills(this.selectedGhosts);
+			this.hud.update(elapsed);
 
 			CombatManager.getInstance().update(elapsed);
 			EffectsManager.getInstance().update(elapsed);
@@ -458,21 +482,15 @@ namespace WOA3.Model.Display {
 
 			if (InputManager.getInstance().wasLeftButtonPressed()) {
 				if (!InputManager.getInstance().isKeyDown(Keys.LeftShift)) {
-					foreach (var ghost in allGhosts) {
-						ghost.Selected = false;
-					}
-					this.selectedGhosts.Clear();
+					clearSelectedGhosts();
 				}
-				Ghost selectedGhost = null;
+		
 				foreach (var ghost in allGhosts) {
-					if (PickingUtils.pickVector(InputManager.getInstance().MousePosition, ghost.BBox)) {
-						selectedGhost = ghost;
-						ghost.Selected = true;
-						this.selectedGhosts.Add(ghost);
+					if (PickingUtils.pickVector(InputManager.getInstance().MousePosition, ghost.BBox) && !ghost.Selected) {
+						selectGhost(ghost);
 					}
 				}
 			}
-			this.hud.update(elapsed);
 
 			// ghosts spawned as part of this cycle are not applicable to the current frame so add them here
 			if (this.recentlySpawned != null && this.recentlySpawned.Count > 0) {
@@ -515,7 +533,7 @@ namespace WOA3.Model.Display {
 				}
 			}
 #endif
-		//	this.hud.render(spriteBatch);
+			this.hud.render(spriteBatch);
 		}
 		#endregion Support methods
 

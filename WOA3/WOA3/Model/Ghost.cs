@@ -42,6 +42,7 @@ namespace WOA3.Model {
 
 		#region Class propeties
 		public bool Selected { get; set; }
+		public List<Skill> Skills { get; set; }
 		#endregion Class properties
 
 		#region Constructor
@@ -120,14 +121,24 @@ namespace WOA3.Model {
 				VisualEffect effect = new VisualEffect(shockWave, effectLife);
 				EffectsManager.getInstance().Visuals.Add(effect);
 			};
+			Skill booSkill = new Boo(booSfx, boo);
+			Skill shriekSkill = new Shriek(shriekSfx, shriek);
+			Skill appearSkill = new Appear(whooshSfx, appear);
+			Skill hideSkill = new Disappear(whooshSfx, disappear);
 
 			this.aggressiveSkills = new Dictionary<Keys, Skill>();
-			this.aggressiveSkills.Add(Keys.D1, new Boo(booSfx, boo));
-			this.aggressiveSkills.Add(Keys.D2, new Shriek(shriekSfx, shriek));
+			this.aggressiveSkills.Add(Keys.D1, booSkill);
+			this.aggressiveSkills.Add(Keys.D2, shriekSkill);
 
 			this.passiveskills = new Dictionary<Keys, Skill>();
-			this.passiveskills.Add(Keys.D3, new Appear(whooshSfx, appear));
-			this.passiveskills.Add(Keys.D4, new Disappear(whooshSfx, disappear));
+			this.passiveskills.Add(Keys.D3, appearSkill);
+			this.passiveskills.Add(Keys.D4, hideSkill);
+
+			this.Skills = new List<Skill>();
+			this.Skills.Add(booSkill);
+			this.Skills.Add(shriekSkill);
+			this.Skills.Add(appearSkill);
+			this.Skills.Add(hideSkill);
 		}
 
 		private void resetFadeEffect(FadeEffect effect, int alphaAmount, FadeEffect.FadeState state) {
@@ -190,11 +201,8 @@ namespace WOA3.Model {
 
 			if (Selected) {
 				// update our skills
-				foreach (var skill in aggressiveSkills) {
-					skill.Value.update(elapsed);
-				}
-				foreach (var skill in passiveskills) {
-					skill.Value.update(elapsed);
+				foreach (var skill in Skills) {
+					skill.update(elapsed);
 				}
 
 				if (InputManager.getInstance().wasRightButtonPressed()) {

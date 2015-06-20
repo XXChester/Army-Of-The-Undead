@@ -1,16 +1,16 @@
 ﻿[]Skill visual effects
 []Skill SFX's
-[]Menu screen
+[*]Menu screen
 []Map screen
 []Transitions
 [*]Map win conditions
 []Map progression
 [*]Tutorial
 []Storyboard
-[]Title
+[*]Title
 []Option screen
 []Progression profiles
-[]Music
+[*]Music
 []Minigame ghost collection at the end
 []Lighting
 []Enemy directed FOV
@@ -38,17 +38,17 @@
 [*]Tutorial can attack the mob before the correct stage
 [*]if you assign a ghost to move, but de-select him, he stops moving until you select him again
 []Fix cool downs
-[]AI Bounding box checks between player and ghost work....but in open spaces they do not as the boxes are axis aligned and not rotatable. Need pixel collision.
-[]context change includes ghost being destroyed
+[*]AI Bounding box checks between player and ghost work....but in open spaces they do not as the boxes are axis aligned and not rotatable. Need pixel collision.
+[*]context change includes ghost being destroyed
 [*]hit reset at the kill stage on the tutorial and you cannot kill
 
 
 [*]can be attacked while invisible
 [*]If you go invisible and then attack to loose right away
-[]Your attacks should happen before the mobs. You can observe this by going invisible and appearing at a mob, it should damage him.
 []Cloest to end doesn't return the closest
 []Going into a wall makes the AI follow you into it
 []AI can get snagged on the corners
+[*]First tutorial text is wrong, it is left click to select the unit.
 
 []Transitions
 []SFX
@@ -66,11 +66,3 @@
 	[*]Tutorial screen
 	[*]Buttons
 [*]Finished game screen
-
-
-Final testing!!
-=================
-[]Full screen
-[]Tutorial
-[]Escape does not exit
-[]Make sure debug stuff doesn't work such as restarting the level by r

@@ -151,13 +151,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="SplashScreen.png">
-      <Name>SplashScreen</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="HUDBackground.png">
       <Name>HUDBackground</Name>
       <Importer>TextureImporter</Importer>
@@ -530,16 +523,6 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="skillIcon1.png">
-      <Name>skillIcon1</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="skillIcon2.png">
-      <Name>skillIcon2</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
     <Compile Include="TextPopupBackground.png">
       <Name>TextPopupBackground</Name>
       <Importer>TextureImporter</Importer>
@@ -576,6 +559,42 @@
       <Processor>PassThroughProcessor</Processor>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SkillAppear.png">
+      <Name>SkillAppear</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="SkillBlast.png">
+      <Name>SkillBlast</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="SkillBoo.png">
+      <Name>SkillBoo</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="SkillHide.png">
+      <Name>SkillHide</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CooldownChip.png">
+      <Name>CooldownChip</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Ghost_Grey.png">
+      <Name>Ghost_Grey</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

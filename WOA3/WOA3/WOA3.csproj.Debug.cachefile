@@ -9,9 +9,6 @@ WOAContent\DoubleRight.xnb
 WOAContent\DoubleTop.xnb
 WOAContent\Simple.xnb
 WOAContent\Ring.xnb
-WOAContent\SplashScreen.xnb
-WOAContent\skillIcon1.xnb
-WOAContent\skillIcon2.xnb
 WOAContent\HUDBackground.xnb
 WOAContent\TextPopupBackground.xnb
 WOAContent\2c1.xnb
@@ -74,6 +71,12 @@ WOAContent\GameOver.xnb
 WOAContent\GeneralBackground.xnb
 WOAContent\Whoosh.xnb
 WOAContent\BottomBorder.xnb
+WOAContent\SkillAppear.xnb
+WOAContent\SkillBlast.xnb
+WOAContent\SkillBoo.xnb
+WOAContent\SkillHide.xnb
+WOAContent\CooldownChip.xnb
+WOAContent\Ghost_Grey.xnb
 WOAContent\Background.wma
 WOAContent\Music.wma
 WOAContent\Data\IdentifiersTemplate.xml
