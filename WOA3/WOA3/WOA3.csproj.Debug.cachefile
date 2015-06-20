@@ -73,6 +73,7 @@ WOAContent\Music.xnb
 WOAContent\GameOver.xnb
 WOAContent\GeneralBackground.xnb
 WOAContent\Whoosh.xnb
+WOAContent\BottomBorder.xnb
 WOAContent\Background.wma
 WOAContent\Music.wma
 WOAContent\Data\IdentifiersTemplate.xml
@@ -81,8 +82,10 @@ WOAContent\Data\Map2Identifiers.xml
 WOAContent\Data\Map1Identifiers.xml
 WOAContent\Data\Map3Identifiers.xml
 WOAContent\Data\Map4Identifiers.xml
-WOAContent\Data\Tutorial.xml
 WOAContent\Data\TutorialIdentifiers.xml
 WOAContent\Data\Map1.XML
 WOAContent\Data\Map3.XML
 WOAContent\Data\Map4.XML
+WOAContent\Data\Pathing.xml
+WOAContent\Data\PathingIdentifiers.xml
+WOAContent\Data\Tutorial.xml

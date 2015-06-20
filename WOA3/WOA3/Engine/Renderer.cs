@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Input;
 
 using WOA3.Logic;
 using WOA3.Logic.AI;
-using WOA3.Logic.StateMachine;
+using WOA3.Logic.GameStateMachine;
 using WOA3.Model.Display;
 using WOA3.Map;
 
@@ -39,7 +39,7 @@ namespace WOA3.Engine {
 			baseParms.ScreenHeight = Constants.RESOLUTION_Y;
 			baseParms.ContentRootDirectory = "WOAContent";
 			baseParms.MouseVisible = true;
-			baseParms.FullScreen = true;
+		//	baseParms.FullScreen = true;
 #if DEBUG
 			baseParms.RunningMode = RunningMode.Debug;
 #else
@@ -174,7 +174,7 @@ namespace WOA3.Engine {
 			if (InputManager.getInstance().wasKeyPressed(Keys.Escape) ||
 			InputManager.getInstance().wasButtonPressed(PlayerIndex.One, Buttons.B)) {
 				MapEditor.getInstance().logEntries();
-				//this.Exit();
+				this.Exit();
 			}
 			Debug.update();
 #endif

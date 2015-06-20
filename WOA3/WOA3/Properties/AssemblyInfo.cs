@@ -5,10 +5,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("WOA3")]
-[assembly: AssemblyProduct("WOA3")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyTitle("Army of the Undead")]
+[assembly: AssemblyProduct("Army of the Undead")]
+[assembly: AssemblyDescription("WOA III Competition Entry")]
+[assembly: AssemblyCompany("Great White North Productions")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

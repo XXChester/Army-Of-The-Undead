@@ -47,6 +47,8 @@
 [*]If you go invisible and then attack to loose right away
 []Your attacks should happen before the mobs. You can observe this by going invisible and appearing at a mob, it should damage him.
 []Cloest to end doesn't return the closest
+[]Going into a wall makes the AI follow you into it
+[]AI can get snagged on the corners
 
 []Transitions
 []SFX

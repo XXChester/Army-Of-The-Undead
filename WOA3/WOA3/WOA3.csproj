@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WOA3</RootNamespace>
-    <AssemblyName>WOA3</AssemblyName>
+    <AssemblyName>Army of the Undead</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
@@ -16,7 +16,7 @@
     <XnaProfile>Reach</XnaProfile>
     <XnaCrossPlatformGroupID>470c8d1f-0bc3-4dfe-a55c-7fa0f08cd035</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
-    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <ApplicationIcon>Monster1.ico</ApplicationIcon>
     <Thumbnail>GameThumbnail.png</Thumbnail>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -32,10 +32,11 @@
     <ProductName>Army of the Undead</ProductName>
     <PublisherName>Great White North Productions</PublisherName>
     <SuiteName>Games</SuiteName>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>5</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -43,7 +44,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\x86\Debug</OutputPath>
-    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <DefineConstants>DEBUG;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoStdLib>true</NoStdLib>
@@ -55,7 +56,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\x86\Release</OutputPath>
-    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <DefineConstants>WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoStdLib>true</NoStdLib>
@@ -65,6 +66,18 @@
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>WOA3.Engine.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>D1F97470802098685D7FF1CBBCE02967381A7144</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>WOA3_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="GWNorthEngine, Version=1.0.0.2, Culture=neutral, processorArchitecture=x86">
@@ -156,19 +169,19 @@
     <Compile Include="Logic\Skills\FireBurst.cs" />
     <Compile Include="Logic\Skills\HolySwirl.cs" />
     <Compile Include="Logic\Skills\CorpseExplode.cs" />
-    <Compile Include="Logic\StateMachine\BaseGameState.cs" />
-    <Compile Include="Logic\StateMachine\CompanyCinematicState.cs" />
-    <Compile Include="Logic\StateMachine\ExitGameState.cs" />
-    <Compile Include="Logic\StateMachine\GameFinishedState.cs" />
-    <Compile Include="Logic\StateMachine\GameOverState.cs" />
-    <Compile Include="Logic\StateMachine\MainMenuState.cs" />
-    <Compile Include="Logic\StateMachine\LevelContext.cs" />
-    <Compile Include="Logic\StateMachine\TutorialCompleteState.cs" />
-    <Compile Include="Logic\StateMachine\TutorialState.cs" />
-    <Compile Include="Logic\StateMachine\GameDisplayState.cs" />
-    <Compile Include="Logic\StateMachine\GameDevSplashState.cs" />
-    <Compile Include="Logic\StateMachine\GameStateMachine.cs" />
-    <Compile Include="Logic\StateMachine\State.cs" />
+    <Compile Include="Logic\GameStateMachine\BaseGameState.cs" />
+    <Compile Include="Logic\GameStateMachine\CompanyCinematicState.cs" />
+    <Compile Include="Logic\GameStateMachine\ExitGameState.cs" />
+    <Compile Include="Logic\GameStateMachine\GameFinishedState.cs" />
+    <Compile Include="Logic\GameStateMachine\GameOverState.cs" />
+    <Compile Include="Logic\GameStateMachine\MainMenuState.cs" />
+    <Compile Include="Logic\GameStateMachine\LevelContext.cs" />
+    <Compile Include="Logic\GameStateMachine\TutorialCompleteState.cs" />
+    <Compile Include="Logic\GameStateMachine\TutorialState.cs" />
+    <Compile Include="Logic\GameStateMachine\GameDisplayState.cs" />
+    <Compile Include="Logic\GameStateMachine\GameDevSplashState.cs" />
+    <Compile Include="Logic\GameStateMachine\GameStateMachine.cs" />
+    <Compile Include="Logic\GameStateMachine\State.cs" />
     <Compile Include="Logic\Unsubscriber.cs" />
     <Compile Include="Logic\Skills\Appear.cs" />
     <Compile Include="Logic\CallBacks.cs" />
@@ -235,6 +248,7 @@
   <ItemGroup>
     <Content Include="Game.ico" />
     <Content Include="GameThumbnail.png" />
+    <Content Include="Monster1.ico" />
     <Content Include="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -270,6 +284,9 @@
       <Name>WOAContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="WOA3_TemporaryKey.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

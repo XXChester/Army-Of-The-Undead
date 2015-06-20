@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using WOA3.Model.Display;
 
-namespace WOA3.Logic.StateMachine {
+namespace WOA3.Logic.GameStateMachine {
 	public abstract class BaseGameState : State, IDisposable {
 
 		protected GraphicsDevice device;

@@ -8,24 +8,25 @@ using Microsoft.Xna.Framework.Graphics;
 
 using WOA3.Model.Display;
 
+namespace WOA3.Logic.GameStateMachine {
+	class CompanyCinematicState : BaseGameState {
 
-namespace WOA3.Logic.StateMachine {
-	class TutorialState : BaseGameState {
-		public TutorialState(GraphicsDevice device, ContentManager content)
-			: base(device, content, null) {
+		public CompanyCinematicState( GraphicsDevice device, ContentManager content)
+			: base( device, content, null) {
+			
 		}
-
+		
 		protected override IRenderable createInstance() {
-			return new TutorialDisplay(device, content);
+			return new Cinematic(content, "Logo");
 		}
 
 		public override void goToPreviousState() {
-			changeState(GameStateMachine.getInstance().MainMenu);
+			changeState(GameStateMachine.getInstance().GameDevCinematic);
 			base.goToPreviousState();
 		}
 
 		public override void goToNextState() {
-			changeState(GameStateMachine.getInstance().TutorialComplete);
+			goToPreviousState();
 			base.goToNextState();
 		}
 	}

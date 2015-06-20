@@ -21,7 +21,7 @@ using WOA3.Logic.Skills;
 using WOA3.Logic.AI;
 using WOA3.Engine;
 using WOA3.Map;
-using WOA3.Logic.StateMachine;
+using WOA3.Logic.GameStateMachine;
 
 
 namespace WOA3.Model.Display {

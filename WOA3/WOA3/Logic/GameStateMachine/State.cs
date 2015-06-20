@@ -5,7 +5,7 @@ using System.Text;
 
 using WOA3.Model.Display;
 
-namespace WOA3.Logic.StateMachine {
+namespace WOA3.Logic.GameStateMachine {
 	public interface State {
 		void goToNextState();
 

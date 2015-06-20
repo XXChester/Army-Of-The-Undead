@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace WOA3.Logic.StateMachine {
+namespace WOA3.Logic.GameStateMachine {
 	public class GameStateMachine : State, IDisposable {
 
 		private static GameStateMachine instance = new GameStateMachine();
@@ -45,10 +45,10 @@ namespace WOA3.Logic.StateMachine {
 			this.ExitState = new ExitGameState(device, content);
 
 			this.LevelContext = null;
-			this.CurrentState = this.CompanyCinematic;
+		//	this.CurrentState = this.CompanyCinematic;
 			//this.CurrentState = this.GameDevCinematic;
 		//	this.CurrentState = this.MainMenu;
-		//	this.CurrentState = this.GameDisplay;
+			this.CurrentState = this.GameDisplay;
 		//	this.CurrentState = this.GameOverState;
 			//this.CurrentState = Tutorial;
 		//	this.CurrentState = TutorialComplete;

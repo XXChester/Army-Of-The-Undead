@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 using WOA3.Model.Display;
 
-namespace WOA3.Logic.StateMachine {
+namespace WOA3.Logic.GameStateMachine {
 	class MainMenuState : BaseGameState {
 
 		public MainMenuState(GraphicsDevice device, ContentManager content)

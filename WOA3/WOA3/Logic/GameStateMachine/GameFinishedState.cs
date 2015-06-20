@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using WOA3.Model.Display;
 
 
-namespace WOA3.Logic.StateMachine {
+namespace WOA3.Logic.GameStateMachine {
 	class GameFinishedState : BaseGameState {
 
 		public GameFinishedState(GraphicsDevice device, ContentManager content)

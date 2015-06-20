@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using WOA3.Logic;
-using WOA3.Logic.StateMachine;
+using WOA3.Logic.GameStateMachine;
 
 namespace WOA3.Model.Display {
 	public class TutorialComplete : BaseMenu {

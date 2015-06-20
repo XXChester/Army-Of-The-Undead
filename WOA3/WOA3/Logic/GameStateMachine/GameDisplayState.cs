@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using WOA3.Model.Display;
 
 
-namespace WOA3.Logic.StateMachine {
+namespace WOA3.Logic.GameStateMachine {
 	class GameDisplayState : BaseGameState {
 
 		public GameDisplayState( GraphicsDevice device,  ContentManager content)
@@ -20,7 +20,9 @@ namespace WOA3.Logic.StateMachine {
 			if (GameStateMachine.getInstance().LevelContext == null) {
 				resetContext();
 			}
-			return new GameDisplay(device, content, "Map" + GameStateMachine.getInstance().LevelContext.MapIndex);
+		//	return new GameDisplay(device, content, "Map" + GameStateMachine.getInstance().LevelContext.MapIndex);
+			return new GameDisplay(device, content, "Pathing");
+			//return new GameDisplay(device, content, "Map4");
 		}
 
 		public override void goToPreviousState() {

@@ -17,12 +17,12 @@ using Microsoft.Xna.Framework.Input;
 using WOA3.Logic;
 using WOA3.Logic.Skills;
 using WOA3.Logic.AI;
-using WOA3.Logic.StateMachine;
+using WOA3.Logic.GameStateMachine;
 using WOA3.Engine;
 using WOA3.Map;
 using WOA3.Model;
 
-namespace WOA3.Logic.StateMachine {
+namespace WOA3.Logic.GameStateMachine {
 	public class LevelContext {
 		public List<Ghost> Ghosts { get; set; }
 		public int MapIndex { get; set; }

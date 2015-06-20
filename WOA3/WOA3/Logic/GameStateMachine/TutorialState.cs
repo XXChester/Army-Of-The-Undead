@@ -9,24 +9,24 @@ using Microsoft.Xna.Framework.Graphics;
 using WOA3.Model.Display;
 
 
-namespace WOA3.Logic.StateMachine {
-	class GameOverState : BaseGameState {
-
-		public GameOverState(GraphicsDevice device, ContentManager content)
+namespace WOA3.Logic.GameStateMachine {
+	class TutorialState : BaseGameState {
+		public TutorialState(GraphicsDevice device, ContentManager content)
 			: base(device, content, null) {
 		}
 
 		protected override IRenderable createInstance() {
-			return new GameOverDisplay(device, content);
+			return new TutorialDisplay(device, content);
+		}
+
+		public override void goToPreviousState() {
+			changeState(GameStateMachine.getInstance().MainMenu);
+			base.goToPreviousState();
 		}
 
 		public override void goToNextState() {
-			changeState(GameStateMachine.getInstance().MainMenu);
+			changeState(GameStateMachine.getInstance().TutorialComplete);
 			base.goToNextState();
-		}
-		public override void goToPreviousState() {
-			changeState(GameStateMachine.getInstance().GameDisplay);
-			base.goToPreviousState();
 		}
 	}
 }

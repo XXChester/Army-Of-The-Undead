@@ -23,7 +23,7 @@ using Microsoft.Xna.Framework.Input;
 using WOA3.Logic;
 using WOA3.Logic.Skills;
 using WOA3.Logic.AI;
-using WOA3.Logic.StateMachine;
+using WOA3.Logic.GameStateMachine;
 using WOA3.Engine;
 using WOA3.Map;
 
@@ -368,6 +368,7 @@ namespace WOA3.Model.Display {
 					if (!hitWall) {
 						mob.Subscribe(this.ghostObserverHandler, closestSeeable.Ghost);
 					} else {
+						// if we are hitting a wall and can still see the mob, route a path to it
 						mob.Unsubscribe(closestSeeable.Ghost.Position);
 					}
 
