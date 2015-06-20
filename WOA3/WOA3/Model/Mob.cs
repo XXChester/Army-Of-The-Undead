@@ -25,7 +25,7 @@ using WOA3.Logic.Behaviours;
 
 namespace WOA3.Model {
 	public abstract class Mob : Character, IObserver<Ghost> {
-		public enum State { Tracking, LostTarget, Stopped, Pathing, Idle }
+		public enum State { Tracking, Pathing, Idle }
 		#region Class variables
 		private TargetBehaviour activeBehaviour;
 		private TargetBehaviour seekingBehaviour;
@@ -33,21 +33,28 @@ namespace WOA3.Model {
 		private TargetBehaviour idleBehaviour;
 		private Pathing pathingBehaviour;
 		private Entity tracking;
+		private State state;
 		private State previousState;
 		private IDisposable unsubscriber;
 		protected List<Skill> skills;
 		private Point previousPoint;
 		private SoundEffect explosionSfx;
 
-		private const float SPEED = .1f;
+		private const float SPEED = .05f;//.1f;
 		#endregion Class variables
 
 		#region Class propeties
 		public Vector2 LastKnownLocation { get; set; }
-		public State CurrentState { get; set; }
 		public float CorpseExplosionDamage { get { return 3; } }
 		public BoundingSphere BoundingSphere { get; set; }
 		public bool Inactive { get; set; }
+		public State CurrentState {
+			get { return this.state; }
+			set {
+				this.previousState = this.state;
+				this.state = value;
+			}
+		}
 		#endregion Class properties
 
 		#region Constructor
@@ -61,17 +68,21 @@ namespace WOA3.Model {
 				swapBehaviours(this.idleBehaviour, State.Idle);
 			};
 			BehaviourFinished restartPathing = delegate() {
-				this.activeBehaviour.Target = this.LastKnownLocation;
-				pathToWaypoint();
+#if DEBUG
+				Debug.log("Restarting");
+#endif
+				//this.activeBehaviour.Target = this.LastKnownLocation;
+				pathToWaypoint(this.LastKnownLocation);
 			};
 			this.seekingBehaviour = new Tracking(position, SPEED, idleCallback, collisionCheck);
 			this.lostTargetBehaviour = new LostTarget(this.seekingBehaviour.Position, this.seekingBehaviour.Position, SPEED, idleCallback);
 			this.pathingBehaviour = new Pathing(position, SPEED, idleCallback, collisionCheck, restartPathing);
 			this.idleBehaviour = new IdleBehaviour(position);
-			this.activeBehaviour = this.seekingBehaviour;
+			this.activeBehaviour = this.idleBehaviour;
 			this.CurrentState = State.Idle;
 			updateBoundingSphere();
 			this.previousPoint = base.Position.toPoint();
+			this.LastKnownLocation = base.Position;
 			
 			this.skills = new List<Skill>();
 			this.explosionSfx = LoadingUtils.load<SoundEffect>(content, "CorpseExplosion");
@@ -96,49 +107,54 @@ namespace WOA3.Model {
 		#region Support methods
 		protected abstract void initSkills();
 		private void swapBehaviours(TargetBehaviour newBehaviour, State state) {
-			if (!state.Equals(previousState)) {
-				this.LastKnownLocation = this.activeBehaviour.Target;
+			//if (!state.Equals(previousState)) {
+				Debug.log("state changed from: " + previousState + "\t to: " + state);
+				// reset the last known location ONLY if we were tracking
+				if (isTracking()) {
+					this.LastKnownLocation = this.activeBehaviour.Target;
+				}
 				newBehaviour.Target = this.LastKnownLocation;
 				newBehaviour.Position = this.activeBehaviour.Position;
 				this.activeBehaviour = newBehaviour;
 				this.CurrentState = state;
-			}
+		//	}
 			if (!state.Equals(State.Pathing)) {
-				this.pathingBehaviour.stop();
+			//	this.pathingBehaviour.stop();
 			}
 		}
 
 		private void trackTarget(Entity toTrack) {
 			//if (!toTrack.Equals(tracking)) {
-				this.tracking = toTrack;
-				/*this.LastKnownLocation = this.activeBehaviour.Target;
-				this.CurrentState = State.Tracking;
-				this.seekingBehaviour.Position = base.Position;
-				this.seekingBehaviour.Target = this.LastKnownLocation;
-				this.activeBehaviour = this.seekingBehaviour;*/
-				swapBehaviours(this.seekingBehaviour, State.Tracking);
+			//	this.tracking = toTrack;
+			//	swapBehaviours(this.seekingBehaviour, State.Tracking);
+			pathToWaypoint(toTrack.Position);
 		//	}
 		}
 
 
-		public void lostTarget() {
-			/*this.LastKnownLocation = this.activeBehaviour.Target;
-			this.CurrentState = State.LostTarget;
-			this.lostTargetBehaviour.Position = base.Position;
-			this.lostTargetBehaviour.Target = this.LastKnownLocation;
-			this.activeBehaviour = this.lostTargetBehaviour;*/
+		/*public void lostTarget() {
 			swapBehaviours(this.lostTargetBehaviour, State.LostTarget);
+		}*/
+
+		public void idle() {
+			swapBehaviours(this.idleBehaviour, State.Idle);
 		}
 
-		public void pathToWaypoint() {
-			//swapBehaviours(this.pathingBehaviour, State.Pathing);
-			//this.pathingBehaviour.init(base.Position, this.LastKnownLocation);
-			this.CurrentState = State.Pathing;
-			this.pathingBehaviour.init(base.Position, this.activeBehaviour.Target);
-			this.activeBehaviour = this.pathingBehaviour;
+		public void pathToWaypoint(Vector2 lastKnowPosition) {
+			// if the last known location isn't the same as our currnet LKL, re-calculate
+			if (!lastKnowPosition.Equals(LastKnownLocation)) {
+				//this.activeBehaviour.Target = this.LastKnownLocation;
+				this.LastKnownLocation = lastKnowPosition;
+				this.pathingBehaviour.init(base.Position, this.LastKnownLocation);
+				swapBehaviours(this.pathingBehaviour, State.Pathing);
+
+				/*this.CurrentState = State.Pathing;
+				this.pathingBehaviour.init(base.Position, this.activeBehaviour.Target);
+				this.activeBehaviour = this.pathingBehaviour;*/
+			}
 		}
 
-		public void stop() {
+	/*	public void stop() {
 #if DEBUG
 			Debug.log("Stoppping");
 #endif
@@ -149,17 +165,18 @@ namespace WOA3.Model {
 		public bool isStopped() {
 			return State.Stopped.Equals(this.CurrentState);
 		}
+	 	
+		public bool isLost() {
+			return State.LostTarget.Equals(this.CurrentState);
+		}
+		*/
 
 		public bool isPathing() {
-			return State.Pathing.Equals(this.CurrentState);
+			return State.Pathing.Equals(this.CurrentState) && this.pathingBehaviour.Targets.Count > 0;
 		}
 
 		public bool isTracking() {
 			return State.Tracking.Equals(this.CurrentState);
-		}
-
-		public bool isLost() {
-			return State.LostTarget.Equals(this.CurrentState);
 		}
 
 		public bool isIdle() {
@@ -199,15 +216,22 @@ namespace WOA3.Model {
 			if (!Inactive) {
 				base.update(elapsed);
 
-				//if (!isIdle()) {
-				// if we are tracking, update our target to the current prey's location
-				if (this.tracking != null) {
-					this.seekingBehaviour.Target = this.tracking.Position;
+				//Problem is the setting of the last known location when we switch behaviours
+#if DEBUG
+				if (Debug.mobsCanMove) {
+#endif
+					//if (!isIdle()) {
+						// if we are tracking, update our target to the current prey's location
+						if (this.tracking != null) {
+							this.seekingBehaviour.Target = this.tracking.Position;
+						}
+						this.activeBehaviour.update(elapsed);
+						base.Position = this.activeBehaviour.Position;
+				//	}
+					updateBoundingSphere();
+#if DEBUG
 				}
-				this.activeBehaviour.update(elapsed);
-				base.Position = this.activeBehaviour.Position;
-				updateBoundingSphere();
-				//}
+#endif
 
 				// update our skills
 				foreach (var skill in skills) {
@@ -215,14 +239,13 @@ namespace WOA3.Model {
 				}
 
 				/*if (GWNorthEngine.Input.InputManager.getInstance().wasRightButtonPressed()) {
-					this.activeBehaviour.Target = GWNorthEngine.Input.InputManager.getInstance().MousePosition;
-					swapBehaviours(this.seekingBehaviour, State.Tracking);
+					pathToWaypoint(GWNorthEngine.Input.InputManager.getInstance().MousePosition);
 				}*/
 				/*if (!isPathing() && !isStopped() && activeBehaviour.Target.Equals(activeBehaviour.Position)) {
 					stop();
 				}*/
 
-				this.previousState = CurrentState;
+				//this.previousState = CurrentState;
 			}
 		}
 
@@ -232,11 +255,14 @@ namespace WOA3.Model {
 
 #if DEBUG
 				if (Debug.debugOn) {
-					if (!isStopped()) {
-						BoundingBox bbox = CollisionGenerationUtils.getBBoxHalf(this.activeBehaviour.Target);
-						DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Green, Debug.debugChip);
-					}
+					BoundingBox bbox = CollisionGenerationUtils.getBBoxHalf(this.activeBehaviour.Target);
+					//BoundingBox bbox = CollisionGenerationUtils.getBBox(this.activeBehaviour.Target);
+					DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Green, Debug.debugChip);
 					DebugUtils.drawBoundingSphere(spriteBatch, BoundingSphere, Color.Pink, Debug.debugRing);
+					if (this.pathingBehaviour.Targets.Count > 0) {
+						bbox = CollisionGenerationUtils.getBBox(this.pathingBehaviour.EndTarget);
+						DebugUtils.drawBoundingBox(spriteBatch, bbox, Color.Orange, Debug.debugChip);
+					}
 				}
 				if (GWNorthEngine.Input.InputManager.getInstance().wasKeyPressed(Microsoft.Xna.Framework.Input.Keys.Space)) {
 					Debug.log("Type: " + this.activeBehaviour + "\tpos: " + this.activeBehaviour.Position);
@@ -250,15 +276,24 @@ namespace WOA3.Model {
 			this.trackTarget(ghost);
 		}
 
-		public virtual void Unsubscribe() {
+		public virtual void Unsubscribe(Vector2 lastKnowPosition) {
 			if (this.unsubscriber != null) {
 				this.unsubscriber.Dispose();
-				this.lostTarget();
 			}
+			//this.lostTarget();
+			/*if (this.tracking != null) {
+				this.LastKnownLocation = this.tracking.Position;
+			}*/
+			// if the last known location isn't the same as our currnet LKL, re-calculate
+			if (!lastKnowPosition.Equals(LastKnownLocation)) {
+				this.pathToWaypoint(lastKnowPosition);
+			}
+			//this.tracking = null;
 		}
 
 		public void OnCompleted() {
-			this.lostTarget();
+			//this.stop();
+			this.idle();
 		}
 
 		public void OnError(Exception error) {
@@ -271,7 +306,7 @@ namespace WOA3.Model {
 				if (ghost.isVisible()) {
 					this.trackTarget(ghost);
 				} else {
-					this.lostTarget();
+					this.pathToWaypoint(ghost.Position);
 				}
 			}
 		}
