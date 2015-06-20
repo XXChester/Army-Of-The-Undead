@@ -70,3 +70,4 @@ Final testing!!
 []Full screen
 []Tutorial
 []Escape does not exit
+[]Make sure debug stuff doesn't work such as restarting the level by r

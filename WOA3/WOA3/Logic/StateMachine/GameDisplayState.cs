@@ -16,13 +16,17 @@ namespace WOA3.Logic.StateMachine {
 			: base(device, content, null) {
 		}
 
+		private void resetContext() {
+			LevelContext context = new LevelContext() {
+				Ghosts = new List<Model.Ghost>(),
+				MapIndex = 1
+			};
+			GameStateMachine.getInstance().LevelContext = context;
+		}
+
 		protected override IRenderable createInstance() {
 			if (GameStateMachine.getInstance().LevelContext == null) {
-				LevelContext context = new LevelContext() {
-					Ghosts = new List<Model.Ghost>(),
-					MapIndex = 1
-				};
-				GameStateMachine.getInstance().LevelContext = context;
+				resetContext();
 			}
 			return new GameDisplay(device, content, "Map" + GameStateMachine.getInstance().LevelContext.MapIndex);
 		}
@@ -35,8 +39,13 @@ namespace WOA3.Logic.StateMachine {
 		public override void goToNextState() {
 			LevelContext context = GameStateMachine.getInstance().LevelContext;
 			context.MapIndex += 1;
-			GameStateMachine.getInstance().LevelContext = context;
-			changeState(GameStateMachine.getInstance().GameDisplay);
+			if (context.MapIndex == 5) {
+				resetContext();
+				changeState(GameStateMachine.getInstance().GameFinishedState);
+			} else {
+				changeState(GameStateMachine.getInstance().GameDisplay);
+				GameStateMachine.getInstance().LevelContext = context;
+			}
 			base.goToNextState();
 		}
 
