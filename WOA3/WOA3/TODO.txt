@@ -46,6 +46,7 @@
 [*]can be attacked while invisible
 [*]If you go invisible and then attack to loose right away
 []Your attacks should happen before the mobs. You can observe this by going invisible and appearing at a mob, it should damage him.
+[]Cloest to end doesn't return the closest
 
 []Transitions
 []SFX

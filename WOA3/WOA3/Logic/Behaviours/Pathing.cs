@@ -38,6 +38,9 @@ namespace WOA3.Logic.Behaviours {
 			}
 		}
 
+#if DEBUG
+		public Vector2 EndTarget { get; set; }
+#endif
 		public Vector2 Target { get; set; }
 
 		public Vector2 Position { get; set; }
@@ -73,6 +76,9 @@ namespace WOA3.Logic.Behaviours {
 			if (points.Count > 0) {
 				Point myPosition = Position.toPoint();
 				List<Point> reversedPoints = points.ToList<Point>();
+#if DEBUG
+				this.EndTarget = reversedPoints[points.Count-1].toVector2();
+#endif
 				reversedPoints.Reverse();
 				foreach (var point in reversedPoints) {
 					if (!point.Equals(myPosition)) {
@@ -85,50 +91,26 @@ namespace WOA3.Logic.Behaviours {
 			}
 		}
 
-		public void stop() {
-			this.Targets.Clear();
-		}
-
 		public void update(float elapsed) {
-			// if we do not have a path, try once more
-			/*if (Targets.Count == 0 && !requestingPath) {
-				init(Position);
-			}*/
-			if (Targets.Count > 0) {
-				float distance = Vector2.Distance(Position, Target);
-				Vector2 direction = Vector2.Normalize(Target - Position);
+			float distance = Vector2.Distance(Position, Target);
+			Vector2 direction = Vector2.Normalize(Target - Position);
 
-				Vector2 newPosition = Position + direction * SPEED * elapsed;
-				if (this.collisionCheck != null && this.collisionCheck.Invoke(newPosition)) {
-					this.restartPathing.Invoke();
-					return;
+			Vector2 newPosition = Position + direction * SPEED * elapsed;
+			if (float.IsNaN(newPosition.X) && float.IsNaN(newPosition.Y)) {
+				if (targets.Count > 0) {
+					Target = targets.Pop();
 				}
+			} else {
 				float distanceBetweenPositions = Vector2.Distance(Target, newPosition);
 				if (distanceBetweenPositions >= distance) {
 					newPosition = Target;
-					Target = targets.Pop();
-				}
-				float x = newPosition.X;
-				if (float.IsNaN(x)) {
-					x = Position.X;
-				}
-				float y = newPosition.Y;
-				if (float.IsNaN(y)) {
-					y = Position.Y;
-				}
-				if (!float.IsNaN(newPosition.X) && !float.IsNaN(newPosition.Y)) {
-					Position = newPosition;
+					if (targets.Count > 0) {
+						Target = targets.Pop();
+					} else if (this.callback != null) {
+						this.callback.Invoke();
+					}
 				} else {
-					Debug.log("NAN: " + Position + "\tCount: " + Targets.Count+"\tnewPosition: " + newPosition);
-					//Target = Targets.Pop();
-					//Position = new Vector2(x, y);
-					//this.callback.Invoke();
-					this.restartPathing.Invoke();
-				}
-			}
-			if (Targets.Count == 0 && !requestingPath) {
-				if (this.callback != null) {
-					this.callback.Invoke();
+					this.Position = newPosition;
 				}
 			}
 		}
