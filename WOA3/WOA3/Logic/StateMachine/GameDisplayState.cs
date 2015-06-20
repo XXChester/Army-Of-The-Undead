@@ -20,7 +20,7 @@ namespace WOA3.Logic.StateMachine {
 			if (GameStateMachine.getInstance().LevelContext == null) {
 				LevelContext context = new LevelContext() {
 					Ghosts = new List<Model.Ghost>(),
-					MapIndex = 3
+					MapIndex = 1
 				};
 				GameStateMachine.getInstance().LevelContext = context;
 			}

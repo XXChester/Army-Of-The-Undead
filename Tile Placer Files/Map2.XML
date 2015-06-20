@@ -247,13 +247,8 @@
       <Value>1</Value>
     </Tile>
     <Tile>
-      <Index>87</Index>
-      <FileName>c4.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
       <Index>88</Index>
-      <FileName>c1.png</FileName>
+      <FileName>ud4.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
@@ -279,16 +274,6 @@
     <Tile>
       <Index>120</Index>
       <FileName>ud2.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>126</Index>
-      <FileName>c4.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>127</Index>
-      <FileName>c1.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>
@@ -339,26 +324,6 @@
     <Tile>
       <Index>160</Index>
       <FileName>ud2.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>163</Index>
-      <FileName>lr4.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>164</Index>
-      <FileName>lr1.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>165</Index>
-      <FileName>lr1.png</FileName>
-      <Value>1</Value>
-    </Tile>
-    <Tile>
-      <Index>166</Index>
-      <FileName>c1.png</FileName>
       <Value>1</Value>
     </Tile>
     <Tile>

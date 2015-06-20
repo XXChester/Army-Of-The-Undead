@@ -65,9 +65,12 @@ namespace WOA3.Logic {
 		private void removeRequests(Character source) {
 			if (this.combatRequests.Count > 0) {
 				lock (this.combatRequests) {
-					foreach (var request in this.combatRequests) {
-						if (request.Source.Equals(source)) {
-							this.combatRequests.Remove(request);
+					for (int j = combatRequests.Count - 1; j >= 0; j--) {
+						CombatRequest request = combatRequests[j];
+						if (request.Source != null && source != null) {
+							if (request.Source.Equals(source)) {
+								this.combatRequests.RemoveAt(j);
+							}
 						}
 					}
 				}
