@@ -22,6 +22,7 @@ namespace WOA3.Logic.StateMachine {
 		public BaseGameState Tutorial { get; set; }
 		public BaseGameState TutorialComplete { get; set; }
 		public BaseGameState GameOverState { get; set; }
+		public BaseGameState GameFinishedState { get; set; }
 
 		public LevelContext LevelContext { get; set; }
 
@@ -39,16 +40,19 @@ namespace WOA3.Logic.StateMachine {
 			this.TutorialComplete = new TutorialCompleteState(device, content);
 			this.MainMenu = new MainMenuState(device, content);
 			this.GameOverState = new GameOverState(device, content);
+			this.GameFinishedState = new GameFinishedState(device, content);
 
 			this.LevelContext = null;
 
 			this.CurrentState = this.CompanyCinematic;
 			//this.CurrentState = this.GameDevCinematic;
 			//this.CurrentState = this.MainMenu;
-			//this.CurrentState = this.GameDisplay;
+		//	this.CurrentState = this.GameDisplay;
 			//this.CurrentState = this.GameOverState;
 			//this.CurrentState = Tutorial;
 			//this.CurrentState = TutorialComplete;
+			//this.CurrentState = this.GameFinishedState;
+
 			this.CurrentState.reset();
 
 			setStates();

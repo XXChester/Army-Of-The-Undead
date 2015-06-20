@@ -59,10 +59,16 @@ namespace WOA3.Model.Display {
 		#region Support methods
 		public void createButtons(ButtonRequest[] requests) {
 			this.buttons = new List<Button>();
-			for (int i = 0; i < requests.Length; i++) {
-				ButtonRequest request = requests[i];
-				TexturedEffectButton button = ModelGenerationUtil.createButton(content, new Vector2(POSITIONS[i], y), request.Name);
+			if (requests.Length == 1) {
+				ButtonRequest request = requests[0];
+				TexturedEffectButton button = ModelGenerationUtil.createButton(content, new Vector2(middle, y), request.Name);
 				this.buttons.Add(new Button(content, button, request.Callback));
+			} else {
+				for (int i = 0; i < requests.Length; i++) {
+					ButtonRequest request = requests[i];
+					TexturedEffectButton button = ModelGenerationUtil.createButton(content, new Vector2(POSITIONS[i], y), request.Name);
+					this.buttons.Add(new Button(content, button, request.Callback));
+				}
 			}
 		}
 
