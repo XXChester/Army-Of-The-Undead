@@ -72,6 +72,14 @@ namespace WOA3.Logic.Behaviours {
 			});
 		}
 
+		private void popIfAvailable() {
+			if (targets.Count > 0) {
+				Target = targets.Pop();
+			} else if (this.callback != null) {
+				this.callback.Invoke();
+			}
+		}
+
 		protected void initTargets(Stack<Point> points) {
 			if (points.Count > 0) {
 				Point myPosition = Position.toPoint();
@@ -87,7 +95,7 @@ namespace WOA3.Logic.Behaviours {
 						Targets.Push(newPosition);
 					}
 				}
-				this.Target = Targets.Pop();
+				popIfAvailable();
 			}
 		}
 
@@ -97,18 +105,12 @@ namespace WOA3.Logic.Behaviours {
 
 			Vector2 newPosition = Position + direction * SPEED * elapsed;
 			if (float.IsNaN(newPosition.X) && float.IsNaN(newPosition.Y)) {
-				if (targets.Count > 0) {
-					Target = targets.Pop();
-				}
+				popIfAvailable();
 			} else {
 				float distanceBetweenPositions = Vector2.Distance(Target, newPosition);
 				if (distanceBetweenPositions >= distance) {
 					newPosition = Target;
-					if (targets.Count > 0) {
-						Target = targets.Pop();
-					} else if (this.callback != null) {
-						this.callback.Invoke();
-					}
+					popIfAvailable();
 				} else {
 					this.Position = newPosition;
 				}
